@@ -1,0 +1,17 @@
+# Card metadata consumed by https://amishchadha.com
+name: PicoFlow
+slug: picoflow
+area: CleanTech
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
+problem: >-
+  Remote homes near streams with 1 to 3 m of head have no simple turbine option.
+budget_usd: 350
+difficulty: 3  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [cleantech, open-hardware, cern-ohl-s]
