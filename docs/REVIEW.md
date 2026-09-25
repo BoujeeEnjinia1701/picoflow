@@ -67,3 +67,66 @@ Requirements not met or at risk: **R8** (touch voltage at runaway), **R13** (set
 ### Recommended next step
 
 Review this note and the media, then decide items 1 to 4. If approved, run `/advance-trl3` to size the runner and nozzles by calculation, confirm the generator constant, design the runaway clamp, lower the frame, and produce the parametric model and drawing sheet.
+
+## Session 2026-09-25: TRL 3
+
+Amish approved all TRL 2 recommendations on 2026-09-25 ("proceed with all of your recommendations across all batches. Make sure we don't proceed to TRL 4 on any of them."). This session took PicoFlow to TRL 3 and stopped there.
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (PCF-DDR-001 v0.1): decisions D1 to D10 recorded as "Decided by Amish, 2026-09-25: go with recommendation"; O1 left open; new TRL 3 items N1 to N5 proposed.
+- `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.1) and `docs/04-calcs/sizing.py`: first-principles hydraulics (Darcy-Weisbach with fittings, per-branch flow split), power chain with a generator loss model, head and flow range, sensitivity, runaway and clamp sizing, bearing life, print time, mass, penstock surge, dump load and cost. The script prints every quoted number and writes `docs/04-calcs/results.json`.
+- `cad/src/model.py`: parametric build123d model of the turbine unit (runner, shaft, bearing housing with posts, plate and coupling guard, coupling, generator, housing and lid, 90 mm manifold with opposed nozzles, gate valve, penstock stub, frame). Exports `cad/step/picoflow-turbine-assembly.step` and `.stl` plus the runner, manifold, housing and bearing mount separately.
+- `cad/src/sheets.py` and `cad/drawings/PCF-DWG-001.svg`, `.pdf`, `.png`: turbine unit general arrangement, Rev P1, scale 1:10, with main dimensions and a parts list; marked "CONCEPT, NOT FOR FABRICATION" and "PRELIMINARY, NOT FOR FABRICATION". The concept sheet keeps PCF-DWG-010, so DWG-001 was the next free number.
+- `bom/bom.csv` and `bom/bom-notes.md`: every line priced with a supplier or supplier type; kit $448.00 against $450.
+- `cad/src/concept_media.py`: now builds the turbine from `model.py` and reads the flow values and key figures from `results.json`; the weir is set for exactly 2.0 m of gross head. All media in `media/` refreshed and checked by eye; no `_views` folders left.
+- `docs/01-problem.md`, `docs/02-concept.md`, `docs/03-requirements.md` moved to v0.3; `project.yaml` (`trl: 3`, `trl_target: 3`, `budget_usd: 450`, evidence list) and `README.md` updated. PDFs rebuilt in `docs/pdf/`.
+
+### Requirements at TRL 3 (PCF-CAL-001)
+
+17 requirements: 8 met, 4 not met, 2 at risk, 3 not verifiable at TRL 3.
+
+| Status | Requirements |
+| --- | --- |
+| **Not met** | **R2** flow range at 1.0 m (10.5 L/s maximum, not 15); **R3** 77.2 W against 80 W; **R4** 23.9 W against 30 W at 1.0 m; **R5** 39.5 % against 40 % |
+| At risk | R12 printed runner life (bearings fine, about 1.1 x 10^7 h); R15 $448.00 against $450, $2 margin |
+| Not verifiable at TRL 3 | R7 controller behavior; R11 service times; R16 stream protection |
+| Met | R1, R6 (1.85 kWh, thin), R8 (clamp holds 48 V; generator overspeed to confirm), R9 (about 21 h print), R10, R13 (280 mm), R14 (22.2 kg), R17 (34.7 kPa) |
+
+Key numbers: pipe and branch losses 23.6 % of head (TRL 2 assumed 10 %); two 34 mm jets; 311 rpm and 3.23 N·m; 82.1 W rectified at 27.1 V; 77.2 W into the battery; 146.4 W at 3.0 m; runaway 764 rpm and 76.4 V open circuit at 3.0 m, clamped to 37 to 48 V by an 8.2 Ω, 300 W resistor; surge 0.59 m with a 10 s closure versus 44 m for an instant stop.
+
+The main design changes at TRL 3, all within sizing scope: branches 63 to 90 mm, jets moved to opposite sides, frame legs cut to 80 mm (nozzles 440 to 280 mm above tailwater), quarter-turn valve replaced by a multi-turn gate valve, independent voltage clamp added, coupling guard added.
+
+### Decisions recorded (PCF-DDR-001)
+
+D1 budget $450 with the salvaged-motor variant documented; D2 new low-speed BLDC; D3 open-design controller as the TRL 3 design, off-the-shelf unit for first bench tests only; D4 12 V; D5 PETG prototype, glass-filled nylon for field units; D6 vertical shaft; D7 two jets; D8 drainage pipe with a slow-closing valve and surge check; D9 problem wording kept; D10 Turgo. All: "Decided by Amish, 2026-09-25: go with recommendation."
+
+### Still awaiting Amish
+
+- **O1.** First site type, region and co-design partner, including confirmation that target sites carry about 5 to 15 L/s (Turgo range). No recommendation; partners are picked per area later.
+- **N1.** Design-point penstock 125 mm instead of 110 mm for a 20 m run: 84.3 W and 43.0 %, meeting R3 and R5; costs more but sits outside the kit budget. Recommendation: 125 mm.
+- **N2.** R4: relax to 20 W at 1.0 m and 7 L/s, or keep 30 W as not met. Recommendation: relax to 20 W.
+- **N3.** R2: state the flow range as 5 to 10 L/s at 1.0 m and 5 to 15 L/s from 2.0 m. Recommendation: yes.
+- **N4.** R14: confirm "turbine unit" means items 1 to 6 and 11 (22.2 kg). Counting the manifold and valve gives 27.4 kg, which fails 25 kg. Recommendation: confirm.
+- **N5.** R15: accept the $2 margin or trim cost. Recommendation: accept, and firm prices with quotes before any build.
+
+### Safety concerns
+
+- Drowning and flood risk at weirs and streams; the runner sits only 210 mm above normal tailwater, so flood levels must be checked at siting.
+- Double-fault runaway (load and clamp) reaches about 76 V DC at 3 m; keep the DC side enclosed and rated for 100 V; confirm the generator's overspeed rating.
+- Water hammer: a quarter-turn valve or a suddenly plugged nozzle could add 22 to 44 m of head to drainage pipe rated (assumed) for 50 kPa. Only the multi-turn gate valve is allowed; keep the screen clear. The 50 kPa rating is an assumption to confirm with the supplier.
+- Dump load and clamp resistor surfaces above 200 °C; fire risk.
+- Coupling guard added; still close the valve and wait for the runner to stop before service.
+- LiFePO4 battery short-circuit current; fuse at the terminal and a BMS.
+
+### Other notes
+
+- No TRL 4 material exists in the repo (`build-log/` holds only its README, and `electronics/` and `firmware/` are empty). The TRL change was not written to the build log because build-log entries are TRL 4 evidence and are on hold.
+- Citations: the TRL 2 review did not flag any unchecked citations, and no new external sources were added at TRL 3. The pipe joint rating (50 kPa) and generator constants are stated as assumptions, not sourced facts.
+- The exploded view labels sit over the small coupling (item 4), which is hard to see; acceptable for concept media.
+
+### Recommended next step
+
+TRL 4 is on hold by Amish's instruction. The next step is for Amish to decide N1 to N5 and O1; if N1 to N3 are accepted, a short document update (PCF-REQ-001 and PCF-PRC-001) closes R2, R3 and R5 on paper, still at TRL 3.
+
+For reference only, TRL 4 would need: a chosen generator with measured constants and overspeed rating; a printed runner and nozzles; a lab rig with a head tank or pump giving 1 to 3 m and 5 to 15 L/s; controller and clamp hardware; a lab test report (TST, `environment: lab`) covering output, efficiency, clamp response and runaway; and build log entries. None of this has been started.

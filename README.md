@@ -1,14 +1,14 @@
 # PicoFlow
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** CleanTech · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $350 USD · **Difficulty:** 3 of 5
+**Area:** CleanTech · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $450 USD · **Difficulty:** 3 of 5
 
 3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
 
 ![PicoFlow concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/PCF-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Problem
 
@@ -18,25 +18,25 @@ Remote homes near streams with 1 to 3 m of head have few durable, repairable tur
 
 3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
 
-At 2 m of head and 10 L/s, first-order estimates give about 90 W into a 12 V battery, or about 2.2 kWh a day, running around the clock. The generator sits on the lid above the spray, and the dump load keeps the runner from running away when the battery is full.
+At 2 m of head and 10 L/s, the TRL 3 sizing calculation (PCF-CAL-001) gives about 77 W into a 12 V battery, or about 1.85 kWh a day, running around the clock; pipe losses of about 24 % keep it just under the 80 W target, and a 125 mm penstock would recover it. The generator sits on the lid above the spray, the dump load keeps the runner from running away when the battery is full, and a hardware clamp holds the DC side below 48 V if the controller fails.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Printed PETG or nylon Turgo runner, 200 mm, with two nozzles
-- Low-speed 500 W BLDC motor as generator (new or salvaged washing machine motor, proposed)
+- Printed Turgo runner, 200 mm (PETG prototype, glass-filled nylon for field units), with two opposed 34 mm jets
+- New low-speed 500 W BLDC motor as generator (a salvaged washing machine motor is the low-cost variant)
 - Sealed bearings above the spray on a stainless shaft
-- PVC penstock, forebay screen and 315 mm PVC housing
+- PVC penstock with a slow-closing gate valve, forebay screen and 315 mm PVC housing
 - Three-phase rectifier
-- MPPT and dump-load controller for a 12 V battery
-- 300 W dump-load resistor
+- Open-design MPPT, dump-load and clamp controller for a 12 V battery
+- 300 W dump-load resistor and 8.2 ohm clamp resistor
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $448 for the turbine kit with a new generator, penstock and battery excluded.
 
 ## Safety
 
-> Streams and weirs can drown people; install and service only at low flow. The runner and coupling rotate; close the valve and wait for them to stop before opening the housing. With no load the generator can exceed 60 V DC, and the dump load runs hot. The 12 V battery needs a BMS and a fuse at the terminal.
+> Streams and weirs can drown people; install and service only at low flow. The runner and coupling rotate; close the valve and wait for them to stop before opening the housing. With no load and a failed clamp the generator can exceed 60 V DC, so the DC side stays enclosed; the dump load and clamp resistor run hot. Close the gate valve slowly. The 12 V battery needs a BMS and a fuse at the terminal.
 
 ## Repository layout
 
