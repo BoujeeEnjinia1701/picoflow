@@ -6,27 +6,37 @@
 
 3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
 
+![PicoFlow concept](media/hero.png)
+
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+
 ## Problem
 
-Remote homes near streams with 1 to 3 m of head have no simple turbine option.
+Remote homes near streams with 1 to 3 m of head have few durable, repairable turbine options: cheap closed units wear out in two or three years, and durable ones cost several times a household budget.
 
 ## Concept
 
 3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
 
+At 2 m of head and 10 L/s, first-order estimates give about 90 W into a 12 V battery, or about 2.2 kWh a day, running around the clock. The generator sits on the lid above the spray, and the dump load keeps the runner from running away when the battery is full.
+
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- PETG or nylon Turgo runner
-- 500 W BLDC motor as generator
-- Sealed bearings
-- PVC penstock and nozzle
-- 3-phase rectifier
-- Dump-load resistor
-- Charge controller board
+- Printed PETG or nylon Turgo runner, 200 mm, with two nozzles
+- Low-speed 500 W BLDC motor as generator (new or salvaged washing machine motor, proposed)
+- Sealed bearings above the spray on a stainless shaft
+- PVC penstock, forebay screen and 315 mm PVC housing
+- Three-phase rectifier
+- MPPT and dump-load controller for a 12 V battery
+- 300 W dump-load resistor
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+
+## Safety
+
+> Streams and weirs can drown people; install and service only at low flow. The runner and coupling rotate; close the valve and wait for them to stop before opening the housing. With no load the generator can exceed 60 V DC, and the dump load runs hot. The 12 V battery needs a BMS and a fuse at the terminal.
 
 ## Repository layout
 
