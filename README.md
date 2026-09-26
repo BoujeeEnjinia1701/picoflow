@@ -20,7 +20,7 @@ The design is open and garage-buildable because the households that need it are 
 
 About 666 million people still had no electricity in 2023, and 85 % of them live in sub-Saharan Africa ([World Bank, Tracking SDG 7: The Energy Progress Report 2025](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)). Many live in hilly, well-watered areas where a stream runs past the house day and night, and pico hydro turns that flow into continuous power that solar alone cannot match after dark or in the rainy season.
 
-The market has already shown both the demand and the failure mode. In Vietnam, 100,000 to 120,000 cheap low-head propeller units were sold over 10 to 15 years, but only about 30,000 were still running, because most became unusable after 2 to 3 years when bearings, seals and generator windings failed ([DFID project R8150, Vietnam country report](https://assets.publishing.service.gov.uk/media/57a08cf340f0b652dd001676/R8150-Vietnam.pdf)). Households paid again and again for power that did not last.
+The market has already shown both the demand and the failure mode. In Vietnam, 100,000 to 120,000 cheap low-head propeller units were sold over 10 to 15 years, but probably no more than 30,000 were still running, because most became unusable within 2 to 3 years as lower bearings, seals and generator windings failed ([DFID project R8150, Vietnam country report](https://assets.publishing.service.gov.uk/media/57a08cf340f0b652dd001676/R8150-Vietnam.pdf)). Households paid again and again for power that did not last.
 
 ## Where it could be used
 
@@ -42,12 +42,12 @@ The market has already shown both the demand and the failure mode. In Vietnam, 1
 | Sub-Saharan Africa (for example the highlands of Rwanda, Uganda and eastern DR Congo) | Home to 85 % of the people without electricity ([World Bank, 2025](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)); many highland homes sit near year-round streams |
 | Vietnam (northern uplands) | A proven market for household pico hydro, where most cheap units fail in 2 to 3 years ([DFID R8150](https://assets.publishing.service.gov.uk/media/57a08cf340f0b652dd001676/R8150-Vietnam.pdf)); a durable, repairable unit fits existing habits |
 | Nepal | Steep hill streams and a long-standing national program for micro and mini hydro ([AEPC](https://www.aepc.gov.np/pages/minimicro-hydro)); pico units can reach homes beyond a village scheme |
-| Andean South America (Peru, Bolivia) | Scattered mountain households far from the grid, with snow-fed streams and steep terrain |
+| Peru | A World Bank-supported rural electrification project installed 11,915 solar home systems in isolated areas and prepared studies for 21 small hydropower projects in the country's major basins ([World Bank, 2019](https://www.worldbank.org/en/results/2019/05/13/promoting-rural-electrification-in-peru)); a pico unit could serve scattered mountain homes on a stream beyond those schemes |
 | New Zealand and the United Kingdom | High-income off-grid cabins and farms already use commercial pico turbines such as the New Zealand-made PowerSpout ([PowerSpout LH](https://www.powerspout.com/pages/low-head-lh-info)); an open design lowers the cost of a repairable, low-head alternative |
 
 ## What sparked the idea
 
-The idea traces back to the Turgo turbine itself. In 1919 the young engineer Eric Crewdson, working for the English turbine maker Gilbert Gilkes & Gordon, applied for a patent on a side-entry impulse runner that would run at about twice the speed of a Pelton wheel on the same head, with jets striking one face at an angle and discharging from the other; the patent was granted in 1920 ([Hydropower & Dams International, "Gilkes celebrates 100 years of the Turgo impulse turbine"](https://www.hydropower-dams.com/news/gilkes-celebrates-100-years-of-the-turgo-impulse-turbine/)). A century on, that higher speed at low head is what lets a small runner drive an off-the-shelf motor directly, without a gearbox, and the University of Bristol's 2013 tests of a Turgo at 1 m of head ([Williamson, Stark and Booker, Applied Energy 102](https://research-information.bris.ac.uk/en/publications/performance-of-a-low-head-pico-hydro-turgo-turbine)) showed the principle holds far below its usual range. PicoFlow is an attempt to put Crewdson's runner into a form that a village workshop can print and repair.
+The idea traces back to the Turgo turbine itself. In 1919 the young engineer Eric Crewdson, then a trainee at the English turbine maker Gilkes of Kendal, applied for a patent on a side-entry impulse runner that would run at twice the speed of a Pelton wheel on the same head, with jets striking one side at an angle and discharging from the other; the patent was granted in 1920 ([Gilkes, "100 Years of the Turgo Impulse Turbine"](https://www.gilkes.com/media/1809/100-yrs-of-the-turgo-impulse-rev-4.pdf)). A century on, that higher speed at low head is what lets a small runner drive an off-the-shelf motor directly, without a gearbox, and the University of Bristol's 2013 tests of a Turgo at heads from 3.5 m down to 1 m, which reached 87 % jet-to-mechanical efficiency at 1 m ([Williamson, Stark and Booker, Applied Energy 102](https://research-information.bris.ac.uk/en/publications/performance-of-a-low-head-pico-hydro-turgo-turbine)), showed the principle holds far below its usual range. PicoFlow is an attempt to put Crewdson's runner into a form that a village workshop can print and repair.
 
 ## Problem
 
@@ -94,6 +94,12 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $448 for the turb
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (PCF-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `PCF-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 

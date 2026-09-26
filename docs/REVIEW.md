@@ -182,3 +182,12 @@ No safety requirement changed status. The double-fault open-circuit voltage rise
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction. Firming prices with quotes (N5), measuring runner efficiency and generator constants, and any build or test were not started.
+
+## Session 2026-09-26: sources strengthened
+
+Amish asked on 2026-09-26 to fix the weaker sources in the README. Changes (README only; no controlled document changed):
+
+- What sparked the idea: the trade-press source (Hydropower & Dams International) was replaced by Gilkes' own history, "100 Years of the Turgo Impulse Turbine", which gives the 1919 application, the 1920 grant to Eric Crewdson, twice Pelton speed at the same head and the side-entry jet. Crewdson is now described as a trainee at Gilkes, as the source says, rather than naming the later company title. The Bristol paper (Williamson, Stark and Booker, Applied Energy 102, 2013) was rechecked and its test range (3.5 m down to 1 m, 87 % at 1 m) is now stated. INSPIRATIONS.md line updated to the new source.
+- By country or region: "Andean South America (Peru, Bolivia)" had no source and was replaced by a Peru row citing the World Bank's 2019 results note on rural electrification (11,915 solar home systems in isolated areas; studies for 21 small hydropower projects).
+- Burning platform: the Vietnam figure now follows the DFID R8150 wording ("doubtful whether there are more than 30,000" still running).
+- Kept and rechecked: World Bank Tracking SDG 7 2025 (666 million, 85 %), DFID R8150, AEPC. The PowerSpout page (the maker's own) was kept but could not be refetched in this session.
