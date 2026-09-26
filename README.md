@@ -10,6 +10,45 @@
 
 [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/PCF-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
+## Concept rationale
+
+A Turgo runner suits the low heads and debris-laden streams that most households near water actually have. It runs in air above the tailwater, tolerates leaves and sand better than a closed propeller, and keeps its efficiency at part flow, so one runner covers 1 to 3 m of head by changing only the nozzle inserts. Putting the bearings and generator on the lid, above the spray, addresses the main reason cheap low-head units fail: bearings and windings that sit in or near the water.
+
+The design is open and garage-buildable because the households that need it are far from spare-parts supply chains. A 200 mm runner prints on a common desktop printer in about a day, the housing and pipework are standard PVC, and the generator is an off-the-shelf low-speed motor, with a salvaged washing machine motor as the low-cost variant. A local workshop can therefore build, repair and adapt it without depending on a single supplier.
+
+## Burning platform
+
+About 666 million people still had no electricity in 2023, and 85 % of them live in sub-Saharan Africa ([World Bank, Tracking SDG 7: The Energy Progress Report 2025](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)). Many live in hilly, well-watered areas where a stream runs past the house day and night, and pico hydro turns that flow into continuous power that solar alone cannot match after dark or in the rainy season.
+
+The market has already shown both the demand and the failure mode. In Vietnam, 100,000 to 120,000 cheap low-head propeller units were sold over 10 to 15 years, but only about 30,000 were still running, because most became unusable after 2 to 3 years when bearings, seals and generator windings failed ([DFID project R8150, Vietnam country report](https://assets.publishing.service.gov.uk/media/57a08cf340f0b652dd001676/R8150-Vietnam.pdf)). Households paid again and again for power that did not last.
+
+## Where it could be used
+
+### By industry
+
+| Industry | Use |
+| --- | --- |
+| Rural energy access | Continuous battery charging for lights, phones, radio and small appliances in off-grid homes near streams |
+| Agriculture | Power for fence energizers, pump controls, lighting and monitoring on farms with irrigation channels or spring outflows |
+| Health and education in remote areas | A second, round-the-clock source beside solar for rural clinics and schools, strongest in the rainy season |
+| Tourism and remote huts | Quiet, fuel-free power for mountain huts, lodges and cabins on a stream |
+| Environmental monitoring | Local power for stream gauges, water-quality sensors and camera traps at the water's edge |
+| Technical training | An inspectable turbine for teaching fluid machinery, power electronics and hydropower siting |
+
+### By country or region
+
+| Country or region | Why it matters there |
+| --- | --- |
+| Sub-Saharan Africa (for example the highlands of Rwanda, Uganda and eastern DR Congo) | Home to 85 % of the people without electricity ([World Bank, 2025](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)); many highland homes sit near year-round streams |
+| Vietnam (northern uplands) | A proven market for household pico hydro, where most cheap units fail in 2 to 3 years ([DFID R8150](https://assets.publishing.service.gov.uk/media/57a08cf340f0b652dd001676/R8150-Vietnam.pdf)); a durable, repairable unit fits existing habits |
+| Nepal | Steep hill streams and a long-standing national program for micro and mini hydro ([AEPC](https://www.aepc.gov.np/pages/minimicro-hydro)); pico units can reach homes beyond a village scheme |
+| Andean South America (Peru, Bolivia) | Scattered mountain households far from the grid, with snow-fed streams and steep terrain |
+| New Zealand and the United Kingdom | High-income off-grid cabins and farms already use commercial pico turbines such as the New Zealand-made PowerSpout ([PowerSpout LH](https://www.powerspout.com/pages/low-head-lh-info)); an open design lowers the cost of a repairable, low-head alternative |
+
+## What sparked the idea
+
+The idea traces back to the Turgo turbine itself. In 1919 the young engineer Eric Crewdson, working for the English turbine maker Gilbert Gilkes & Gordon, applied for a patent on a side-entry impulse runner that would run at about twice the speed of a Pelton wheel on the same head, with jets striking one face at an angle and discharging from the other; the patent was granted in 1920 ([Hydropower & Dams International, "Gilkes celebrates 100 years of the Turgo impulse turbine"](https://www.hydropower-dams.com/news/gilkes-celebrates-100-years-of-the-turgo-impulse-turbine/)). A century on, that higher speed at low head is what lets a small runner drive an off-the-shelf motor directly, without a gearbox, and the University of Bristol's 2013 tests of a Turgo at 1 m of head ([Williamson, Stark and Booker, Applied Energy 102](https://research-information.bris.ac.uk/en/publications/performance-of-a-low-head-pico-hydro-turgo-turbine)) showed the principle holds far below its usual range. PicoFlow is an attempt to put Crewdson's runner into a form that a village workshop can print and repair.
+
 ## Problem
 
 Remote homes near streams with 1 to 3 m of head have few durable, repairable turbine options: cheap closed units wear out in two or three years, and durable ones cost several times a household budget.
@@ -18,16 +57,16 @@ Remote homes near streams with 1 to 3 m of head have few durable, repairable tur
 
 3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
 
-At 2 m of head and 10 L/s, the TRL 3 sizing calculation (PCF-CAL-001) gives about 77 W into a 12 V battery, or about 1.85 kWh a day, running around the clock; pipe losses of about 24 % keep it just under the 80 W target, and a 125 mm penstock would recover it. The generator sits on the lid above the spray, the dump load keeps the runner from running away when the battery is full, and a hardware clamp holds the DC side below 48 V if the controller fails.
+At 2 m of head and 10 L/s, the TRL 3 sizing calculation (PCF-CAL-001) gives about 83 W into a 12 V battery, or about 1.99 kWh a day, running around the clock, with a 125 mm penstock that keeps pipe losses to about 17 % of head. The generator sits on the lid above the spray, the dump load keeps the runner from running away when the battery is full, and a hardware clamp holds the DC side below 48 V if the controller fails.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Printed Turgo runner, 200 mm (PETG prototype, glass-filled nylon for field units), with two opposed 34 mm jets
+- Printed Turgo runner, 200 mm (PETG prototype, glass-filled nylon for field units), with two opposed 33 mm jets
 - New low-speed 500 W BLDC motor as generator (a salvaged washing machine motor is the low-cost variant)
 - Sealed bearings above the spray on a stainless shaft
-- PVC penstock with a slow-closing gate valve, forebay screen and 315 mm PVC housing
+- 125 mm PVC penstock with a slow-closing gate valve, forebay screen and 315 mm PVC housing
 - Three-phase rectifier
 - Open-design MPPT, dump-load and clamp controller for a 12 V battery
 - 300 W dump-load resistor and 8.2 ohm clamp resistor
@@ -61,4 +100,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-Part of the open hardware portfolio at [amishchadha.com](https://amishchadha.com).
+A project of the [Design Molecule](https://designmolecule.com) lab.

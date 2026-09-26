@@ -3,7 +3,7 @@ doc_id: PCF-DDR-001
 title: PicoFlow TRL 2 review decisions
 project: PicoFlow
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's 2026-09-25 decisions on the TRL 2 review points
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items D1 to D10); item O1 and the new TRL 3 items N1 to N5 remain proposed
+- **Status:** accepted (items D1 to D10); new TRL 3 items N1 to N5 accepted later on 2026-09-25 (PCF-DDR-002); item O1 remains proposed
 
 ## Context
 
@@ -62,13 +66,13 @@ Items that remain open (no recommendation was made, so they stay "Proposed, awai
 
 - **O1.** First site type, region and co-design partner, including confirmation of the target site type (streams of about 5 to 15 L/s, which suit a Turgo, rather than larger flows, which suit a propeller). Portfolio guidance is that community designs pick co-design partners per area later. Proposed, awaiting Amish.
 
-New items raised at TRL 3 (not part of the 2026-09-25 decision; details in `docs/REVIEW.md`):
+New items raised at TRL 3 (decided later on 2026-09-25 in PCF-DDR-002; details in `docs/REVIEW.md`):
 
-- **N1.** Design-point penstock: 125 mm instead of 110 mm for a 20 m run, which meets R3 and R5. Recommendation: 125 mm. Proposed, awaiting Amish.
-- **N2.** R4 (30 W at 1.0 m): relax to 20 W or keep 30 W as not met. Recommendation: relax to 20 W. Proposed, awaiting Amish.
-- **N3.** R2 at 1.0 m: state the range as 5 to 10 L/s at 1.0 m. Recommendation: yes. Proposed, awaiting Amish.
-- **N4.** R14: confirm that the "turbine unit" excludes the manifold and valve (22.2 kg; 27.4 kg with them). Recommendation: confirm. Proposed, awaiting Amish.
-- **N5.** R15: accept the $2 margin or trim cost (for example a printed bearing housing). Recommendation: accept for now and firm up prices with quotes at TRL 4. Proposed, awaiting Amish.
+- **N1.** Design-point penstock: 125 mm instead of 110 mm for a 20 m run, which meets R3 and R5. Recommendation: 125 mm. Decided by Amish, 2026-09-25: go with recommendation.
+- **N2.** R4 (30 W at 1.0 m): relax to 20 W or keep 30 W as not met. Recommendation: relax to 20 W. Decided by Amish, 2026-09-25: go with recommendation.
+- **N3.** R2 at 1.0 m: state the range as 5 to 10 L/s at 1.0 m. Recommendation: yes. Decided by Amish, 2026-09-25: go with recommendation.
+- **N4.** R14: confirm that the "turbine unit" excludes the manifold and valve (22.2 kg; 27.4 kg with them). Recommendation: confirm. Decided by Amish, 2026-09-25: go with recommendation.
+- **N5.** R15: accept the $2 margin or trim cost (for example a printed bearing housing). Recommendation: accept for now and firm up prices with quotes at TRL 4. Decided by Amish, 2026-09-25: go with recommendation.
 
 ## Consequences
 

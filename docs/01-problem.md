@@ -3,7 +3,7 @@ doc_id: PCF-PRB-001
 title: PicoFlow problem statement
 project: PicoFlow
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,15 +21,19 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Apply Amish's 2026-09-25 decisions (PCF-DDR-001) on budget and battery voltage; output range from PCF-CAL-001
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # PicoFlow problem statement
 
-Homes near small streams with only 1 to 3 m of usable drop have water running past them all day and night, yet the turbines they can buy for that head are either cheap closed units that wear out in two or three years or professional machines that cost several times a household's budget. PicoFlow aims to be an open, printable, repairable pico hydro turbine for 1 to 3 m of head that charges a household battery with roughly 24 to 146 W, around the clock (PCF-CAL-001).
+Homes near small streams with only 1 to 3 m of usable drop have water running past them all day and night, yet the turbines they can buy for that head are either cheap closed units that wear out in two or three years or professional machines that cost several times a household's budget. PicoFlow aims to be an open, printable, repairable pico hydro turbine for 1 to 3 m of head that charges a household battery with roughly 26 to 156 W, around the clock (PCF-CAL-001 v0.2).
 
 ## The problem
 
-About 666 million people had no electricity in 2023, and 85 % of them live in sub-Saharan Africa ([World Bank, Tracking SDG 7: The Energy Progress Report 2025](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)). Many live in hilly, well-watered areas where a stream passes close to the house. Pico hydro, meaning hydro generation under 5 kW ([Wikipedia, Pico hydro](https://en.wikipedia.org/wiki/Pico_hydro)), turns that stream into continuous power: unlike solar, it runs 24 hours a day, so 77 W of hydro delivers about as much daily energy as 550 W of solar panels (estimate at 4.5 peak sun hours and 75 % system efficiency, see PCF-CAL-001).
+About 666 million people had no electricity in 2023, and 85 % of them live in sub-Saharan Africa ([World Bank, Tracking SDG 7: The Energy Progress Report 2025](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)). Many live in hilly, well-watered areas where a stream passes close to the house. Pico hydro, meaning hydro generation under 5 kW ([Wikipedia, Pico hydro](https://en.wikipedia.org/wiki/Pico_hydro)), turns that stream into continuous power: unlike solar, it runs 24 hours a day, so 83 W of hydro delivers about as much daily energy as 590 W of solar panels (estimate at 4.5 peak sun hours and 75 % system efficiency, see PCF-CAL-001).
 
 The difficulty is head. Most small streams offer a drop of only 1 to 5 m over a practical pipe length, and low-head sites are by far the most common kind ([DFID project R8150, Vietnam country report](https://assets.publishing.service.gov.uk/media/57a08cf340f0b652dd001676/R8150-Vietnam.pdf)). Turbines for that range fall into two groups:
 

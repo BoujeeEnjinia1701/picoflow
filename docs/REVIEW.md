@@ -34,6 +34,8 @@ Requirements not met or at risk: **R8** (touch voltage at runaway), **R13** (set
 
 ### Proposed, awaiting Amish
 
+Items 1 to 10 were later decided by Amish, 2026-09-25: go with recommendation (PCF-DDR-001, D1 to D10). Item 11 has no recommendation and stays proposed, awaiting Amish (O1).
+
 1. **Budget.** The kit is about $424 with a new generator against `budget_usd: 350`. Options: (a) keep $350 and make the salvaged washing machine motor the baseline (about $354); (b) raise `budget_usd` to $450; (c) keep $350 and cut elsewhere (printed housing, cheaper valve), which is unlikely to close $74 alone. Recommendation: (b) for the prototype, so the reference build uses a repeatable generator, with (a) documented as the low-cost variant. `project.yaml` is unchanged.
 2. **Generator.** A: new low-speed BLDC with a shaft (recommended for the prototype). B: salvaged direct-drive washing machine motor. C: e-bike hub motor with the runner on the disc flange.
 3. **Controller.** A: open-design MPPT and dump-load board. B: off-the-shelf diversion controller. Recommendation: B for first bench tests, A as the TRL 3 design.
@@ -103,12 +105,14 @@ D1 budget $450 with the salvaged-motor variant documented; D2 new low-speed BLDC
 
 ### Still awaiting Amish
 
+N1 to N5 below were decided later on 2026-09-25 (PCF-DDR-002); only O1 remains open.
+
 - **O1.** First site type, region and co-design partner, including confirmation that target sites carry about 5 to 15 L/s (Turgo range). No recommendation; partners are picked per area later.
-- **N1.** Design-point penstock 125 mm instead of 110 mm for a 20 m run: 84.3 W and 43.0 %, meeting R3 and R5; costs more but sits outside the kit budget. Recommendation: 125 mm.
-- **N2.** R4: relax to 20 W at 1.0 m and 7 L/s, or keep 30 W as not met. Recommendation: relax to 20 W.
-- **N3.** R2: state the flow range as 5 to 10 L/s at 1.0 m and 5 to 15 L/s from 2.0 m. Recommendation: yes.
-- **N4.** R14: confirm "turbine unit" means items 1 to 6 and 11 (22.2 kg). Counting the manifold and valve gives 27.4 kg, which fails 25 kg. Recommendation: confirm.
-- **N5.** R15: accept the $2 margin or trim cost. Recommendation: accept, and firm prices with quotes before any build.
+- **N1.** Design-point penstock 125 mm instead of 110 mm for a 20 m run: 84.3 W and 43.0 %, meeting R3 and R5; costs more but sits outside the kit budget. Recommendation: 125 mm. Decided by Amish, 2026-09-25: go with recommendation (PCF-DDR-002).
+- **N2.** R4: relax to 20 W at 1.0 m and 7 L/s, or keep 30 W as not met. Recommendation: relax to 20 W. Decided by Amish, 2026-09-25: go with recommendation (PCF-DDR-002).
+- **N3.** R2: state the flow range as 5 to 10 L/s at 1.0 m and 5 to 15 L/s from 2.0 m. Recommendation: yes. Decided by Amish, 2026-09-25: go with recommendation (PCF-DDR-002).
+- **N4.** R14: confirm "turbine unit" means items 1 to 6 and 11 (22.2 kg). Counting the manifold and valve gives 27.4 kg, which fails 25 kg. Recommendation: confirm. Decided by Amish, 2026-09-25: go with recommendation (PCF-DDR-002).
+- **N5.** R15: accept the $2 margin or trim cost. Recommendation: accept, and firm prices with quotes before any build. Decided by Amish, 2026-09-25: go with recommendation (PCF-DDR-002).
 
 ### Safety concerns
 
@@ -130,3 +134,51 @@ D1 budget $450 with the salvaged-motor variant documented; D2 new low-speed BLDC
 TRL 4 is on hold by Amish's instruction. The next step is for Amish to decide N1 to N5 and O1; if N1 to N3 are accepted, a short document update (PCF-REQ-001 and PCF-PRC-001) closes R2, R3 and R5 on paper, still at TRL 3.
 
 For reference only, TRL 4 would need: a chosen generator with measured constants and overspeed rating; a printed runner and nozzles; a lab rig with a head tank or pump giving 1 to 3 m and 5 to 15 L/s; controller and clamp hardware; a lab test report (TST, `environment: lab`) covering output, efficiency, clamp response and runaway; and build log entries. None of this has been started.
+
+## Session 2026-09-25: recommendations accepted
+
+Amish wrote on 2026-09-25, in chat: "i accept all your recommendations, go with them across all repos." Every item with a recommendation is now "Decided by Amish, 2026-09-25: go with recommendation" and recorded in `docs/decisions/0002-recommendations-accepted.md` (PCF-DDR-002 v0.1). TRL stays at 3.
+
+### Decisions applied and what changed
+
+| Item | Decision | Before | After |
+| --- | --- | --- | --- |
+| N1 | 125 mm design-point penstock | 110 mm; loss 23.6 %; 77.2 W; 39.5 %; 1.85 kWh/day; 34 mm inserts | 125 mm SN8; loss 17.0 %; 82.8 W; 43.2 %; 1.99 kWh/day; 33 mm inserts |
+| N2 | R4 relaxed | 30 W target; 23.9 W, not met | 20 W target; 26.3 W, met |
+| N3 | R2 stated per head | 5 to 15 L/s at every head; not met at 1.0 m | 5 to 10 L/s at 1.0 m, 5 to 15 L/s from 2.0 m; met (1.3 to 11.3 and 1.9 to 16.1 L/s) |
+| N4 | R14 definition confirmed | Met, definition to confirm | Met, items 1 to 6 and 11 (22.2 kg) |
+| N5 | $2 cost margin accepted | R15 at risk | R15 met; quotes before any build (TRL 4, on hold) |
+
+Side effects of N1, from PCF-CAL-001 v0.2: runaway at 3.0 m 764 to 795 rpm and 76.4 to 79.5 V open circuit; worst-case clamped bus 37.2 to 39.6 V (still under the 40 V release, margin now 0.4 V); dump-load margin 1.90 to 1.68 times; bearing L10 1.1 x 10^7 to 8.7 x 10^6 h; surge peak 34.7 to 33.3 kPa; penstock cost (excluded) $100 to $140. Kit cost unchanged at $448.00 against `budget_usd: 450` (no budget change).
+
+Files changed: `docs/03-requirements.md` (PCF-REQ-001 v0.4), `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.2) and `sizing.py`, `results.json`, `docs/02-concept.md` (PCF-PRC-001 v0.4), `docs/01-problem.md` (PCF-PRB-001 v0.4), `docs/decisions/0001-trl2-review-decisions.md` (PCF-DDR-001 v0.2), new PCF-DDR-002, `cad/src/model.py` (`penstock_od` 125, `jet_d` 33) with STEP and STL re-exported, `cad/src/sheets.py` (PCF-DWG-001 Rev P1 to P2), `cad/src/concept_media.py` labels, `bom/bom.csv`, `bom/bom-notes.md`, `README.md`, `project.yaml` (evidence list only). All media, drawings and PDFs regenerated with designmolecule.com in the footers.
+
+README: the four write-up sections (Concept rationale, Burning platform, Where it could be used, What sparked the idea) were added before "## Problem". The inspiration point is Eric Crewdson's Turgo patent (applied 1919, granted 1920), cited to Hydropower & Dams International.
+
+### Requirement status (PCF-CAL-001 v0.2)
+
+17 requirements: 0 not met, 1 at risk, 3 not verifiable at TRL 3, 13 met.
+
+| Status | Requirements |
+| --- | --- |
+| Not met | None |
+| At risk | R12 printed runner life (bearings fine) |
+| Not verifiable at TRL 3 | R7 controller behavior; R11 service times; R16 stream protection |
+| Met | R1, R2, R3 (82.8 W, 2.8 W margin), R4 (26.3 W), R5 (43.2 %), R6, R8, R9, R10, R13, R14, R15 ($2 margin accepted), R17 |
+
+### Still awaiting Amish
+
+- **O1.** First site type, region and co-design partner (no recommendation).
+- **N6 (new).** Inlet valve bore: the BOM's 90 mm gate valve on the 125 mm penstock needs a reducer and expander that the calculation does not yet include and that could erode the 2.8 W margin on R3. Recommendation: add the reducer losses to PCF-CAL-001 first; move to a full-bore valve only if R3 then fails.
+
+### Cross-repo actions
+
+None. No PicoFlow recommendation depends on another repo.
+
+### Safety
+
+No safety requirement changed status. The double-fault open-circuit voltage rises to about 80 V DC at 3.0 m, still inside the enclosed 100 V DC side. The clamp margin below its 40 V release is now 0.4 V in the worst case; a 6.8 Ω clamp resistor is noted in PCF-CAL-001 as the option if measured generator constants are less favorable.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. Firming prices with quotes (N5), measuring runner efficiency and generator constants, and any build or test were not started.

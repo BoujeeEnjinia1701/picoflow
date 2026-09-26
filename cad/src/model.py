@@ -32,7 +32,7 @@ PARAMS = {
     # Jets (PCF-CAL-001 section 2)
     "jet_z": 280.0,            # nozzle exit centerline above tailwater (R13: 300 or less)
     "jet_angle": 20.0,         # jet angle below the runner plane, degrees
-    "jet_d": 32.0,             # design-point insert bore (CAL-001 rounds to a stocked size)
+    "jet_d": 33.0,             # design-point insert bore (PCF-CAL-001 v0.2, 125 mm penstock)
     "nozzle_len": 170.0,       # converging nozzle length along the jet axis
     "nozzle_exit_x": 85.0,     # nozzle exit distance before the strike point, along X
     # Shaft, bearings, coupling
@@ -62,7 +62,7 @@ PARAMS = {
     "frame": 420.0,            # frame outside size, square
     "frame_leg": 40.0,         # 40 mm galvanized angle (massing as square)
     # Pipework
-    "penstock_od": 110.0,      # PVC drainage pipe
+    "penstock_od": 125.0,      # PVC drainage pipe, SN8 (decided 2026-09-25, PCF-DDR-002 N1)
     "branch_od": 90.0,         # branches to the nozzles (CAL-001 section 1)
     "manifold_z": 338.0,       # manifold and branch centerline
     "tee_x": -400.0,

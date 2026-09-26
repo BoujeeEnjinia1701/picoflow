@@ -24,7 +24,8 @@ EPS = 1.5e-6                   # PVC absolute roughness, m
 
 H_DESIGN, Q_DESIGN = 2.0, 0.010   # design point: gross head m, flow m3/s
 L_PEN = 20.0                   # penstock length, m
-D_PEN = 0.1036                 # 110 mm drainage PVC (SN4, 3.2 mm wall), bore m
+D_PEN = 0.1176                 # 125 mm drainage PVC (SN8, 3.7 mm wall), bore m; decided 2026-09-25 (PCF-DDR-002 N1)
+D_PEN_110 = 0.1036             # 110 mm drainage PVC (SN4, 3.2 mm wall), TRL 3 v0.1 baseline, for comparison
 K_PEN = {"rounded entrance": 0.20, "intake screen": 0.10, "two bends": 0.30, "gate valve, open": 0.15}
 D_BR = 0.0840                  # 90 mm PVC branch bore, m
 D_BR_ALT = 0.0578              # 63 mm branch bore used at TRL 2, m (comparison)
@@ -51,7 +52,7 @@ PETG_RHO = 1270.0              # kg/m3
 PRINT_FILL = 0.6               # printed mass / solid massing volume (thin buckets, infill)
 PRINT_RATE = 25.0              # g/h, PETG, 0.4 mm nozzle, 0.28 mm layers
 E_PVC, K_WATER = 3.0e9, 2.2e9  # Pa, for water hammer wave speed
-WALL_PEN = 0.0032              # m
+WALL_PEN = 0.0037              # m, 125 mm SN8
 T_CLOSE = 10.0                 # gate valve closing time, s (about ten turns)
 P_PIPE = 50.0                  # kPa, assumed rating of drainage pipe joints (to confirm)
 BUDGET = 450.0                 # budget_usd, decided by Amish 2026-09-25
@@ -150,7 +151,7 @@ def main():
     d_ins = round(d_exact * 1000)                       # insert bore rounded to 1 mm
     dp = chain(H_DESIGN, d_ins / 1000)
     alt = hydraulics(H_DESIGN, d_ins / 1000, 2, D_BR_ALT)
-    print("1. Design point: 2.0 m gross head, 10 L/s, 20 m of 110 mm PVC, two jets")
+    print("1. Design point: 2.0 m gross head, 10 L/s, 20 m of 125 mm PVC, two jets")
     line("Jet diameter for exactly 10 L/s", d_exact * 1000, "mm")
     line("Insert bore chosen (rounded)", d_ins, "mm", "{:.0f}")
     line("Flow with the chosen inserts", dp["q"] * 1000, "L/s", "{:.2f}")
@@ -231,11 +232,11 @@ def main():
     # sensitivity: penstock bore and runner efficiency at the design point
     print("\n   Sensitivity at 2.0 m and 10 L/s (inserts resized for 10 L/s each time)")
     sens = {}
-    for label, dpen, eta in (("110 mm penstock, runner 75 %", D_PEN, ETA_RUNNER),
-                             ("125 mm penstock (117.6 mm bore), runner 75 %", 0.1176, ETA_RUNNER),
+    for label, dpen, eta in (("110 mm penstock (103.6 mm bore), runner 75 %", D_PEN_110, ETA_RUNNER),
+                             ("125 mm penstock (117.6 mm bore), runner 75 %", D_PEN, ETA_RUNNER),
                              ("160 mm penstock (150.6 mm bore), runner 75 %", 0.1506, ETA_RUNNER),
-                             ("110 mm penstock, runner 80 %", D_PEN, 0.80),
-                             ("125 mm penstock, runner 80 %", 0.1176, 0.80)):
+                             ("110 mm penstock, runner 80 %", D_PEN_110, 0.80),
+                             ("125 mm penstock, runner 80 %", D_PEN, 0.80)):
         cs = chain(H_DESIGN, solve_jet(H_DESIGN, Q_DESIGN, 2, dpen), 2, dpen, eta)
         cs1 = chain(1.0, solve_jet(1.0, 0.007, 2, dpen), 2, dpen, eta)
         lf = 100 * (1 - sum(cs["hn"].values()) / 2 / H_DESIGN)
@@ -360,7 +361,7 @@ def main():
     dh_fast = a * c3["v_pen"] / G
     dh_half = a * c3["v_pen"] / 2 / G
     peak = RHO * G * (h_static + dh_slow) / 1000
-    line("Pressure wave speed in 110 mm SN4 PVC", a, "m/s", "{:.0f}")
+    line("Pressure wave speed in 125 mm SN8 PVC", a, "m/s", "{:.0f}")
     line("Critical closure time 2L/a", 2 * L_PEN / a, "s", "{:.2f}")
     line("Penstock velocity at 3.0 m", c3["v_pen"], "m/s", "{:.2f}")
     line("Static head at the valve, 3.0 m site", h_static, "m", "{:.2f}")
