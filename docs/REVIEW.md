@@ -191,3 +191,27 @@ Amish asked on 2026-09-26 to fix the weaker sources in the README. Changes (READ
 - By country or region: "Andean South America (Peru, Bolivia)" had no source and was replaced by a Peru row citing the World Bank's 2019 results note on rural electrification (11,915 solar home systems in isolated areas; studies for 21 small hydropower projects).
 - Burning platform: the Vietnam figure now follows the DFID R8150 wording ("doubtful whether there are more than 30,000" still running).
 - Kept and rechecked: World Bank Tracking SDG 7 2025 (666 million, 85 %), DFID R8150, AEPC. The PowerSpout page (the maker's own) was kept but could not be refetched in this session.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose PicoFlow on 2026-09-26 for the first batch of product renders. This session added an appearance model for photoreal renders; no controlled document, the BOM or `cad/src/model.py` changed.
+
+### What was added
+
+- `cad/src/product_model.py`: `product_parts()` (47 parts: 33 shell, 5 internal, 5 accessory and 4 context, including the clear window, guard and tailwater), `TITLE` and three `RENDER_VIEWS` (hero, exploded, detail). All main dimensions and interfaces come from `PARAMS`, `_derived()` and `build_parts()` in `model.py`.
+- Finished-product detail: filleted HDPE lid with corner bolts; aluminium bearing housing with bearing-seat rings, a filleted flange, cap screws and a grease nipple; stainless posts with nuts under a filleted generator plate; a two-hub jaw coupling with an orange elastomer spider; a finned BLDC generator with end caps, a rating label, a cable gland and lead; the tee, 90 mm branches, elbows and socket couplers; printed nozzles with separate 33 mm metal inserts; a gate valve with bonnet and handwheel; the frame drawn as galvanized angle on foot plates with anchor bolts.
+- Context (group "context"): the model.py penstock stub on a pipe saddle, the concrete edges of the tailrace channel under the frame and the tailwater surface.
+- README hero image now points to `media/render-hero.png`, with a link to `media/render-exploded.png`. The render files are produced separately.
+
+### Differences from model.py (each Proposed, awaiting Amish)
+
+1. **Housing split into two halves.** The model has one 315 mm pipe section. The appearance model splits it on the Y = 0 plane into front and back halves joined by bolted vertical seam flanges, so the exploded view can show the runner. Recommendation: keep the one-piece pipe for the kit (cheaper, no seam to seal); adopt the split only if runner inspection without lifting the lid is wanted.
+2. **Clear inspection window.** A bolted polycarbonate window (about 180 x 200 mm) in the front of the housing shows the runner. It is not in the model or the BOM. Recommendation: adopt it as an optional part; it helps fault finding and teaching, adds a few dollars and needs a guard against impact from debris.
+3. **Clear coupling guard.** The BOM gives a 110 mm coupling guard without a material; the renders show clear polycarbonate. Recommendation: accept, since a clear guard lets the owner check the spider without removing it.
+4. **Nozzle entry holes in the housing.** The massing model lets the nozzles overlap the housing wall; the appearance model cuts clearance holes. Recommendation: accept; the holes are implied by the design.
+5. **Rectifier box position.** The rectifier (BOM 13) is not in model.py and is installed on the equipment post; the exploded view shows it loose beside the unit. Recommendation: accept as a render layout only.
+6. **Tailwater drawn 20 mm below the channel edge.** In model.py Z = 0 is both normal tailwater and the top of the pad under the frame. The render draws the water surface 20 mm lower so it reads as a surface. Recommendation: accept as an appearance choice; the setting height (R13) is unchanged.
+
+### Status
+
+This is an appearance model only: no tolerances, fabrication detail or TRL 4 work. `trl` stays 3 in `project.yaml`, and TRL 4 remains on hold by Amish's instruction.
