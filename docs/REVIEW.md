@@ -221,3 +221,57 @@ This is an appearance model only: no tolerances, fabrication detail or TRL 4 wor
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: kit 1.7.0, design for construction and the prototype build plan
+
+Amish approved the build plan format on 2026-09-30 and asked for it across all repos, with outstanding decisions kept in a separate register. This session installed kit 1.7.0, made the PicoFlow design constructable and wrote the illustrated build plan. Nothing was built; TRL stays 3.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` now matches `.kit/CLAUDE.md`.
+- `cad/src/model.py` rewritten as separate components (frame, tie rods, housing, nozzles, gaskets, inserts, lid, bearing units, sleeves, V-ring, shaft, hub, runner, guard, posts, plate, coupling, generator, pipework, valve and fittings, stands, forebay, equipment post, electrics and every fixing) with 69 constructability checks (`python cad/src/model.py --check`, all pass) and a clean all-pairs overlap scan. STEP and STL re-exported, including the nozzle, insert pair and saddle gaskets for printing and cutting.
+- `docs/decisions/0003-design-for-construction.md` (PCF-DDR-003 v0.1, Draft): every change, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `docs/05-build-plan.md` (PCF-BLD-001 v0.1) and `cad/src/build_plan_media.py`: overview, 14 making sketches (PCF-DWG-101 to 114), 12 joint close-ups, 19 step pictures, a lid hole layout, a full-size nozzle hole template (PNG and PDF) and a block wiring diagram.
+- `docs/06-design-decisions.md` (PCF-DEC-001 v0.1): open decisions, items to confirm when parts are bought, value engineering and decisions made.
+- `docs/04-calcs/sizing.py` and PCF-CAL-001 v0.3, PCF-REQ-001 v0.5, PCF-PRC-001 v0.5, `bom/bom.csv` (lines 2, 3, 7, 8, 10, 11, 12 respecified; lines 18 and 19 added), `bom/bom-notes.md`, PCF-DWG-001 Rev P3, concept media regenerated, `project.yaml` (`design_state: constructable`, evidence), README (links line and "Building the prototype").
+
+### Design changes made for construction (PCF-DDR-003)
+
+| # | Change |
+| --- | --- |
+| P1 | Frame: a 380 mm welded square of 40 x 40 x 4 mm angle (was a 420 mm massing frame the housing did not rest on), with legs, foot plates, anchors and pipe stops |
+| P2 | Four M10 tie rods clamp lid, housing and frame; a groove under the lid locates the housing (housing cut to 303 mm) |
+| P3 | Two UCF204-class flange bearing units on spacer sleeves, bolted through the lid, and a V-ring seal, in place of an unmachinable bearing housing |
+| P4 | Runner fixed by a bought clamping hub and four M5 screws into heat-set inserts |
+| P5 | Printed nozzles with a horizontal spigot, a 20 degree bend and a gasketed saddle bolted to the housing; wall holes cut from a template; flexible couplings to the pipe |
+| P6 | Nozzle exit moved from 85 to 115 mm before the strike point and the runner lowered 11 mm, so the runner lifts out past the nozzle tips; nozzle height unchanged at 280 mm |
+| P7 | Generator sits on its plate, four M6 screws (was floating 5 mm above it) |
+| P8 | Posts are 20 x 2 mm tubes on M10 rods, moved to 125 mm so the washers clear the housing |
+| P9 | Guard is a 160 mm PVC pipe in a groove on the lid, covering both bearings and the coupling |
+| P10 | Penstock on the jet 2 line into the run of a 125 x 90 reducing tee; standard fittings with socket depths allowed for; jet 1's far corner moved from 330 to 460 mm |
+| P11 | Reducer, expander and nipples join the 90 mm valve into the 125 mm line; their loss is now in the calculation |
+| P12 | Three pipe stands (new BOM line 18) |
+| P13 | Forebay tank connector and screen frame |
+| P14 | Fixings listed (new BOM line 19); generator plate 8 mm, foot plates 5 mm and post tube 20 x 2 mm to keep R14 |
+
+### Key results (PCF-CAL-001 v0.3)
+
+- Design point: 82.5 W into the battery with the 34 mm inserts (was 33 mm), 81.7 W at exactly 10 L/s, 41.4 % water to wire, 1.98 kWh a day. Pipe, valve and branch loss 20.3 % of head (17.0 % in v0.2, which took the valve as full bore). **The margin on R3 is now 1.7 W.**
+- Clamped bus 38.7 V at most (R8); surge peak 33.4 kPa (R17); bearing L10 8.0 x 10^6 h; turbine unit 24.5 kg with fixings (R14, 0.5 kg margin).
+- Requirements: none not met, R12 at risk, R7, R11, R16 not verifiable at TRL 3, 12 met, and R15 reported against its value-engineering target: USD 534, USD 84 over the USD 450 target (USD 464 with a salvaged motor).
+
+### Proposed, awaiting Amish
+
+All listed in `docs/06-design-decisions.md`: accept PCF-DDR-003 (recommended); inlet valve bore N6, now quantified (full bore gives 85.6 W; recommended); welded frame (recommended); O1 site and partner; and the four appearance items from the 2026-09-26 render session (split housing, inspection window, clear guard, render layout).
+
+### Safety
+
+No safety requirement changed status. The build plan carries safety stops S1 to S7 (stream work, lid and plate closure, wiring, first water, opening for service). The clamp margin below its 40 V release is now 1.3 V in the worst case.
+
+### Stale outputs
+
+The design changed visibly (frame, bearings, guard, nozzles, pipework). The photoreal renders `media/render-*.png`, `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept and need regenerating on Amish's Mac. The `render-*.png` files are not in this cloud copy, so the README hero and render links point at files made there.
+
+### Recommended next step
+
+Amish reviews PCF-DDR-003 and decides the open items in PCF-DEC-001, starting with the valve bore. Then refresh the product renders on the Mac. TRL 4 (building and testing to this plan) stays on hold.

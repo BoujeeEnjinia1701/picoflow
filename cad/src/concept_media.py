@@ -33,20 +33,21 @@ WEIR_TOP = p["jet_z"] + 2000.0 - FB_WATER          # 2.0 m gross head to the noz
 WEIR_X0, WEIR_X1 = -1750.0, -1300.0
 
 # ---------------- site (grey, not in kit) ----------------
-weir = Pos((WEIR_X0 + WEIR_X1) / 2, 0, WEIR_TOP / 2) * Box(WEIR_X1 - WEIR_X0, 1000, WEIR_TOP)
+weir = Pos((WEIR_X0 + WEIR_X1) / 2, p["pen_y"], WEIR_TOP / 2) * Box(WEIR_X1 - WEIR_X0, 1000, WEIR_TOP)
 
 # ---------------- 9 Penstock (shortened for the figure) with a support ----------------
-elbow = (p["stub_x"], 0.0, MZ)
-top = (WEIR_X1 + 20, 0.0, WEIR_TOP + 110)
+PY = p["pen_y"]
+elbow = (p["stub_x"], PY, MZ)
+top = (WEIR_X1 + 20, PY, WEIR_TOP + 110)
 penstock = (tube3(elbow, top, PIPE_R) + P["penstock_stub"] + Pos(*elbow) * Cylinder(PIPE_R + 6, 2 * PIPE_R + 12))
 mid = tuple((e + t) / 2 for e, t in zip(elbow, top))
 ang = 90 - math.degrees(math.atan2(top[2] - elbow[2], top[0] - elbow[0]))
-penstock = (penstock + tube3((mid[0], 0, 0), (mid[0], 0, mid[2] - PIPE_R), 20)
-            + Pos(mid[0], 0, mid[2]) * Rot(0, ang, 0) * (Cylinder(PIPE_R + 10, 40) - Cylinder(PIPE_R, 42)))
+penstock = (penstock + tube3((mid[0], PY, 0), (mid[0], PY, mid[2] - PIPE_R), 20)
+            + Pos(mid[0], PY, mid[2]) * Rot(0, ang, 0) * (Cylinder(PIPE_R + 10, 40) - Cylinder(PIPE_R, 42)))
 
 # ---------------- 10 Forebay and intake screen ----------------
-fb = Pos(WEIR_X1 - 230, 0, WEIR_TOP + 200) * (Box(460, 560, 400) - Pos(0, 0, 10) * Box(430, 530, 400))
-screen = Pos(WEIR_X1 - 230, 0, WEIR_TOP + 395) * Box(440, 540, 10)
+fb = Pos(WEIR_X1 - 230, PY, WEIR_TOP + 200) * (Box(460, 560, 400) - Pos(0, 0, 10) * Box(430, 530, 400))
+screen = Pos(WEIR_X1 - 230, PY, WEIR_TOP + 395) * Box(440, 540, 10)
 forebay = fb + screen
 
 # ---------------- 12 Equipment post, 13 rectifier, 14 controller, 15 dump load and clamp ----------------
@@ -86,6 +87,8 @@ parts = [
     Part("Dump-load and clamp resistors", dump, "#C2410C", 15),
     Part("Wiring, fuse and isolator", wiring, "#111827", 16),
     Part("Battery, 12 V (not in kit cost)", battery, "#65A30D", 17),
+    Part("Pipe stands", P["stands"], "#92400E", 18),
+    Part("Fixings (tie rods, post rods, bolts)", P["fixings"], "#374151", 19),
 ]
 
 r = lambda v: int(round(v))
@@ -99,9 +102,9 @@ if not os.environ.get("EXPLODED_ONLY"):
                    f"About {r(C['p_batt'])} W into the battery, {C['kwh_day']:.2f} kWh/day",
                    f"Pipe losses {r(C['loss_pct'])} % of head (PCF-CAL-001)",
                    f"1 to 3 m head: about {r(C['range']['1.0']['p_batt'])} to {r(C['range']['3.0']['p_batt'])} W",
-                   f"Kit ${r(C['kit'])} of $450 budget (battery, penstock excluded)"],
+                   f"Kit about ${r(C['kit'])}; value-engineering target $450"],
       cut_exclude=("Weir or rock step (site, not in kit)", "Forebay and intake screen",
-                   "Penstock, 125 mm PVC (site-dependent)", "Equipment post",
+                   "Penstock, 125 mm PVC (site-dependent)", "Equipment post", "Pipe stands",
                    "Three-phase rectifier", "MPPT, dump-load and clamp controller", "Dump-load and clamp resistors",
                    "Wiring, fuse and isolator", "Battery, 12 V (not in kit cost)", "Inlet gate valve"),
       flow={"title": "power flow at the design point, 2 m gross head and 10 L/s, W (estimates, PCF-CAL-001)", "unit": "W",
@@ -116,17 +119,17 @@ if not os.environ.get("EXPLODED_ONLY"):
 
 # ---------------- exploded view (turbine and electrics; penstock shown as a short stub) ----------------
 stub_dir = Vector(top[0] - elbow[0], 0, top[2] - elbow[2]).normalized()
-stub_top = (elbow[0] + stub_dir.X * 600, 0, elbow[2] + stub_dir.Z * 600)
-stub = tube3(elbow, stub_top, PIPE_R) + model.build_parts()["penstock_stub"] + Pos(*elbow) * Cylinder(PIPE_R + 6, 2 * PIPE_R + 12)
+stub_top = (elbow[0] + stub_dir.X * 600, PY, elbow[2] + stub_dir.Z * 600)
+stub = tube3(elbow, stub_top, PIPE_R) + P["penstock_stub"] + Pos(*elbow) * Cylinder(PIPE_R + 6, 2 * PIPE_R + 12)
 fb_ex = Pos(stub_top[0] - 300 - (WEIR_X1 - 230), 0, stub_top[2] + 250 - (WEIR_TOP + 200)) * forebay
 
 by_bom = {q.bom: q for q in parts if q.bom}
 EXPLODE = {1: (0, 0, -40), 2: (320, 0, 760), 3: (0, 0, 560), 4: (-320, 0, 820), 5: (0, 0, 1000),
            6: (0, 0, 220), 7: (0, 0, -420), 8: (-200, 0, -650), 11: (0, 0, -760),
            12: (300, 0, 0), 13: (650, -1050, -300), 14: (420, -520, 150), 15: (650, 0, 0),
-           16: (500, -600, -450), 17: (700, 400, 0)}
+           16: (500, -600, -450), 17: (700, 400, 0), 18: (0, 0, -560), 19: (0, 0, 380)}
 ex_parts = []
-for n in range(1, 18):
+for n in range(1, 20):
     q = by_bom[n]
     shape = {9: stub, 10: fb_ex}.get(n, q.shape)
     off = {9: (-250, 0, -900), 10: (-150, 0, -2250)}.get(n, EXPLODE.get(n, (0, 0, 0)))

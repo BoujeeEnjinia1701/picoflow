@@ -3,8 +3,8 @@
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md and writes them to
 docs/04-calcs/results.json, which cad/src/concept_media.py reads for the flow diagram
-and key figures. Geometry (setting height, runner envelope, part volumes) is read from
-cad/src/model.py and costs from bom/bom.csv.
+and key figures. Geometry (setting height, runner envelope, branch lengths, part volumes) is read
+from cad/src/model.py (the constructable design, PCF-DDR-003) and costs from bom/bom.csv.
 
 All values are first-principles estimates for a TRL 3 proof of concept on paper.
 """
@@ -26,12 +26,20 @@ H_DESIGN, Q_DESIGN = 2.0, 0.010   # design point: gross head m, flow m3/s
 L_PEN = 20.0                   # penstock length, m
 D_PEN = 0.1176                 # 125 mm drainage PVC (SN8, 3.7 mm wall), bore m; decided 2026-09-25 (PCF-DDR-002 N1)
 D_PEN_110 = 0.1036             # 110 mm drainage PVC (SN4, 3.2 mm wall), TRL 3 v0.1 baseline, for comparison
-K_PEN = {"rounded entrance": 0.20, "intake screen": 0.10, "two bends": 0.30, "gate valve, open": 0.15}
+K_PEN = {"rounded entrance": 0.20, "intake screen": 0.10, "two bends": 0.30}
+# Inlet valve (BOM 8): a 90 mm gate valve between a 125 x 90 reducer and a 90 x 125 expander
+# (PCF-DDR-003 P11). Coefficients on the valve's own velocity head; bore taken as the 90 mm pipe bore.
+D_VALVE = 0.0840
+K_VALVE = {"reducer 125 to 90": 0.10, "gate valve 90 mm, open": 0.15,
+           "expander 90 to 125 (sudden)": (1 - (D_VALVE / 0.1176) ** 2) ** 2}
+K_VALVE_FULL = 0.15            # full-bore 125 mm gate valve, on the penstock velocity head (N6 option a)
 D_BR = 0.0840                  # 90 mm PVC branch bore, m
 D_BR_ALT = 0.0578              # 63 mm branch bore used at TRL 2, m (comparison)
-# branch losses on branch velocity head: tee branch 1.0, 90 degree elbow 0.3 each
-K_BR = {"jet 1 (around the housing)": 1.0 + 4 * 0.3, "jet 2 (direct)": 1.0 + 1 * 0.3}
-L_BR = {"jet 1 (around the housing)": 1.40, "jet 2 (direct)": 0.30}   # m, from the model layout
+# branch losses on branch velocity head (PCF-DDR-003 P10 layout): jet 1 leaves the side of a
+# 125 x 90 reducing tee (1.0) and turns three 90 degree elbows (0.3 each); jet 2 runs straight
+# through the tee (0.3) and a 125 x 90 reducer (0.1). Lengths are read from the model.
+K_BR = {"jet 1 (around the housing)": 1.0 + 3 * 0.3, "jet 2 (direct)": 0.3 + 0.1}
+L_BR = {"jet 1 (around the housing)": 1.40, "jet 2 (direct)": 0.30}   # m, replaced from the model in main()
 CV = 0.97                      # nozzle velocity coefficient
 PHI = 0.46                     # bucket speed / jet speed at best efficiency
 D_PITCH = 0.150                # runner pitch diameter, m
@@ -47,7 +55,7 @@ V_BUCK_MIN = 15.0              # bus voltage the buck needs to charge at 14.4 V 
 INSERTS = (20, 45)             # nozzle insert bore range, mm
 CLAMP_ON, CLAMP_OFF = 48.0, 40.0   # hardware clamp thresholds on the DC bus, V
 TOUCH_LIMIT = 60.0             # R8 limit, V DC
-BRG_C = 13.5e3                 # 6204-2RS dynamic load rating, N (catalog class)
+BRG_C = 12.8e3                 # UC204 insert bearing in a UCF204-class flange unit, dynamic load rating, N (catalog class)
 PETG_RHO = 1270.0              # kg/m3
 PRINT_FILL = 0.6               # printed mass / solid massing volume (thin buckets, infill)
 PRINT_RATE = 25.0              # g/h, PETG, 0.4 mm nozzle, 0.28 mm layers
@@ -55,7 +63,7 @@ E_PVC, K_WATER = 3.0e9, 2.2e9  # Pa, for water hammer wave speed
 WALL_PEN = 0.0037              # m, 125 mm SN8
 T_CLOSE = 10.0                 # gate valve closing time, s (about ten turns)
 P_PIPE = 50.0                  # kPa, assumed rating of drainage pipe joints (to confirm)
-BUDGET = 450.0                 # budget_usd, decided by Amish 2026-09-25
+BUDGET = 450.0                 # budget_usd: a value-engineering target, not a limit (Amish, 2026-10-01)
 EXCLUDED = ("9 ", "17 ")       # penstock and battery lines, excluded from kit cost
 SALVAGED_GEN = 40.0            # USD, salvaged direct-drive washing machine motor (30 to 50)
 
@@ -74,6 +82,16 @@ def pipe_k(q, d, length, k_minor):
     return (f * length / d + k_minor) / (2 * G * a ** 2)
 
 
+FULL_BORE = False              # True: N6 option (a), a full-bore valve on the penstock
+
+
+def k_pen_total(d_pen):
+    """Penstock minor losses on the penstock velocity head, including the inlet valve."""
+    if FULL_BORE:
+        return sum(K_PEN.values()) + K_VALVE_FULL
+    return sum(K_PEN.values()) + sum(K_VALVE.values()) * (d_pen / D_VALVE) ** 4
+
+
 def hydraulics(h_gross, d_jet, jets=2, d_br=D_BR, d_pen=D_PEN):
     """Solve flow through the penstock, branches and nozzles for a gross head. d_jet in m."""
     aj = math.pi / 4 * d_jet ** 2
@@ -90,10 +108,10 @@ def hydraulics(h_gross, d_jet, jets=2, d_br=D_BR, d_pen=D_PEN):
         h_tee = (lo + hi) / 2
         q = branch_flows(h_tee)
         qt = sum(q.values())
-        need = h_tee + pipe_k(qt, d_pen, L_PEN, sum(K_PEN.values())) * qt ** 2
+        need = h_tee + pipe_k(qt, d_pen, L_PEN, k_pen_total(d_pen)) * qt ** 2
         lo, hi = (h_tee, hi) if need < h_gross else (lo, h_tee)
     qt = sum(q.values())
-    hp = pipe_k(qt, d_pen, L_PEN, sum(K_PEN.values())) * qt ** 2
+    hp = pipe_k(qt, d_pen, L_PEN, k_pen_total(d_pen)) * qt ** 2
     hn = {n: k_jet * q[n] ** 2 * CV ** 2 for n in names}        # net head at each nozzle
     vj = {n: CV * math.sqrt(2 * G * hn[n]) for n in names}
     pj = sum(0.5 * RHO * q[n] * vj[n] ** 2 for n in names)
@@ -140,9 +158,13 @@ def line(label, value, unit="", fmt="{:.1f}"):
 
 
 def main():
+    global FULL_BORE
     import model
     parts = model.build_parts()
+    C = model.build_components()
     mp = parts["_p"]
+    L_BR["jet 1 (around the housing)"] = mp["branch_len_1"]
+    L_BR["jet 2 (direct)"] = mp["branch_len_2"]
 
     print("PicoFlow sizing (PCF-CAL-001). Estimates for TRL 3.\n")
 
@@ -167,6 +189,26 @@ def main():
     line("Same, with the TRL 2 63 mm branches", 100 * alt_frac, "%")
     line("Jet velocity (flow-weighted mean)", dp["vj"], "m/s", "{:.2f}")
     line("Jet to pitch diameter ratio", d_ins / (D_PITCH * 1000), "", "{:.2f}")
+    line("Branch length, jet 1 (model)", L_BR["jet 1 (around the housing)"], "m", "{:.2f}")
+    line("Branch length, jet 2 (model)", L_BR["jet 2 (direct)"], "m", "{:.2f}")
+    kv = sum(K_VALVE.values()) * (D_PEN / D_VALVE) ** 4
+    line("Valve, reducer and expander, on the penstock velocity head", kv, "", "{:.2f}")
+    line("Head lost at the valve and its fittings", kv * dp["v_pen"] ** 2 / (2 * G), "m", "{:.3f}")
+    FULL_BORE = True
+    fb = chain(H_DESIGN, d_ins / 1000)
+    fb_d = solve_jet(H_DESIGN, Q_DESIGN)
+    fb10 = chain(H_DESIGN, fb_d)
+    FULL_BORE = False
+    ex10 = chain(H_DESIGN, d_exact)
+    line("Into the battery at exactly 10 L/s (inserts sized for it), 90 mm valve", ex10["p_batt"], "W")
+    line("N6 option (a), full-bore valve: into the battery at exactly 10 L/s", fb10["p_batt"], "W")
+    line("N6 option (a), full-bore valve: water to wire at 10 L/s", 100 * fb10["eta_w2w"], "%")
+    line("N6 option (a), full-bore valve: pipe and branch loss at 10 L/s", 100 * (1 - sum(fb10["hn"].values()) / 2 / H_DESIGN), "%")
+    line("N6 option (a), full-bore valve: insert for 10 L/s", fb_d * 1000, "mm")
+    R.update(br_len=[L_BR["jet 1 (around the housing)"], L_BR["jet 2 (direct)"]], k_valve=kv,
+             h_valve=kv * dp["v_pen"] ** 2 / (2 * G), p_batt_10=ex10["p_batt"], w2w_10=100 * ex10["eta_w2w"],
+             fb_p_batt_10=fb10["p_batt"], fb_w2w_10=100 * fb10["eta_w2w"], fb_d=fb_d * 1000,
+             fb_loss_10=100 * (1 - sum(fb10["hn"].values()) / 2 / H_DESIGN))
     R.update(d_jet_exact=d_exact * 1000, d_insert=d_ins, q_design=dp["q"] * 1000, h_pen=dp["h_pen"],
              loss_pct=100 * loss_frac, loss_pct_63=100 * alt_frac, hn=sum(dp["hn"].values()) / 2, vj=dp["vj"],
              jet_ratio=d_ins / (D_PITCH * 1000), v_pen=dp["v_pen"])
@@ -314,35 +356,42 @@ def main():
 
     # ---------------------------------------------------------- 7 geometry, print, mass (R9, R13, R14)
     print("\n7. Geometry, printing and mass (R9, R13, R14)")
+    vol = lambda k: C[k].shape.volume * 1e-9  # noqa: E731  m3
     rb = parts["runner"].bounding_box()
     line("Runner envelope X", rb.size.X, "mm", "{:.0f}")
     line("Runner envelope Z", rb.size.Z, "mm", "{:.0f}")
     print_g = m_runner * 1000
     line("Runner printed mass (model volume x 0.6 x PETG density)", print_g, "g", "{:.0f}")
     line("Print time at 25 g/h", print_g / PRINT_RATE, "h")
+    line("Nozzle printed mass, each (model volume x 0.6 x PETG density)", vol("nozzle_1") * PETG_RHO * PRINT_FILL * 1000, "g", "{:.0f}")
+    line("Nozzle print time at 25 g/h, each", vol("nozzle_1") * PETG_RHO * PRINT_FILL * 1000 / PRINT_RATE, "h")
     setting = mp["jet_z"] / 1000
     line("Nozzle centerline above tailwater (model)", setting * 1000, "mm", "{:.0f}")
     line("Runner underside above tailwater (model)", mp["runner_bottom"], "mm", "{:.0f}")
     line("Setting height as share of site drop at the design point", 100 * setting / (H_DESIGN + setting), "%")
     masses = {
         "Generator, 500 W low-speed BLDC (catalog class, assumed)": 7.0,
-        "Housing, 315 mm PVC (model volume x 1,400 kg/m3)": None,
-        "Lid, 12 mm HDPE (400 x 400 mm)": 0.40 * 0.40 * 0.012 * 950,
-        "Frame, 40 x 40 x 4 mm angle, about 2.0 m at 2.42 kg/m": 2.0 * 2.42,
-        "Bearing housing, posts, plate, guard (aluminium, model volume)": parts["bearing_mount"].volume * 1e-9 * 2700,
-        "Shaft, 316 stainless (model volume)": parts["shaft"].volume * 1e-9 * 7950,
+        "Housing, 315 mm PVC (model volume x 1,400 kg/m3)": vol("housing") * 1400,
+        "Lid, 12 mm HDPE (model volume x 950 kg/m3)": vol("lid") * 950,
+        "Frame, 40 x 40 x 4 mm angle, foot plates, stops (model volume, steel)": vol("frame") * 7850,
+        "Bearing units, two UCF204 class (catalog, about 0.65 kg each)": 1.30,
+        "Generator plate, 8 mm aluminium (model volume)": vol("plate") * 2700,
+        "Posts and spacer sleeves, steel tube (model volume)": (vol("posts") + vol("brg_sleeves")) * 7850,
+        "Guard, 160 mm PVC (model volume)": vol("guard") * 1400,
+        "Tie rods, post rods, bearing bolts and nuts (model volume, steel)": (vol("tie_rods") + vol("lid_nuts") + vol("post_rods") + vol("plate_nuts") + vol("brg_bolts")) * 7850,
+        "Shaft, 316 stainless (model volume)": vol("shaft") * 7950,
+        "Clamping hub (aluminium, model volume)": vol("hub") * 2700,
         "Runner, PETG": m_runner,
         "Coupling": 0.3,
-        "Manifold: about 2.0 m of 90 mm PVC at 1.1 kg/m, tee, elbows, nozzles": 2.0 * 1.1 + 1.0,
-        "Gate valve, 90 mm PVC": 2.0,
+        "Manifold: about 1.9 m of 90 mm PVC at 1.1 kg/m, tee, reducer, elbows, couplings": 1.9 * 1.1 + 1.2,
+        "Nozzles, printed (two, model volume x 0.6 x PETG)": 2 * vol("nozzle_1") * PETG_RHO * PRINT_FILL,
+        "Gate valve, 90 mm PVC, with reducer and expander": 2.4,
     }
-    import build123d  # noqa: F401
-    shell_vol = math.pi / 4 * ((mp["housing_od"]) ** 2 - (mp["housing_od"] - 2 * mp["housing_wall"]) ** 2) * mp["housing_h"]
-    masses["Housing, 315 mm PVC (model volume x 1,400 kg/m3)"] = shell_vol * 1e-9 * 1400
     for k, v in masses.items():
         line(k, v, "kg", "{:.2f}")
     total = sum(masses.values())
-    pipework = masses["Manifold: about 2.0 m of 90 mm PVC at 1.1 kg/m, tee, elbows, nozzles"] + masses["Gate valve, 90 mm PVC"]
+    pipework = (masses["Manifold: about 1.9 m of 90 mm PVC at 1.1 kg/m, tee, reducer, elbows, couplings"]
+                + masses["Nozzles, printed (two, model volume x 0.6 x PETG)"] + masses["Gate valve, 90 mm PVC, with reducer and expander"])
     unit = total - pipework
     line("Turbine unit, items 1 to 6 and 11 (R14 definition)", unit, "kg")
     line("Manifold and valve, carried separately as pipework", pipework, "kg")
@@ -350,7 +399,8 @@ def main():
     R.update(runner_env=[rb.size.X, rb.size.Y, rb.size.Z], print_g=print_g, print_h=print_g / PRINT_RATE,
              setting_mm=mp["jet_z"], runner_bottom=mp["runner_bottom"],
              setting_pct=100 * setting / (H_DESIGN + setting), mass_total=total, mass_unit=unit,
-             mass_pipework=pipework, mass_gen=7.0)
+             mass_pipework=pipework, mass_gen=7.0, masses=masses,
+             nozzle_g=vol("nozzle_1") * PETG_RHO * PRINT_FILL * 1000)
 
     # ---------------------------------------------------------- 8 penstock surge (R17)
     print("\n8. Penstock surge (R17)")
@@ -390,8 +440,8 @@ def main():
     line("Turbine kit, salvaged washing machine motor", salv, "USD", "{:.2f}")
     for k, v in exc.items():
         line(f"Excluded: {k}", v, "USD", "{:.2f}")
-    line("Budget (project.yaml)", BUDGET, "USD", "{:.0f}")
-    line("Margin, new generator", BUDGET - kit, "USD", "{:.2f}")
+    line("Value-engineering target (project.yaml budget_usd)", BUDGET, "USD", "{:.0f}")
+    line("Over (+) or under (-) the target, new generator", kit - BUDGET, "USD", "{:+.2f}")
     R.update(kit=kit, kit_salvaged=salv, budget=BUDGET, excluded=exc)
 
     out = ROOT / "docs" / "04-calcs" / "results.json"
