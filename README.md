@@ -57,7 +57,7 @@ Remote homes near streams with 1 to 3 m of head have few durable, repairable tur
 
 3D-printed Turgo runner in a printed or PVC nozzle housing, driving an off-the-shelf BLDC motor used as a generator, with an MPPT dump-load controller.
 
-At 2 m of head and 10 L/s, the TRL 3 sizing calculation (PCF-CAL-001) gives about 82 W into a 12 V battery, or about 1.98 kWh a day, running around the clock, with a 125 mm penstock; pipe, valve and branch losses take about 20 % of the head. The generator sits on the lid above the spray, the dump load keeps the runner from running away when the battery is full, and a hardware clamp holds the DC side below 48 V if the controller fails.
+At 2 m of head and 10 L/s, the TRL 3 sizing calculation (PCF-CAL-001) gives about 86 W into a 12 V battery, or about 2.05 kWh a day, running around the clock, with a 125 mm penstock; pipe, valve and branch losses take about 16 % of the head. The generator sits on the lid above the spray, the dump load keeps the runner from running away when the battery is full, and a hardware clamp holds the DC side below 48 V if the controller fails.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -66,12 +66,12 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - Printed Turgo runner, 200 mm (PETG prototype, glass-filled nylon for field units), with two opposed 34 mm jets from printed nozzles bolted to the housing
 - New low-speed 500 W BLDC motor as generator (a salvaged washing machine motor is the low-cost variant)
 - Two sealed flange bearing units above the spray on a stainless shaft
-- 125 mm PVC penstock with a slow-closing gate valve, forebay screen and 315 mm PVC housing
+- 125 mm PVC penstock with a slow-closing, full-bore gate valve, forebay screen and 315 mm PVC housing
 - Three-phase rectifier
 - Open-design MPPT, dump-load and clamp controller for a 12 V battery
 - 300 W dump-load resistor and 8.2 ohm clamp resistor
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv): about $534 for the turbine kit with a new generator, against a value-engineering target of $450; penstock and battery excluded.
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): about $614 for the turbine kit with a new generator, against a value-engineering target of $450; penstock and battery excluded.
 
 ## Building the prototype
 

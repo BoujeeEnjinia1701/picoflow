@@ -93,7 +93,9 @@ PARAMS = {
     "manifold_z": 338.0,       # manifold and branch centerline (derived: the nozzle inlet height, 338.1)
     "pen_y": -75.0,            # penstock and tee on the jet 2 line (DDR-003 P10)
     "tee_x": -560.0,
-    "valve_x": -820.0,
+    "valve_x": -875.0,         # full-bore 125 mm valve centre (N6 option a, decided 2026-10-01)
+    "valve_len": 330.0,        # valve overall length over its two sockets (catalogue class, to confirm)
+    "valve_sock": 70.0,        # valve socket depth for 125 mm pipe
     "stub_x": -1200.0,         # end of the penstock stub in the model
     "branch_y": 260.0,         # far branch runs around the housing at this Y
     "branch_x": 460.0,
@@ -519,22 +521,27 @@ def build_components(p=None):
     add("pipes", "Branch pipes, 90 mm PVC (5)", _unite(list(pipe_shapes.values())), 7, "made", "manifold")
     add("couplings", "Flexible couplings, 90 mm (2)", _unite(cpl), 7, "bought", "manifold")
 
-    # ---- 8 inlet valve: 90 mm gate valve between a reducer and an expander
-    vx = p["valve_x"]
-    rv = 58.0
-    valve = (_tube((vx - 55, py, mz), (vx + 55, py, mz), rv) + zcyl(vx, py, mz, mz + 150, 28) + ztube(vx, py, mz + 194, mz + 206, 80, 66)
-             + zcyl(vx, py, mz + 150, mz + 200, 8) + bx(vx - 70, vx + 70, py - 4, py + 4, mz + 196, mz + 204))
-    valve -= _tube((vx - 56, py, mz), (vx + 56, py, mz), r9)
-    exp_ = _cone((tx - 90, py, mz), (tx - 160, py, mz), r12, rf)          # 125 spigot in the tee, 90 socket
-    red_ = _cone((vx - 110, py, mz), (vx - 180, py, mz), rf, r12)
-    exp_ -= _cone((tx - 89, py, mz), (tx - 161, py, mz), p["penstock_od"] / 2, r9)
-    red_ -= _cone((vx - 109, py, mz), (vx - 181, py, mz), r9, p["penstock_od"] / 2)
-    nip = (_tube((tx - 160 + sk, py, mz), (vx + 55 - 20, py, mz), r9) + _tube((vx - 55 + 20, py, mz), (vx - 110 - sk + 0, py, mz), r9))
-    add("valve", "Inlet gate valve, 90 mm, multi-turn", valve, 8, "bought", "valve")
-    add("valve_fittings", "Expander, reducer and nipples at the valve", exp_ + red_ + nip, 8, "bought", "valve")
+    # ---- 8 inlet valve: full-bore 125 mm PVC-U gate valve with solvent-weld sockets (N6 option a,
+    #      decided by Amish 2026-10-01), joined to the tee by a short piece of 125 mm pipe
+    vx, vl, vs = p["valve_x"], p["valve_len"] / 2, p["valve_sock"]
+    rp = p["penstock_od"] / 2
+    rb = rp - 3.7                                                         # bore, as the SN8 pipe
+    valve = (_tube((vx - vl, py, mz), (vx - vl + vs + 5, py, mz), rp + 8)  # upstream socket hub
+             + _tube((vx + vl - vs - 5, py, mz), (vx + vl, py, mz), rp + 8)
+             + _tube((vx - vl + vs + 5, py, mz), (vx + vl - vs - 5, py, mz), rp + 12)   # body
+             + bx(vx - 40, vx + 40, py - 78, py + 78, mz, mz + 205)      # bonnet that takes the gate
+             + bx(vx - 48, vx + 48, py - 86, py + 86, mz + 205, mz + 215)
+             + zcyl(vx, py, mz + 215, mz + 300, 10)                       # stem
+             + ztube(vx, py, mz + 290, mz + 302, 100, 86)                # 200 mm handwheel
+             + bx(vx - 4, vx + 4, py - 92, py + 92, mz + 292, mz + 300) + bx(vx - 92, vx + 92, py - 4, py + 4, mz + 292, mz + 300))
+    valve -= (_tube((vx - vl - 1, py, mz), (vx + vl + 1, py, mz), rb)
+              + _tube((vx - vl - 1, py, mz), (vx - vl + vs, py, mz), rp) + _tube((vx + vl - vs, py, mz), (vx + vl + 1, py, mz), rp))
+    nip = _tube((tx - 90 + sk, py, mz), (vx + vl - vs, py, mz), rp) - _tube((tx - 91 + sk, py, mz), (vx + vl - vs - 1, py, mz), rb)
+    add("valve", "Inlet gate valve, 125 mm full bore, multi-turn", valve, 8, "bought", "valve")
+    add("valve_fittings", "Pipe piece, 125 mm, tee to valve", nip, 8, "made", "valve")
 
     # ---- 9 penstock stub (site)
-    add("penstock_stub", "Penstock, 125 mm PVC (stub)", _tube((p["stub_x"], py, mz), (vx - 180, py, mz), p["penstock_od"] / 2), 9, "site", "penstock_stub")
+    add("penstock_stub", "Penstock, 125 mm PVC (stub)", _tube((p["stub_x"], py, mz), (vx - vl + vs, py, mz), p["penstock_od"] / 2), 9, "site", "penstock_stub")
 
     # ---- 18 pipe stands (three)
     st = []
@@ -720,6 +727,11 @@ def checks(p=None):
     fits("Pipe stands under the branch pipes", S("stands"), S("pipes"))
     chk("Pipe stands clear of the frame", S("stands"), S("frame"), 30.0)
     chk("Valve handwheel clear of the pipework", S("valve"), S("pipes") + S("fittings"), 20.0)
+    fits("Pipe piece in the tee's 125 mm run", S("valve_fittings"), S("fittings"))
+    fits("Pipe piece in the valve's downstream socket", S("valve_fittings"), S("valve"))
+    fits("Penstock in the valve's upstream socket", S("penstock_stub"), S("valve"))
+    chk("Valve clear of the tee", S("valve"), S("fittings"), 20.0)
+    chk("Valve clear of the pad", S("valve"), pad_context(), 20.0)
     return rows
 
 

@@ -275,3 +275,49 @@ The design changed visibly (frame, bearings, guard, nozzles, pipework). The phot
 ### Recommended next step
 
 Amish reviews PCF-DDR-003 and decides the open items in PCF-DEC-001, starting with the valve bore. Then refresh the product renders on the Mac. TRL 4 (building and testing to this plan) stays on hold.
+
+## Session 2026-10-01: inlet valve bore decided (full bore)
+
+Amish decided open decision 2 of the design decisions register (inlet valve bore, N6) on 2026-10-01. He was told the R3 output margin had dropped to 1.7 W and that the recommendation was a full-bore inlet valve, and replied: "picoflow - i agree with the recommendation". Option (a) is now the design: a full-bore valve matched to the 125 mm penstock, re-priced. Only this item is decided; acceptance of PCF-DDR-003 (A1), the welded frame and the other open items stay open. Nothing was built; TRL stays 3.
+
+### What was done
+
+- `cad/src/model.py`: the 90 mm gate valve, reducer, expander and nipples are replaced by a full-bore 125 mm PVC-U gate valve with solvent-weld sockets for 125 mm pipe (assumed type, catalogue class, to confirm: PN10, multi-turn handwheel with a non-rising stem, 330 mm over the sockets, 70 mm deep sockets, 200 mm handwheel about 300 mm above the pipe centre line, about 5.5 kg). It sits 60 mm clear of the tee, joined to it by a 175 mm piece of the penstock pipe; the penstock goes straight into its upstream socket. Five checks added (pipe piece in the tee and the valve, penstock in the valve, valve clear of the tee and of the pad): 74 of 74 pass. STEP and STL re-exported. The five 90 mm branch cut lengths are unchanged; the new cut length is the 175 mm pipe piece.
+- `docs/04-calcs/sizing.py` and PCF-CAL-001 v0.4: valve loss coefficient 0.15 on the penstock velocity head (the v0.3 90 mm arrangement is kept as a printed comparison); the design insert is now read from the model (34 mm) rather than rounded from the exact bore, which with the full-bore valve is 33.3 mm; the clamp check now uses the 8.2 Ω resistor in the BOM and also reports the largest E12 value that keeps the clamp cycling. Every number rerun.
+- `bom/bom.csv` line 8 and `bom/bom-notes.md`: re-priced with a stated basis (below).
+- PCF-REQ-001 v0.6, PCF-PRC-001 v0.6 (`docs/02-concept.md`) and `README.md`: figures updated.
+- PCF-BLD-001 v0.2 (`docs/05-build-plan.md`): change table row, section 3.14 rewritten as "Inlet valve and its pipe piece" with a new joint picture (Figure 28, `joint-13.png`; later figures renumbered), the bought-parts list, step 17, pipework dry fit wording, cost line and "Where the numbers come from".
+- Pictures regenerated with `cad/src/build_plan_media.py`: `docs/05-build-plan/overview.png`, `step-17.png`, new `joint-13.png`, and `cad/drawings/PCF-DWG-112` (the pipework sketch shows the valve and its note now names the pipe piece). The script gained `STEPS` and `JOINTS` filters, like the existing `SHEETS`, so one picture can be redrawn. No other joint or step picture shows the valve.
+- PCF-DWG-001 moved to Rev P4 (parts list item 8: "Inlet gate valve, 125 mm full bore"). Concept media regenerated (`media/hero.png`, `concept-blueprint`, `cutaway.png`, `exploded.png`, `flow.png`, `model.glb`).
+- PCF-DEC-001 v0.2: item 2 moved to Decisions made (2026-10-01, Amish's words, record PCF-DDR-003 A2); open items renumbered 1 to 7; a new proposed item 8 (clamp resistor, below); item 6 to confirm now covers the full-bore valve; Value engineering updated. PCF-DDR-003 v0.2 records that Amish accepted A2 (a) on 2026-10-01; A1 and A3 stay open.
+
+### Key results (PCF-CAL-001 v0.4)
+
+- Valve loss 0.007 m at the design point (0.081 m with the 90 mm valve and its fittings).
+- **R3: 85.6 W into the battery at exactly 10 L/s, a 5.6 W margin (was 81.7 W and 1.7 W).** With the 34 mm design inserts: 87.8 W at 10.36 L/s. Water to wire 43.6 % at 10 L/s (43.2 % with the inserts); 2.05 kWh a day at 10 L/s. Pipe, valve and branch loss 16.3 % at 10 L/s.
+- R4 26.8 W; surge peak 33.5 kPa (R17); bearing L10 7.1 x 10^6 h; dump load margin 1.64 times (R7).
+- Mass (R14): turbine unit unchanged at 24.5 kg. The pipework carried separately is now 9.8 kg (was 6.3 kg), of which the valve is about 5.5 kg, well under the 15 kg heaviest-item limit; all items together 34.3 kg.
+- Cost (R15): Value-engineering target: USD 450. Estimated cost of the constructable design: USD 614 (USD 164 over the target). USD 544 with a salvaged motor (USD 94 over).
+- Price basis for line 8 (USD 120, was USD 40): an estimate, not a quote. Full-bore PVC-U gate valves with socket ends are made up to DN300 (for example Petron Thermoplast, PN10, handwheel), but no published price was found for the 125 mm size; US-made 4 in PVC gate valves list at over USD 1,000 (Spears 2022-040, USD 1,700.91 at pvcfittingsonline.com, read 2026-10-01). USD 115 is assumed for an imported metric valve plus USD 5 for the pipe piece and cement. The line must be quoted; it is now the largest line in the kit.
+- Requirements: none not met, R12 at risk, R7, R11 and R16 not verifiable at TRL 3, 12 met, R15 USD 164 over its value-engineering target.
+
+### Proposed, awaiting Amish
+
+- **New, register item 8: clamp resistor.** The full-bore valve delivers more power at the worst-case site (3.0 m, 15 L/s: 247 W at the shaft). With the 8.2 Ω clamp resistor the bus now settles at 40.1 V, 0.1 V above the clamp's 40 V release point, so in that case the clamp stays switched in instead of cycling. The bus still never exceeds 48 V, so R8 is met. Options: (a) keep 8.2 Ω, 300 W; (b) 6.8 Ω, which settles at 36.7 V but needs a 350 W or larger rating (339 W at 48 V). Recommendation (b). Not changed in the BOM or the wiring picture until Amish decides.
+- Unchanged: accept PCF-DDR-003 (A1), welded frame, site and partner, and the appearance items.
+
+### Safety
+
+No safety requirement changed status. The valve is still multi-turn (never quarter-turn), so R17 holds at 33.5 kPa; the build plan's safety stops are unchanged. The clamp's margin below its release point is gone in the worst case (see item 8 above); the 48 V ceiling and the 100 V enclosure are unaffected.
+
+### Found, not changed
+
+- `bom/bom.csv` line 7 still says "a pair of printed 33 mm inserts", while the model, the calculation and the build plan use 34 mm. Worth correcting with the next BOM edit.
+
+### Stale outputs
+
+The valve is visible in all three photoreal renders: `media/render-hero.png` (penstock and gate valve from the back left), `media/render-exploded.png` (gate valve listed) and `media/render-detail.png` may show it at the left edge. They, `media/card.png` and `media/social-preview.png` still show the earlier valve and need regenerating on Amish's Mac; `cad/src/product_model.py` draws its own gate valve and still sizes it as before (it reads only the valve position from the model).
+
+### Recommended next step
+
+Amish decides register item 8 (clamp resistor) and the other open items, starting with acceptance of PCF-DDR-003. A real quote for the 125 mm gate valve would firm up the cost. Then refresh the product renders on the Mac. TRL 4 stays on hold.

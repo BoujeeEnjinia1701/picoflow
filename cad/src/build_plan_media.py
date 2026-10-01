@@ -81,7 +81,7 @@ def made():
         "generator": part("Generator", S("generator", "gen_screws"), COL["gen"]),
         "stands": part("Pipe stands (3)", S("stands"), COL["stands"]),
         "pipework": part("Tee, reducer, elbows, pipes, couplings", S("fittings", "pipes", "couplings"), COL["fittings"]),
-        "valve": part("Inlet valve with reducer and expander", S("valve", "valve_fittings"), COL["valve"]),
+        "valve": part("Inlet valve, full bore, and pipe piece", S("valve", "valve_fittings"), COL["valve"]),
         "penstock": part("Penstock stub (site)", S("penstock_stub"), COL["pen"]),
         "forebay": part("Forebay tub, outlet and screen", S("forebay", "forebay_outlet", "screen"), COL["forebay"]),
         "eqpost": part("Equipment post and anchor", S("eq_post", "post_base"), COL["post"]),
@@ -365,7 +365,7 @@ def sheets():
                f"  P1 tee branch to first elbow, {L_['P1']:.0f} mm; P2 long run, {L_['P2']:.0f} mm;",
                f"  P3 short drop, {L_['P3']:.0f} mm; P4 last elbow to jet 1 coupling, {L_['P4']:.0f} mm;",
                f"  P5 reducer to jet 2 coupling, {L_['P5']:.0f} mm.",
-               "Penstock enters the 125 mm run of the tee; the run's other end takes",
+               "The valve's pipe piece enters the 125 mm run of the tee; the other end takes",
                "  a 125 x 90 reducer and P5 to jet 2. The 90 mm side branch takes",
                "  P1, then elbows and P2, P3, P4 round the housing to jet 1.",
                "Dry fit everything on the stands first. Then solvent weld the PVC",
@@ -526,6 +526,19 @@ def win(sh, x0, x1, y0, y1, z0, z1):
 
 
 def joints():
+    import os
+
+    # limit drawing to the joint numbers in $JOINTS when that is set
+    only = os.environ.get("JOINTS")
+    _joint = bv.joint
+
+    class _BV:
+        def __getattr__(self, k):
+            if k != "joint" or not only:
+                return getattr(bv, k)
+            return lambda parts, out, *a, **kw: (_joint(parts, out, *a, **kw)
+                                                 if str(int(Path(out).stem.split("-")[1])) in only.split(",") else None)
+    bvj = _BV()
     out = []
     hf = P["frame"] / 2
     z0h = P["housing_z0"]
@@ -534,7 +547,7 @@ def joints():
     half = b.Rot(0, 0, 45) * b.Pos(0, -500, 0) * b.Box(3000, 1000, 2000)      # keeps y <= x
     bx_ = (110, 240, 110, 240, -30, 120)
     cut1 = lambda sh: win(sh, *bx_) & half  # noqa: E731
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Frame square (angle, horizontal leg inward)", cut1(S("frame")) & model.bx(100, 240, 100, 240, 40, 130), COL["frame"]),
         part("Leg (angle) and foot plate, welded", cut1(S("frame")) & model.bx(100, 240, 100, 240, -1, 40), "#A8A29E"),
         part("Tie rod, nuts above and below the angle", cut1(S("tie_rods")), COL["rods"]),
@@ -544,7 +557,7 @@ def joints():
         elev=12, azim=135, size=(8, 6)))
     # 02 housing on the frame at a pipe stop (cut through the middle of the +X side)
     bx_ = (120, 200, -25, 0, 60, 130)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Frame angle", win(S("frame"), *bx_) - model.bx(150, 200, -25, 0, z0h + 0.5, 130), COL["frame"]),
         part("Pipe stop, welded to the angle", win(S("frame"), *bx_) & model.bx(150, 200, -25, 0, z0h + 0.5, 130), "#B45309"),
         part("Housing wall, 7.7 mm", win(S("housing"), *bx_), COL["housing"])],
@@ -554,7 +567,7 @@ def joints():
     # 03 nozzle saddle on the housing, from outside
     W = P["wall_pt"]
     bx_ = (60, 400, -20, 200, 200, 400)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Housing", win(S("housing"), 60, 260, -20, 200, 200, 380), COL["housing"]),
         part("Gasket, 2 mm EPDM", win(S("gaskets"), *bx_), COL["gasket"]),
         part("Nozzle saddle", win(S("nozzle_1"), *bx_), COL["nozzle"]),
@@ -565,7 +578,7 @@ def joints():
     # 04 nozzle tip and insert, cut through the jet's centre line
     yj = P["runner_pcd"] / 2
     bx_ = (60, 230, yj, yj + 60, 220, 360)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Housing wall (cut)", win(S("housing"), *bx_), COL["housing"]),
         part("Nozzle (cut)", win(S("nozzle_1"), *bx_), COL["nozzle"]),
         part("Insert, 34 mm bore (cut)", win(S("inserts"), *bx_), COL["insert"]),
@@ -576,7 +589,7 @@ def joints():
         elev=4, azim=-90, size=(8, 6)))
     # 05 lid on the housing, cut through the +X side
     bx_ = (110, 205, -20, 0, 340, 400)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Lid (cut)", win(S("lid"), *bx_), COL["lid"]),
         part("Housing (cut)", win(S("housing"), *bx_), "#64748B")],
         OUT / "joint-05.png", "Joint 5: lid on the housing (cut open)",
@@ -585,7 +598,7 @@ def joints():
     # 06 bearing stack, cut in half
     zl = P["lid_z"]
     bx_ = (-60, 60, -60, 0, zl - 15, P["brg_top"] + 8)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Lid (cut)", win(S("lid"), *bx_), COL["lid"]),
         part("Lower flange bearing unit (cut)", win(S("brg_low"), *bx_), COL["brg"]),
         part("Spacer sleeves", win(S("brg_sleeves"), *bx_), COL["posts"]),
@@ -599,7 +612,7 @@ def joints():
     # 07 runner hub on the shaft, cut
     rz = P["runner_z"]
     bx_ = (-50, 50, -50, 0, rz - 30, rz + 60)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Runner hub (cut)", win(S("runner"), *bx_), COL["runner"]),
         part("Clamping hub (cut)", win(S("hub"), *bx_), COL["hub"]),
         part("M5 screws into heat-set inserts", win(S("hub_screws"), *bx_), COL["bolt"]),
@@ -609,7 +622,7 @@ def joints():
         elev=12, azim=90, size=(8, 6)))
     # 08 coupling, guard and generator, cut
     bx_ = (-100, 100, -100, 0, P["brg_up_z0"] + 5, P["gen_z0"] + 40)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Upper bearing unit", win(S("brg_up"), *bx_), COL["brg"]),
         part("Jaw coupling (cut)", win(S("coupling"), *bx_), COL["coupling"]),
         part("Shaft and generator shaft", win(S("shaft") + S("generator"), *bx_) & model.bx(-15, 15, -15, 15, 0, 2000), COL["shaft"]),
@@ -625,7 +638,7 @@ def joints():
     jet = model._tube(F["X"], (0.0, yj, P["strike_z"]), P["jet_d"] / 2)
     jets = jet + model._rotz180(jet)
     zc = 300
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Runner", S("runner"), COL["runner"]),
         part("Nozzles and inserts", win(S("nozzle_1", "nozzle_2", "inserts"), -400, 400, -400, 400, 0, zc), COL["nozzle"]),
         part("Jets (water)", jets, "#38BDF8"),
@@ -638,7 +651,7 @@ def joints():
     sp = P["spigot_end_x"]
     mz = P["manifold_z"]
     bx_ = (sp - 90, sp + 140, yj - 0.3, yj + 60, mz - 70, mz + 70)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Nozzle spigot (printed)", win(model._tube((sp - P["spigot_len"], yj, mz), (sp, yj, mz), 45.0)
                                             - model._tube((sp - P["spigot_len"] - 1, yj, mz), (sp + 1, yj, mz), 41.0), *bx_), COL["nozzle"]),
         part("Flexible coupling and band clamps", win(S("couplings"), *bx_), COL["cpl"]),
@@ -650,7 +663,7 @@ def joints():
     # 11 pipe stand
     x, y, _ = P["stands"][1]
     bx_ = (x - 90, x + 90, y - 70, y + 70, -1, mz + 60)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Pipe stand", win(S("stands"), *bx_), COL["stands"]),
         part("Pipe P2", win(S("pipes"), *bx_), COL["pipes"]),
         part("Pad (site)", win(pad_context(), *bx_), COL["pad"])],
@@ -660,7 +673,7 @@ def joints():
     # 12 post between lid and plate
     po = P["post_offset"]
     bx_ = (po - 30, po + 30, po - 30, po, P["lid_z"] - 20, P["plate_z0"] + 30)
-    out.append(bv.joint([
+    out.append(bvj.joint([
         part("Lid (cut)", win(S("lid"), *bx_), COL["lid"]),
         part("Post (cut)", win(S("posts"), *bx_), COL["posts"]),
         part("M10 post rod, washers and nuts", win(S("post_rods"), *bx_), COL["rods"]),
@@ -668,6 +681,19 @@ def joints():
         OUT / "joint-12.png", "Joint 12: post between the lid and the generator plate (cut in half)",
         subtitle="The rod clamps the post between the lid and the plate; a 30 mm washer spreads the load under the lid",
         elev=10, azim=90, size=(7, 6)))
+    # 13 inlet valve between the tee and the penstock, cut in half along the pipe
+    tx, py, vx = P["tee_x"], P["pen_y"], P["valve_x"]
+    vl, vs = P["valve_len"] / 2, P["valve_sock"]
+    piece = (tx - 90 + P["sock"]) - (vx + vl - vs)
+    bx_ = (vx - vl - 120, tx - 20, py - 160, py, mz - 90, mz + 310)
+    out.append(bvj.joint([
+        part("Penstock, 125 mm (cut)", win(S("penstock_stub"), *bx_), COL["pen"]),
+        part("Full-bore gate valve (cut)", win(S("valve"), *bx_), COL["valve"]),
+        part(f"Pipe piece, 125 mm, {piece:.0f} mm long (cut)", win(S("valve_fittings"), *bx_), "#9CA3AF"),
+        part("Reducing tee, 125 mm run (cut)", win(S("fittings"), *bx_), COL["fittings"])],
+        OUT / "joint-13.png", "Joint 13: inlet valve between the penstock and the tee (cut in half)",
+        subtitle="Both pipes go fully into the valve's solvent-weld sockets; the bore is the same as the penstock's all the way through",
+        elev=12, azim=90, size=(8, 6)))
     return out
 
 
@@ -679,6 +705,10 @@ def steps():
     back = F["back"]
 
     def st(n, done, new, title, sub, **kw):
+        import os
+        only = os.environ.get("STEPS")
+        if only and str(n) not in only.split(","):
+            return
         out.append(bv.step(done, new, OUT / f"step-{n:02d}.png", f"Step {n}: {title}", subtitle=sub, **kw))
 
     padp = pad()
@@ -754,7 +784,7 @@ def steps():
        context=[padp], elev=26, azim=-50, label_done=False)
     st(17, unit + [M["stands"], M["pipework"]], [mv(M["valve"], (0, 0, 260)), mv(M["penstock"], (-300, 0, 0))],
        "inlet valve and penstock",
-       "Expander into the tee, valve, reducer, then the penstock; valve stem up so the handwheel is easy to reach",
+       "Pipe piece into the tee, full-bore valve onto it, penstock into the valve; stem up so the handwheel is easy to reach",
        context=[padp], elev=26, azim=-50, label_done=False)
     st(18, [part("Forebay tub", S("forebay"), COL["forebay"])],
        [mv(part("Outlet tank connector", S("forebay_outlet"), "#1F2937"), (220, 0, 0)), mv(part("Intake screen", S("screen"), COL["screen"]), (0, 0, 260))],

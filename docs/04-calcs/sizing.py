@@ -27,12 +27,14 @@ L_PEN = 20.0                   # penstock length, m
 D_PEN = 0.1176                 # 125 mm drainage PVC (SN8, 3.7 mm wall), bore m; decided 2026-09-25 (PCF-DDR-002 N1)
 D_PEN_110 = 0.1036             # 110 mm drainage PVC (SN4, 3.2 mm wall), TRL 3 v0.1 baseline, for comparison
 K_PEN = {"rounded entrance": 0.20, "intake screen": 0.10, "two bends": 0.30}
-# Inlet valve (BOM 8): a 90 mm gate valve between a 125 x 90 reducer and a 90 x 125 expander
-# (PCF-DDR-003 P11). Coefficients on the valve's own velocity head; bore taken as the 90 mm pipe bore.
+# Inlet valve (BOM 8): a full-bore 125 mm PVC-U gate valve with solvent-weld sockets on the penstock
+# (N6 option a, decided by Amish 2026-10-01). Open gate valve 0.15 on the penstock velocity head.
+K_VALVE_FULL = 0.15
+# v0.3 comparison only: a 90 mm gate valve between a 125 x 90 reducer and a 90 x 125 expander
+# (PCF-DDR-003 P11), coefficients on the valve's own velocity head, bore the 90 mm pipe bore.
 D_VALVE = 0.0840
 K_VALVE = {"reducer 125 to 90": 0.10, "gate valve 90 mm, open": 0.15,
            "expander 90 to 125 (sudden)": (1 - (D_VALVE / 0.1176) ** 2) ** 2}
-K_VALVE_FULL = 0.15            # full-bore 125 mm gate valve, on the penstock velocity head (N6 option a)
 D_BR = 0.0840                  # 90 mm PVC branch bore, m
 D_BR_ALT = 0.0578              # 63 mm branch bore used at TRL 2, m (comparison)
 # branch losses on branch velocity head (PCF-DDR-003 P10 layout): jet 1 leaves the side of a
@@ -54,6 +56,7 @@ V_BATT = 13.6                  # 12 V LiFePO4 charging, V
 V_BUCK_MIN = 15.0              # bus voltage the buck needs to charge at 14.4 V absorption
 INSERTS = (20, 45)             # nozzle insert bore range, mm
 CLAMP_ON, CLAMP_OFF = 48.0, 40.0   # hardware clamp thresholds on the DC bus, V
+CLAMP_R = 8.2                  # clamp resistor in the BOM (line 15), ohm
 TOUCH_LIMIT = 60.0             # R8 limit, V DC
 BRG_C = 12.8e3                 # UC204 insert bearing in a UCF204-class flange unit, dynamic load rating, N (catalog class)
 PETG_RHO = 1270.0              # kg/m3
@@ -82,7 +85,7 @@ def pipe_k(q, d, length, k_minor):
     return (f * length / d + k_minor) / (2 * G * a ** 2)
 
 
-FULL_BORE = False              # True: N6 option (a), a full-bore valve on the penstock
+FULL_BORE = True               # N6 option (a), decided 2026-10-01; False gives the v0.3 90 mm valve for comparison
 
 
 def k_pen_total(d_pen):
@@ -170,12 +173,12 @@ def main():
 
     # ---------------------------------------------------------- 1 hydraulics and nozzle
     d_exact = solve_jet(H_DESIGN, Q_DESIGN)
-    d_ins = round(d_exact * 1000)                       # insert bore rounded to 1 mm
+    d_ins = round(mp["jet_d"])                          # design insert bore, from the model (34 mm)
     dp = chain(H_DESIGN, d_ins / 1000)
     alt = hydraulics(H_DESIGN, d_ins / 1000, 2, D_BR_ALT)
     print("1. Design point: 2.0 m gross head, 10 L/s, 20 m of 125 mm PVC, two jets")
     line("Jet diameter for exactly 10 L/s", d_exact * 1000, "mm")
-    line("Insert bore chosen (rounded)", d_ins, "mm", "{:.0f}")
+    line("Design insert bore (model)", d_ins, "mm", "{:.0f}")
     line("Flow with the chosen inserts", dp["q"] * 1000, "L/s", "{:.2f}")
     line("Penstock velocity", dp["v_pen"], "m/s", "{:.2f}")
     line("Penstock loss (friction and fittings)", dp["h_pen"], "m", "{:.3f}")
@@ -191,24 +194,27 @@ def main():
     line("Jet to pitch diameter ratio", d_ins / (D_PITCH * 1000), "", "{:.2f}")
     line("Branch length, jet 1 (model)", L_BR["jet 1 (around the housing)"], "m", "{:.2f}")
     line("Branch length, jet 2 (model)", L_BR["jet 2 (direct)"], "m", "{:.2f}")
-    kv = sum(K_VALVE.values()) * (D_PEN / D_VALVE) ** 4
-    line("Valve, reducer and expander, on the penstock velocity head", kv, "", "{:.2f}")
-    line("Head lost at the valve and its fittings", kv * dp["v_pen"] ** 2 / (2 * G), "m", "{:.3f}")
-    FULL_BORE = True
-    fb = chain(H_DESIGN, d_ins / 1000)
-    fb_d = solve_jet(H_DESIGN, Q_DESIGN)
-    fb10 = chain(H_DESIGN, fb_d)
-    FULL_BORE = False
+    kv = K_VALVE_FULL
+    line("Full-bore valve, on the penstock velocity head", kv, "", "{:.2f}")
+    line("Head lost at the valve", kv * dp["v_pen"] ** 2 / (2 * G), "m", "{:.3f}")
     ex10 = chain(H_DESIGN, d_exact)
-    line("Into the battery at exactly 10 L/s (inserts sized for it), 90 mm valve", ex10["p_batt"], "W")
-    line("N6 option (a), full-bore valve: into the battery at exactly 10 L/s", fb10["p_batt"], "W")
-    line("N6 option (a), full-bore valve: water to wire at 10 L/s", 100 * fb10["eta_w2w"], "%")
-    line("N6 option (a), full-bore valve: pipe and branch loss at 10 L/s", 100 * (1 - sum(fb10["hn"].values()) / 2 / H_DESIGN), "%")
-    line("N6 option (a), full-bore valve: insert for 10 L/s", fb_d * 1000, "mm")
+    loss10 = 100 * (1 - sum(ex10["hn"].values()) / 2 / H_DESIGN)
+    line("Into the battery at exactly 10 L/s (inserts sized for it)", ex10["p_batt"], "W")
+    line("Margin over R3 (80 W) at exactly 10 L/s", ex10["p_batt"] - 80.0, "W")
+    line("Water to wire at exactly 10 L/s", 100 * ex10["eta_w2w"], "%")
+    line("Pipe and branch loss at exactly 10 L/s", loss10, "%")
+    FULL_BORE = False                                   # v0.3 comparison: 90 mm valve with fittings
+    kv90 = sum(K_VALVE.values()) * (D_PEN / D_VALVE) ** 4
+    old_d = solve_jet(H_DESIGN, Q_DESIGN)
+    old10 = chain(H_DESIGN, old_d)
+    FULL_BORE = True
+    line("v0.3 comparison: 90 mm valve, reducer and expander, coefficient", kv90, "", "{:.2f}")
+    line("v0.3 comparison: head lost there", kv90 * ex10["v_pen"] ** 2 / (2 * G), "m", "{:.3f}")
+    line("v0.3 comparison: into the battery at exactly 10 L/s", old10["p_batt"], "W")
     R.update(br_len=[L_BR["jet 1 (around the housing)"], L_BR["jet 2 (direct)"]], k_valve=kv,
              h_valve=kv * dp["v_pen"] ** 2 / (2 * G), p_batt_10=ex10["p_batt"], w2w_10=100 * ex10["eta_w2w"],
-             fb_p_batt_10=fb10["p_batt"], fb_w2w_10=100 * fb10["eta_w2w"], fb_d=fb_d * 1000,
-             fb_loss_10=100 * (1 - sum(fb10["hn"].values()) / 2 / H_DESIGN))
+             loss_10=loss10, r3_margin=ex10["p_batt"] - 80.0,
+             v03_k_valve=kv90, v03_h_valve=kv90 * ex10["v_pen"] ** 2 / (2 * G), v03_p_batt_10=old10["p_batt"], v03_d=old_d * 1000)
     R.update(d_jet_exact=d_exact * 1000, d_insert=d_ins, q_design=dp["q"] * 1000, h_pen=dp["h_pen"],
              loss_pct=100 * loss_frac, loss_pct_63=100 * alt_frac, hn=sum(dp["hn"].values()) / 2, vj=dp["vj"],
              jet_ratio=d_ins / (D_PITCH * 1000), v_pen=dp["v_pen"])
@@ -322,10 +328,13 @@ def main():
 
     e12 = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2]
     cands = [m * k for k in (1, 10) for m in e12]
-    rc = max(r for r in cands if clamp_eq(r)[1] < CLAMP_OFF)
+    rc_best = max(r for r in cands if clamp_eq(r)[1] < CLAMP_OFF)
+    rc = CLAMP_R                                        # the resistor in the BOM (line 15)
     rpm_c, v_c, p_c = clamp_eq(rc)
     p_rating = CLAMP_ON ** 2 / rc
-    line("Clamp resistor chosen (largest E12 value holding the bus below 40 V)", rc, "ohm")
+    line("Clamp resistor in the BOM", rc, "ohm")
+    line("Largest E12 value holding the equilibrium below the 40 V release", rc_best, "ohm")
+    line("That value's clamped bus voltage and rating needed at 48 V", clamp_eq(rc_best)[1], f"V, {CLAMP_ON ** 2 / rc_best:.0f} W")
     line("Clamped speed, worst case", rpm_c, "rpm", "{:.0f}")
     line("Clamped bus voltage, worst case", v_c, "V")
     line("Clamp dissipation at equilibrium", p_c, "W", "{:.0f}")
@@ -334,7 +343,7 @@ def main():
     line("Runner rim speed at worst runaway", rim_v, "m/s")
     line("Rim hoop stress, rho v^2 (PETG)", PETG_RHO * rim_v ** 2 / 1e6, "MPa", "{:.2f}")
     R.update(run_rpm_3=rng[3.0]["rpm_run"], run_v_3=rng[3.0]["v_run"], worst_p_shaft=worst["p_shaft"],
-             worst_run_rpm=worst["rpm_run"], worst_run_v=worst["v_run"], clamp_r=rc, clamp_rpm=rpm_c, clamp_v=v_c,
+             worst_run_rpm=worst["rpm_run"], worst_run_v=worst["v_run"], clamp_r=rc, clamp_r_best=rc_best, clamp_v_best=clamp_eq(rc_best)[1], clamp_rpm=rpm_c, clamp_v=v_c,
              clamp_p=p_c, clamp_rating=p_rating, rim_v=rim_v, rim_stress=PETG_RHO * rim_v ** 2 / 1e6)
 
     # ---------------------------------------------------------- 6 bearings (R12)
@@ -385,13 +394,14 @@ def main():
         "Coupling": 0.3,
         "Manifold: about 1.9 m of 90 mm PVC at 1.1 kg/m, tee, reducer, elbows, couplings": 1.9 * 1.1 + 1.2,
         "Nozzles, printed (two, model volume x 0.6 x PETG)": 2 * vol("nozzle_1") * PETG_RHO * PRINT_FILL,
-        "Gate valve, 90 mm PVC, with reducer and expander": 2.4,
+        "Gate valve, 125 mm PVC-U full bore (catalogue class, about 5.5 kg), with the 125 mm pipe piece": 5.5 + 0.175 * 2.2,
     }
     for k, v in masses.items():
         line(k, v, "kg", "{:.2f}")
     total = sum(masses.values())
     pipework = (masses["Manifold: about 1.9 m of 90 mm PVC at 1.1 kg/m, tee, reducer, elbows, couplings"]
-                + masses["Nozzles, printed (two, model volume x 0.6 x PETG)"] + masses["Gate valve, 90 mm PVC, with reducer and expander"])
+                + masses["Nozzles, printed (two, model volume x 0.6 x PETG)"]
+                + masses["Gate valve, 125 mm PVC-U full bore (catalogue class, about 5.5 kg), with the 125 mm pipe piece"])
     unit = total - pipework
     line("Turbine unit, items 1 to 6 and 11 (R14 definition)", unit, "kg")
     line("Manifold and valve, carried separately as pipework", pipework, "kg")

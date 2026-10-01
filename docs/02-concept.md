@@ -3,7 +3,7 @@ doc_id: PCF-PRC-001
 title: PicoFlow design precis
 project: PicoFlow
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Constructable design (PCF-DDR-003) and numbers from PCF-CAL-001 v0.3; budget treated as a value-engineering target
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Full-bore 125 mm inlet valve (N6, option a, decided by Amish 2026-10-01); numbers from PCF-CAL-001 v0.4
 ---
 
 # PicoFlow design precis
@@ -42,7 +46,7 @@ PicoFlow is a vertical-shaft pico hydro turbine for 1 to 3 m of head: water from
 ## How it works
 
 1. **Intake.** A small forebay (a plastic tub or masonry box) at the top of the drop settles sand and passes water through a 6 mm screen. Surplus water spills over the forebay and carries leaves away, so the screen cleans itself.
-2. **Penstock.** A 125 mm PVC pipe (decided 2026-09-25, PCF-DDR-002; 110 mm lost about 24 % of the head) carries about 10 L/s down 1 to 3 m of head. Drainage-grade pipe is allowed (decided 2026-09-25) because the static pressure is at most about 29 kPa (4.2 psi) and a multi-turn gate valve at the bottom cannot close in under about 10 s, which keeps the surge to about 33 kPa peak (PCF-CAL-001 section 9).
+2. **Penstock.** A 125 mm PVC pipe (decided 2026-09-25, PCF-DDR-002; 110 mm lost about 24 % of the head) carries about 10 L/s down 1 to 3 m of head. Drainage-grade pipe is allowed (decided 2026-09-25) because the static pressure is at most about 29 kPa (4.2 psi) and a multi-turn gate valve at the bottom cannot close in under about 10 s, which keeps the surge to about 34 kPa peak (PCF-CAL-001 section 9).
 3. **Nozzles.** A 125 x 90 mm reducing tee splits the flow into two 90 mm branches. One runs straight on through a reducer to its nozzle; the other runs around the housing, so the two jets strike the runner on opposite sides and their radial forces cancel. Each printed nozzle is bolted to the housing wall through a gasketed saddle and joined to its pipe by a flexible coupling; a swappable insert (20 to 45 mm bore) sets the jet, 34 mm at the design point. The jets strike the runner from above at 20 degrees to the runner plane.
 4. **Runner.** A printed Turgo runner, 200 mm outside diameter and 150 mm pitch diameter, with 20 buckets, turns at about 318 rpm at the design point. The water leaves the far side of the buckets and falls out of the open bottom of the housing into the tailrace, so nothing floods the runner.
 5. **Shaft and bearings.** A 20 mm stainless shaft runs up through the lid into two sealed flange bearing units (UCF204 class) stacked on the lid, above the spray, and drives the generator through a jaw coupling inside a guard.
@@ -66,7 +70,7 @@ Numbers match the exploded view (Figure 3), the general arrangement drawing PCF-
 | 5 | Generator | New low-speed BLDC, about 500 W rated, about 10 rpm/V (decided); salvaged washing machine motor as the low-cost variant | About 7 kg |
 | 6 | Housing and lid | 315 mm PVC sewer pipe, 303 mm long, open bottom at 80 mm above tailwater; 400 x 400 mm HDPE lid with a groove that locates the housing; four tie rods clamp lid, housing and frame | |
 | 7 | Nozzle manifold and nozzles | 125 x 90 mm reducing tee and reducer, 90 mm branches, three elbows, flexible couplings, two printed nozzles with saddles and swappable inserts, opposed jets | Inserts 20 to 45 mm (R2, R10); 34 mm at the design point |
-| 8 | Inlet valve | 90 mm (3 in) PVC multi-turn gate valve with a reducer and an expander | Slow closing (R17); bore against the 125 mm penstock is open decision N6 (PCF-DEC-001) |
+| 8 | Inlet valve | Full-bore 125 mm PVC-U multi-turn gate valve with solvent-weld sockets, joined to the tee by a short piece of penstock pipe | Slow closing (R17); full bore decided by Amish, 2026-10-01 (PCF-DEC-001) |
 | 9 | Penstock | 125 mm PVC (SN8), about 20 m, drainage grade allowed, support every 2 to 3 m | Site-dependent; excluded from kit cost; 125 mm decided 2026-09-25 |
 | 10 | Forebay and intake screen | Plastic tub or masonry box, 6 mm stainless mesh, overflow lip | Keep the screen clear (surge risk if a nozzle plugs) |
 | 11 | Turbine frame | 40 mm galvanized steel angle, 380 mm welded square, short legs and foot plates, anchored to a pad over the tailrace | Nozzles 280 mm above tailwater (R13) |
@@ -95,17 +99,17 @@ The numbers below are calculated in PCF-CAL-001 (script `docs/04-calcs/sizing.py
 
 | Quantity | Value | Basis |
 | --- | --- | --- |
-| Gross hydraulic power | 199.3 W | ρ g Q H, 10.16 L/s with 34 mm inserts |
-| Pipe, valve and branch loss | 20.3 % of head | 20 m of 125 mm PVC, fittings, 90 mm valve with reducer and expander, 90 mm branches |
-| Net head at the nozzles | 1.59 m | |
-| Jet velocity, jet size | 5.43 m/s, two 34 mm jets | Velocity coefficient 0.97 |
-| Best runner speed, torque | 318 rpm, 3.37 N·m | Bucket speed 0.46 of jet speed; runner 75 % |
-| Rectified DC | 87.8 W at 27.6 V | Generator and rectifier 78.3 % |
-| **Into the battery** | **82.5 W, 6.07 A at 13.6 V** | Buck converter 94 % |
-| Water-to-wire efficiency | 41.4 % | R5 (40 %) met |
-| Daily energy | 1.98 kWh | R6 (1.8 kWh) met |
+| Gross hydraulic power | 203.2 W | ρ g Q H, 10.36 L/s with 34 mm inserts |
+| Pipe, valve and branch loss | 17.0 % of head | 20 m of 125 mm PVC, fittings, full-bore 125 mm valve, 90 mm branches |
+| Net head at the nozzles | 1.66 m | |
+| Jet velocity, jet size | 5.53 m/s, two 34 mm jets | Velocity coefficient 0.97 |
+| Best runner speed, torque | 324 rpm, 3.51 N·m | Bucket speed 0.46 of jet speed; runner 75 % |
+| Rectified DC | 93.4 W at 28.2 V | Generator and rectifier 78.5 % |
+| **Into the battery** | **87.8 W, 6.46 A at 13.6 V** | Buck converter 94 % |
+| Water-to-wire efficiency | 43.2 % | R5 (40 %) met |
+| Daily energy | 2.11 kWh | R6 (1.8 kWh) met |
 
-At exactly 10 L/s the output is 81.7 W, 1.7 W over R3. The 90 mm inlet valve's reducer and expander cost 0.084 m of head; a full-bore valve would give 85.6 W (open decision N6 in PCF-DEC-001).
+At exactly 10 L/s the output is 85.6 W, 5.6 W over R3, with 43.6 % water to wire and 2.05 kWh a day. The full-bore inlet valve, chosen by Amish on 2026-10-01 (PCF-DEC-001), loses 0.007 m of head; the 90 mm valve with its reducer and expander lost 0.081 m and left 81.7 W, 1.7 W over R3.
 
 ### Across the head range
 
@@ -113,31 +117,31 @@ With the design-point inserts, flow rises with head. The bus stays above the 15 
 
 | Gross head | Flow | Best speed | Bus under load | Into battery | Requirement |
 | --- | --- | --- | --- | --- | --- |
-| 1.0 m | 7.2 L/s | 224 rpm | 19.7 V | 25.9 W | R4 (20 W) met |
-| 2.0 m | 10.2 L/s | 318 rpm | 27.6 V | 82.5 W | R3 (80 W) met |
-| 3.0 m | 12.5 L/s | 390 rpm | 33.4 V | 155.7 W | |
+| 1.0 m | 7.3 L/s | 229 rpm | 20.1 V | 27.8 W | R4 (20 W) met |
+| 2.0 m | 10.4 L/s | 324 rpm | 28.2 V | 87.8 W | R3 (80 W) met |
+| 3.0 m | 12.7 L/s | 398 rpm | 34.0 V | 165.4 W | |
 
-At 1.0 m the inserts pass at most about 11.0 L/s, which meets R2 as restated on 2026-09-25 (5 to 10 L/s at 1.0 m, 5 to 15 L/s from 2.0 m).
+At 1.0 m the inserts pass at most about 11.5 L/s, which meets R2 as restated on 2026-09-25 (5 to 10 L/s at 1.0 m, 5 to 15 L/s from 2.0 m).
 
 ### Runaway and the voltage clamp
 
-With no load, the runner would reach about 780 rpm at 3.0 m, and the generator about 78 V DC open circuit, above the 60 V extra-low voltage limit. The hardware clamp prevents this: in the worst case (3.0 m, 15 L/s) the 8.2 Ω clamp resistor holds the runner at about 441 rpm and the bus at about 39 V, so the bus stays at or below 48 V. Only a double fault (load and clamp) lets the voltage rise to about 78 V, and the DC side is enclosed and rated for 100 V for that case. The runner rim reaches only about 7.9 m/s at runaway, so the printed runner does not burst; the generator's overspeed rating is still to be confirmed.
+With no load, the runner would reach about 795 rpm at 3.0 m, and the generator about 80 V DC open circuit, above the 60 V extra-low voltage limit. The hardware clamp prevents this: in the worst case (3.0 m, 15 L/s) the 8.2 Ω clamp resistor holds the runner at about 456 rpm and the bus at about 40 V, so the bus stays at or below 48 V. That equilibrium is now 0.1 V above the clamp's 40 V release point, so in the worst case the clamp stays switched in rather than cycling (PCF-CAL-001 section 6). Only a double fault (load and clamp) lets the voltage rise to about 80 V, and the DC side is enclosed and rated for 100 V for that case. The runner rim reaches only about 8.1 m/s at runaway, so the printed runner does not burst; the generator's overspeed rating is still to be confirmed.
 
 ### Setting height, loads, mass and life
 
 - **Setting height.** The housing stands on the frame 80 mm above the pad, so the nozzle centerline is 280 mm above normal tailwater (R13 met) and the runner underside is 199 mm above it. The setting height costs 12.3 % of the site drop at the design point, down from about 18 % at TRL 2.
-- **Bearing loads** are small: with one jet closed at 3.0 m and 15 L/s, 43 N radial and 101 N axial, giving an L10 life of about 8.0 x 10^6 h. Seal wear and water ingress, not fatigue, will set bearing life. The printed runner's life under sandy water is unknown (R12 at risk).
-- **Mass:** turbine unit (items 1 to 6 and 11, with their fixings) 24.5 kg, with the 7 kg generator the heaviest item; the manifold, nozzles and valve add 6.3 kg and are carried separately (R14; definition confirmed by Amish, 2026-09-25).
-- **Surge:** closing the gate valve over 10 s at 3.0 m adds 0.47 m of head; an instant stop would add about 35 m, which is why a quarter-turn ball valve is not allowed.
+- **Bearing loads** are small: with one jet closed at 3.0 m and 15 L/s, 43 N radial and 105 N axial, giving an L10 life of about 7.1 x 10^6 h. Seal wear and water ingress, not fatigue, will set bearing life. The printed runner's life under sandy water is unknown (R12 at risk).
+- **Mass:** turbine unit (items 1 to 6 and 11, with their fixings) 24.5 kg, with the 7 kg generator the heaviest item; the manifold, nozzles and full-bore valve add 9.8 kg and are carried separately (the valve alone about 5.5 kg) (R14; definition confirmed by Amish, 2026-09-25).
+- **Surge:** closing the gate valve over 10 s at 3.0 m adds 0.48 m of head; an instant stop would add about 36 m, which is why a quarter-turn ball valve is not allowed.
 
 ### Cost
 
-Value-engineering target: USD 450 (a hypothetical control target, not a limit; Amish, 2026-10-01). Estimated cost of the constructable design: USD 534 (USD 84 over the target). Cost drivers and savings worth trying are in the design decisions register (PCF-DEC-001).
+Value-engineering target: USD 450 (a hypothetical control target, not a limit; Amish, 2026-10-01). Estimated cost of the constructable design: USD 614 (USD 164 over the target); the full-bore valve added USD 80 of that, an estimate to be quoted. Cost drivers and savings worth trying are in the design decisions register (PCF-DEC-001).
 
 | Group | Cost | Against the target |
 | --- | --- | --- |
-| Turbine kit with a new generator (items 1 to 8, 10 to 16, 18, 19) | USD 534.00 | USD 84 over |
-| Turbine kit with a salvaged washing machine motor | USD 464.00 | USD 14 over; documented low-cost variant |
+| Turbine kit with a new generator (items 1 to 8, 10 to 16, 18, 19) | USD 614.00 | USD 164 over |
+| Turbine kit with a salvaged washing machine motor | USD 544.00 | USD 94 over; documented low-cost variant |
 | Penstock, 20 m of 125 mm (item 9, excluded) | USD 140.00 | Site-dependent |
 | Battery, 12 V 50 Ah LiFePO4 (item 17, excluded) | USD 160.00 | Often already owned |
 

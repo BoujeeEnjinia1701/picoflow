@@ -3,7 +3,7 @@ doc_id: PCF-BLD-001
 title: PicoFlow prototype build plan
 project: PicoFlow
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan; design made constructable (PCF-DDR-003)
+  - version: "0.2"
+    date: '2026-10-01'
+    author: Amish Chadha
+    change: Full-bore 125 mm inlet valve fitted with a short pipe piece (section 3.14, step 17, joint 13); pictures regenerated
 ---
 
 # PicoFlow prototype build plan
@@ -25,7 +29,7 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order. The penstock is a short stub; the real run is 10 to 30 m of pipe from the forebay.*
 
-The prototype is one PicoFlow turbine set on a concrete pad over a tailrace, with its pipework, inlet valve, forebay and an equipment post for the electrics. Water from the forebay runs down the penstock, through a slow-closing valve and a tee, to two printed nozzles that fire jets onto a printed Turgo runner inside an open-bottomed plastic pipe; the runner turns a generator on top through a shaft in two sealed bearings. Figure 1 shows the 23 components in the order you make or fit them. Fourteen are made in a small workshop: the welded steel frame, the housing cut from sewer pipe, two printed nozzles and their inserts, the plastic lid, the shaft, the printed runner, the guard, the posts and sleeves, the generator plate, three pipe stands, the cut pipework, the forebay and the equipment post. Everything else is bought and fitted: bearing units, hub, coupling, generator, pipe fittings, valve, rectifier, controller modules, resistors, wiring and fixings. The work is sawing and welding steel angle, cutting and drilling plastic pipe and sheet, 3D printing, solvent welding PVC, and wiring bought modules. The turbine kit costs about USD 534 in parts with a new generator, from the bill of materials; the penstock and battery are extra.
+The prototype is one PicoFlow turbine set on a concrete pad over a tailrace, with its pipework, inlet valve, forebay and an equipment post for the electrics. Water from the forebay runs down the penstock, through a slow-closing valve and a tee, to two printed nozzles that fire jets onto a printed Turgo runner inside an open-bottomed plastic pipe; the runner turns a generator on top through a shaft in two sealed bearings. Figure 1 shows the 23 components in the order you make or fit them. Fourteen are made in a small workshop: the welded steel frame, the housing cut from sewer pipe, two printed nozzles and their inserts, the plastic lid, the shaft, the printed runner, the guard, the posts and sleeves, the generator plate, three pipe stands, the cut pipework, the forebay and the equipment post. Everything else is bought and fitted: bearing units, hub, coupling, generator, pipe fittings, valve, rectifier, controller modules, resistors, wiring and fixings. The work is sawing and welding steel angle, cutting and drilling plastic pipe and sheet, 3D printing, solvent welding PVC, and wiring bought modules. The turbine kit costs about USD 614 in parts with a new generator, from the bill of materials; the penstock and battery are extra.
 
 > **Safety:** Streams and weirs can drown people; work at the site only at low flow, never alone, and close the intake before entering the stream. The runner and coupling spin at 300 to 450 rpm: close the valve and wait for them to stop before opening anything. With no load and a failed clamp the generator can reach about 80 V DC, so the DC side is enclosed and rated for 100 V. The dump load and clamp resistor run above 200 °C. The 12 V battery can deliver hundreds of amperes into a short. Close the gate valve slowly, over at least ten turns. Welding, grinding and printing need eye protection and ventilation.
 
@@ -45,7 +49,7 @@ The concept showed what the turbine does; some of its parts could not be made, f
 | Nozzle tip and runner | The runner could not be lifted past the nozzle tips | Nozzle tips end at the housing wall, 115 mm before the strike point; runner 11 mm lower so the jets still meet the top of the buckets (Figure 18) | The lid, shaft and runner lift out together for service |
 | Generator, posts, guard | Generator 5 mm above its plate; posts and guard with no fixing | Generator screwed to the plate; posts as tubes on threaded rods; a 160 mm pipe guard held between lid and plate (Figures 20 and 22) | Everything is clamped or screwed |
 | Pipework | A tee and elbows placed closer together than real fittings allow; no supports | Penstock on the jet 2 line into a reducing tee, standard fittings with their sockets allowed for, three pipe stands (Figures 24 to 27) | Every fitting is a standard one |
-| Inlet valve | A 90 mm valve drawn as a block on the 125 mm line | A reducer and an expander join the 90 mm valve into the line | The valve as listed can only be joined this way |
+| Inlet valve | A 90 mm valve drawn as a block on the 125 mm line | A full-bore 125 mm gate valve with solvent-weld sockets, joined to the tee by a 175 mm piece of penstock pipe (Figure 28) | It joins the 125 mm line directly, and its bore matches the penstock's, so it costs almost no head |
 | Mass | Fixings and feet not counted | Generator plate 8 mm, foot plates 5 mm, post tube 20 x 2 mm | Keeps the turbine unit at 24.5 kg, under the 25 kg limit |
 
 ## 3. Making the components
@@ -350,7 +354,7 @@ One stand goes under the tee branch, one under the long run behind the housing a
 **How to make it.**
 
 1. Cut five lengths of 90 mm pipe, square and deburred, for fittings with 45 mm sockets (adjust each by the difference if yours differ): P1, tee branch to the first elbow, 275 mm; P2, the long run behind the housing, 970 mm; P3, the short drop, 135 mm; P4, last elbow to the jet 1 coupling, 100 mm; P5, reducer to the jet 2 coupling, 110 mm.
-2. Dry fit everything on the stands with the nozzles in place: the penstock enters one end of the tee's 125 mm run; the other end takes the reducer and P5 to jet 2; the 90 mm side branch takes P1, an elbow, P2, an elbow, P3, an elbow and P4 to jet 1.
+2. Dry fit everything on the stands with the nozzles in place: the valve's pipe piece (section 3.14) enters one end of the tee's 125 mm run; the other end takes the reducer and P5 to jet 2; the 90 mm side branch takes P1, an elbow, P2, an elbow, P3, an elbow and P4 to jet 1.
 3. Mark each joint across both parts so it goes back the same way, then solvent weld the PVC joints one at a time, keeping the elbows square. Never glue a nozzle.
 
 **How it fits the parts next to it.**
@@ -363,21 +367,31 @@ The pipework centre line is 338 mm above the pad all round, the height of the no
 
 **Check before moving on.** Dry fitted, the pipework reaches both spigots with no strain and the centre line is level within 3 mm.
 
-### 3.14 Inlet valve and its fittings
+### 3.14 Inlet valve and its pipe piece
 
-**What they are and what they are made from.** A bought 90 mm (3 in) PVC gate valve, multi-turn so it cannot close in under about 10 s, joined into the 125 mm line with a 125 x 90 mm reducer and a 90 x 125 mm expander on two short 90 mm nipples.
+**What they are and what they are made from.** A bought full-bore 125 mm PVC-U gate valve, multi-turn with a handwheel so it cannot close in under about 10 s, with a solvent-weld socket for 125 mm pipe at each end. The one drawn is about 330 mm long over its sockets, with 70 mm deep sockets, a 200 mm handwheel whose top is about 300 mm above the pipe centre line, and a mass of about 5.5 kg. A 175 mm piece of the 125 mm penstock pipe joins it to the tee.
 
-**How to make it.** Cut two 90 mm nipples to suit the valve's sockets. Count the turns from open to closed and write the number on the handwheel; it should be about ten.
+**How to make it.**
 
-**How it fits the parts next to it.** The expander's 125 mm end goes into the free end of the tee's run, then a nipple, the valve, a nipple, the reducer and the penstock (step 17). The valve stem stands up so the handwheel is easy to reach. The penstock is supported by its own site supports every 2 to 3 m, one close to the valve.
+1. Before cutting, measure the valve's socket depth and the depth of the tee's 125 mm socket. Cut the pipe piece from the penstock pipe, square and deburred, to 60 mm plus both socket depths: 175 mm for a 70 mm valve socket and a 45 mm tee socket. The 60 mm is the clear gap between the valve and the tee, which leaves room to turn the handwheel and to cut the line out later.
+2. Chamfer both ends of the pipe piece and the end of the penstock lightly, so they slide into the sockets without pushing the cement off.
+3. Count the turns from open to closed and write the number on the handwheel; it should be about ten. Look through the open valve: the gate must lift clear of the bore.
 
-**Check before moving on.** The valve opens and closes fully and takes about ten turns.
+**How it fits the parts next to it.**
+
+![Figure 28. Joint 13: inlet valve between the penstock and the tee](05-build-plan/joint-13.png)
+
+*Figure 28. The pipe piece goes fully into the tee's free 125 mm socket and the valve's downstream socket; the penstock goes fully into the valve's upstream socket. The bore is 117 to 118 mm all the way through.*
+
+The pipe piece is solvent welded into the free end of the tee's 125 mm run and into the valve's downstream socket; the penstock is solvent welded into the valve's upstream socket (step 17). No reducer or expander is needed. The valve stem stands straight up so the handwheel is easy to reach and clears the pipework by 60 mm. The valve is heavier than the pipe either side, so the penstock's own site support goes within 300 mm of the valve's upstream socket, and the stand under the tee branch carries the downstream side.
+
+**Check before moving on.** The valve opens and closes fully, takes about ten turns, and the pipe piece and penstock each go fully home in their sockets when dry fitted.
 
 ### 3.15 Forebay tub and intake screen
 
-![Figure 28. Making sketch of the forebay](../cad/drawings/PCF-DWG-113.png)
+![Figure 29. Making sketch of the forebay](../cad/drawings/PCF-DWG-113.png)
 
-*Figure 28. Forebay making sketch (PCF-DWG-113).*
+*Figure 29. Forebay making sketch (PCF-DWG-113).*
 
 **What it is and what it is made from.** The tub at the top of the drop that settles sand and screens the water before it enters the penstock. A stiff polyethylene tub about 560 x 460 x 400 mm, a 125 mm tank connector, 6 mm stainless mesh and 20 x 20 x 3 mm aluminium angle.
 
@@ -393,9 +407,9 @@ The pipework centre line is 338 mm above the pad all round, the height of the no
 
 ### 3.16 Equipment post and electrics
 
-![Figure 29. Making sketch of the equipment post](../cad/drawings/PCF-DWG-114.png)
+![Figure 30. Making sketch of the equipment post](../cad/drawings/PCF-DWG-114.png)
 
-*Figure 29. Equipment post making sketch (PCF-DWG-114).*
+*Figure 30. Equipment post making sketch (PCF-DWG-114).*
 
 **What it is and what it is made from.** A timber post beside the turbine that carries the rectifier box, the controller box and the guarded resistors, out of the spray and above flood level. Treated timber 70 x 70 mm, 1.4 m, in a bolt-down post anchor.
 
@@ -408,9 +422,9 @@ The pipework centre line is 338 mm above the pad all round, the height of the no
 
 #### 3.16.1 Wiring
 
-![Figure 30. Block-level wiring](05-build-plan/wiring.png)
+![Figure 31. Block-level wiring](05-build-plan/wiring.png)
 
-*Figure 30. Block-level wiring with wire sizes. No circuit board is laid out at this stage; bought modules stand in for the controller board.*
+*Figure 31. Block-level wiring with wire sizes. No circuit board is laid out at this stage; bought modules stand in for the controller board.*
 
 The controller in the bill of materials is an open-design board, laid out at TRL 4. For this prototype, buy modules that meet this specification:
 
@@ -446,7 +460,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Generator (line 5).** Low-speed three-phase permanent magnet motor used as a generator, about 500 W, about 10 rpm per volt, face mounting with a spigot and a shaft at least 50 mm long, overspeed rating at least 800 rpm.
 - **Housing and lid (line 6).** 315 mm SN4 sewer pipe offcut at least 310 mm long; 400 x 400 x 12 mm HDPE sheet.
 - **Pipework (line 7).** 125 x 90 mm reducing tee, 125 x 90 mm reducer, three 90 mm 90° elbows, 2 m of 90 mm PVC pipe, solvent cement, two 90 mm flexible couplings, PETG filament, 2 mm EPDM sheet.
-- **Valve (line 8).** 90 mm (3 in) PVC gate valve, multi-turn; 125 x 90 mm reducer and expander.
+- **Valve (line 8).** Full-bore 125 mm PVC-U gate valve, PN10 class, solvent-weld sockets for 125 mm pipe at both ends, multi-turn handwheel (never a quarter-turn valve); 175 mm of 125 mm pipe, cut from the penstock, for the pipe piece.
 - **Forebay (line 10).** Tub, 125 mm tank connector, 6 mm stainless mesh, aluminium angle and rivets.
 - **Rectifier, controller, resistors, wiring (lines 13 to 16).** As Table 2.
 - **Fixings (line 19).** Stainless or galvanized: 2 m of M10 threaded rod, 24 M10 nuts, 16 penny washers 30 mm, four M10 x 80 bolts, eight M6 x 25 bolts with nuts and washers, four M6 x 20 screws, four M5 x 16 screws, four M4 x 12 screws, four M5 and four M4 heat-set inserts, four M12 anchors, M8 bolts for the stands.
@@ -555,7 +569,7 @@ Lay the solvent-welded pipework in the clips with the tee on the penstock side. 
 
 ![Step 17](05-build-plan/step-17.png)
 
-Solvent weld the expander into the tee, then the nipple, valve, nipple and reducer, valve stem up; join the penstock to the reducer. Close the valve fully.
+Solvent weld the pipe piece into the free end of the tee's 125 mm run, then the valve onto the pipe piece, stem straight up; solvent weld the penstock into the valve's upstream socket and support it within 300 mm of the valve. Let the joints cure for the time on the cement tin, then close the valve fully.
 
 ### Step 18: forebay (at the top of the drop)
 
@@ -567,7 +581,7 @@ Fit the outlet connector, bed the tub level at the top of the drop with its over
 
 ![Step 19](05-build-plan/step-19.png)
 
-Set the post anchor on ground above flood level, at least 1 m from the bank; fit the post, the rectifier and controller boxes on the face toward the turbine and the resistor guard on the side. Wire as Figure 30. **Hold point:** safety stop S4 in section 6.
+Set the post anchor on ground above flood level, at least 1 m from the bank; fit the post, the rectifier and controller boxes on the face toward the turbine and the resistor guard on the side. Wire as Figure 31. **Hold point:** safety stop S4 in section 6.
 
 ## 5. First checks
 
@@ -612,10 +626,10 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 69 checks); STEP and STL exports in `cad/step/` and `cad/stl/`, including `picoflow-nozzle`, `picoflow-runner`, `picoflow-insert-pair-34mm` and `picoflow-saddle-gaskets`.
+- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 74 checks); STEP and STL exports in `cad/step/` and `cad/stl/`, including `picoflow-nozzle`, `picoflow-runner`, `picoflow-insert-pair-34mm` and `picoflow-saddle-gaskets`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/PCF-DWG-101` to `PCF-DWG-114`. Hole template: `docs/05-build-plan/nozzle-hole-template.pdf`.
-- General arrangement: `cad/drawings/PCF-DWG-001.pdf`, Rev P3.
-- Calculations: `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.3) and `docs/04-calcs/sizing.py`.
+- General arrangement: `cad/drawings/PCF-DWG-001.pdf`, Rev P4.
+- Calculations: `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.4) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (PCF-DDR-003), with PCF-DDR-001 and PCF-DDR-002.
-- Requirements: `docs/03-requirements.md` (PCF-REQ-001 v0.5).
+- Requirements: `docs/03-requirements.md` (PCF-REQ-001 v0.6).
