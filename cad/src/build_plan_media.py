@@ -837,7 +837,7 @@ def wiring():
     blk(52, 22, 16, 12, "Dump-load switch", "MOSFET, on when\nthe battery is full", "#16A34A")
     blk(77, 42, 15, 12, "DC isolator", "rated 100 V DC,\n2 pole", "#374151")
     blk(101, 42, 16, 14, "Battery", "12 V LiFePO4 with\nBMS (household),\n20 A fuse at +", "#65A30D")
-    blk(77, 14, 15, 16, "Resistor guard", "300 W dump load\n(12 V side);\n8.2 ohm 300 W\nclamp (DC bus)", ORA)
+    blk(77, 14, 15, 16, "Resistor guard", "300 W dump load\n(12 V side);\n6.8 ohm 350 W\nclamp (DC bus)", ORA)
     for yy in (51, 49, 47):
         wire([(17, yy), (30, yy)], "#111827", 1.4)
     lab(18, 44.3, "3 x 4 mm²,\nabout 10 m", INK)
@@ -848,7 +848,7 @@ def wiring():
     wire([(72.5, 48), (72.5, 30), (68, 30)], RED); lab(73.2, 38, "12 V to the\nswitch, 4 mm²", RED)
     wire([(68, 25), (77, 25)], ORA); lab(72.5, 23.2, "4 mm²", ORA, "center")
     wire([(60, 42), (60, 34)], GRY, 1.2); lab(60.7, 38, "battery full,\n0.5 mm²", GRY)
-    wire([(37, 22), (37, 16), (77, 16)], ORA); lab(40, 17.6, "to the 8.2 ohm clamp resistor, 1.5 mm²", ORA)
+    wire([(37, 22), (37, 16), (77, 16)], ORA); lab(40, 17.6, "to the 6.8 ohm clamp resistor, 1.5 mm²", ORA)
     ax.text(26, 8.8, "Safety: the clamp works on its own, whatever the charger is doing. Never run the turbine with the clamp or the dump load disconnected.",
             fontsize=7.6, color="#B45309", fontweight="bold")
     ax.text(26, 5.9, "Red: power. Orange: resistor circuits (run hot). Grey: control. The DC bus can reach 48 V in normal clamping and about 80 V on a double fault;"

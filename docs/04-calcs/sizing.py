@@ -56,7 +56,8 @@ V_BATT = 13.6                  # 12 V LiFePO4 charging, V
 V_BUCK_MIN = 15.0              # bus voltage the buck needs to charge at 14.4 V absorption
 INSERTS = (20, 45)             # nozzle insert bore range, mm
 CLAMP_ON, CLAMP_OFF = 48.0, 40.0   # hardware clamp thresholds on the DC bus, V
-CLAMP_R = 8.2                  # clamp resistor in the BOM (line 15), ohm
+CLAMP_R = 6.8                  # clamp resistor in the BOM (line 15), ohm (8.2 before 2026-10-01)
+CLAMP_W = 350.0                # its power rating in the BOM, W
 TOUCH_LIMIT = 60.0             # R8 limit, V DC
 BRG_C = 12.8e3                 # UC204 insert bearing in a UCF204-class flange unit, dynamic load rating, N (catalog class)
 PETG_RHO = 1270.0              # kg/m3
@@ -339,12 +340,14 @@ def main():
     line("Clamped bus voltage, worst case", v_c, "V")
     line("Clamp dissipation at equilibrium", p_c, "W", "{:.0f}")
     line("Clamp resistor rating needed (at 48 V turn-on)", p_rating, "W", "{:.0f}")
+    line("Clamp resistor rating in the BOM", CLAMP_W, "W", "{:.0f}")
+    line("Release margin, 40 V release less clamped bus voltage", CLAMP_OFF - v_c, "V")
     rim_v = worst["rpm_run"] * 2 * math.pi / 60 * 0.1
     line("Runner rim speed at worst runaway", rim_v, "m/s")
     line("Rim hoop stress, rho v^2 (PETG)", PETG_RHO * rim_v ** 2 / 1e6, "MPa", "{:.2f}")
     R.update(run_rpm_3=rng[3.0]["rpm_run"], run_v_3=rng[3.0]["v_run"], worst_p_shaft=worst["p_shaft"],
              worst_run_rpm=worst["rpm_run"], worst_run_v=worst["v_run"], clamp_r=rc, clamp_r_best=rc_best, clamp_v_best=clamp_eq(rc_best)[1], clamp_rpm=rpm_c, clamp_v=v_c,
-             clamp_p=p_c, clamp_rating=p_rating, rim_v=rim_v, rim_stress=PETG_RHO * rim_v ** 2 / 1e6)
+             clamp_p=p_c, clamp_rating=p_rating, clamp_w=CLAMP_W, rim_v=rim_v, rim_stress=PETG_RHO * rim_v ** 2 / 1e6)
 
     # ---------------------------------------------------------- 6 bearings (R12)
     print("\n6. Bearing life (R12)")

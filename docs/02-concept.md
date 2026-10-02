@@ -3,7 +3,7 @@ doc_id: PCF-PRC-001
 title: PicoFlow design precis
 project: PicoFlow
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Full-bore 125 mm inlet valve (N6, option a, decided by Amish 2026-10-01); numbers from PCF-CAL-001 v0.4
+- version: "0.7"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Clamp resistor 6.8 Ω, 350 W (decided by Amish 2026-10-01; was 8.2 Ω, 300 W); clamp and cost figures from PCF-CAL-001 v0.5
 ---
 
 # PicoFlow design precis
@@ -51,7 +55,7 @@ PicoFlow is a vertical-shaft pico hydro turbine for 1 to 3 m of head: water from
 4. **Runner.** A printed Turgo runner, 200 mm outside diameter and 150 mm pitch diameter, with 20 buckets, turns at about 318 rpm at the design point. The water leaves the far side of the buckets and falls out of the open bottom of the housing into the tailrace, so nothing floods the runner.
 5. **Shaft and bearings.** A 20 mm stainless shaft runs up through the lid into two sealed flange bearing units (UCF204 class) stacked on the lid, above the spray, and drives the generator through a jaw coupling inside a guard.
 6. **Generator.** A new low-speed BLDC motor (about 500 W rated, about 10 rpm per volt; decided 2026-09-25) produces three-phase AC, about 28 V DC after the rectifier at the design point. Its mounting plate also accepts a salvaged direct-drive washing machine motor.
-7. **Power electronics.** A three-phase bridge rectifies the output. The open-design controller (the TRL 3 design, decided 2026-09-25) runs a buck converter that holds the runner at its best speed (maximum power point tracking, MPPT) and charges the 12 V battery. When the battery is full or disconnected it switches the output into a 300 W dump load. Separately, a comparator on the DC bus switches an 8.2 Ω clamp resistor across the bus at 48 V and releases it at 40 V, whatever the microcontroller is doing.
+7. **Power electronics.** A three-phase bridge rectifies the output. The open-design controller (the TRL 3 design, decided 2026-09-25) runs a buck converter that holds the runner at its best speed (maximum power point tracking, MPPT) and charges the 12 V battery. When the battery is full or disconnected it switches the output into a 300 W dump load. Separately, a comparator on the DC bus switches a 6.8 Ω, 350 W clamp resistor across the bus at 48 V and releases it at 40 V, whatever the microcontroller is doing.
 
 ![Power flow](../media/flow.png)
 
@@ -77,7 +81,7 @@ Numbers match the exploded view (Figure 3), the general arrangement drawing PCF-
 | 12 | Equipment post | Treated timber post on a base plate | Keeps electronics out of spray and flood |
 | 13 | Rectifier | Three-phase bridge, 35 A, 1,000 V, on a heat sink | |
 | 14 | MPPT, dump-load and clamp controller | Microcontroller, synchronous buck converter, MOSFET dump-load switch, independent comparator clamp, IP65 box rated for 100 V DC | Open design (decided); off-the-shelf unit for first bench tests only |
-| 15 | Dump-load and clamp resistors | 300 W, 12 V heating element or wire-wound resistor; 8.2 Ω, 300 W aluminium-clad clamp resistor; vented guard | Both run hot |
+| 15 | Dump-load and clamp resistors | 300 W, 12 V heating element or wire-wound resistor; 6.8 Ω, 350 W (or higher rated) aluminium-clad clamp resistor; vented guard | Both run hot |
 | 16 | Wiring, fuse and isolator | 4 mm² cable, 20 A fuse at the battery, DC isolator rated 100 V, cable glands | |
 | 17 | Battery | 12 V (decided), about 50 Ah LiFePO4 with BMS, or an existing lead-acid battery | Household item; excluded from kit cost |
 | 18 | Pipe stands | Three steel angle stands with 90 mm pipe clips | Carry the branch pipework |
@@ -125,7 +129,7 @@ At 1.0 m the inserts pass at most about 11.5 L/s, which meets R2 as restated on 
 
 ### Runaway and the voltage clamp
 
-With no load, the runner would reach about 795 rpm at 3.0 m, and the generator about 80 V DC open circuit, above the 60 V extra-low voltage limit. The hardware clamp prevents this: in the worst case (3.0 m, 15 L/s) the 8.2 Ω clamp resistor holds the runner at about 456 rpm and the bus at about 40 V, so the bus stays at or below 48 V. That equilibrium is now 0.1 V above the clamp's 40 V release point, so in the worst case the clamp stays switched in rather than cycling (PCF-CAL-001 section 6). Only a double fault (load and clamp) lets the voltage rise to about 80 V, and the DC side is enclosed and rated for 100 V for that case. The runner rim reaches only about 8.1 m/s at runaway, so the printed runner does not burst; the generator's overspeed rating is still to be confirmed.
+With no load, the runner would reach about 795 rpm at 3.0 m, and the generator about 80 V DC open circuit, above the 60 V extra-low voltage limit. The hardware clamp prevents this: in the worst case (3.0 m, 15 L/s) the 6.8 Ω clamp resistor holds the runner at about 426 rpm and the bus at about 36.7 V, so the bus stays at or below 48 V. That equilibrium is 3.3 V below the clamp's 40 V release point, so the clamp cycles as intended; with the earlier 8.2 Ω resistor it settled at 40.1 V and stayed switched in, which is why Amish chose 6.8 Ω on 2026-10-01 (PCF-CAL-001 section 6). Only a double fault (load and clamp) lets the voltage rise to about 80 V, and the DC side is enclosed and rated for 100 V for that case. The runner rim reaches only about 8.1 m/s at runaway, so the printed runner does not burst; the generator's overspeed rating is still to be confirmed.
 
 ### Setting height, loads, mass and life
 
@@ -136,12 +140,12 @@ With no load, the runner would reach about 795 rpm at 3.0 m, and the generator a
 
 ### Cost
 
-Value-engineering target: USD 450 (a hypothetical control target, not a limit; Amish, 2026-10-01). Estimated cost of the constructable design: USD 614 (USD 164 over the target); the full-bore valve added USD 80 of that, an estimate to be quoted. Cost drivers and savings worth trying are in the design decisions register (PCF-DEC-001).
+Value-engineering target: USD 450 (a hypothetical control target, not a limit; Amish, 2026-10-01). Estimated cost of the constructable design: USD 618 (USD 168 over the target); the 6.8 Ω, 350 W clamp resistor added USD 4 and the full-bore valve added USD 80 of that, an estimate to be quoted. Cost drivers and savings worth trying are in the design decisions register (PCF-DEC-001).
 
 | Group | Cost | Against the target |
 | --- | --- | --- |
-| Turbine kit with a new generator (items 1 to 8, 10 to 16, 18, 19) | USD 614.00 | USD 164 over |
-| Turbine kit with a salvaged washing machine motor | USD 544.00 | USD 94 over; documented low-cost variant |
+| Turbine kit with a new generator (items 1 to 8, 10 to 16, 18, 19) | USD 618.00 | USD 168 over |
+| Turbine kit with a salvaged washing machine motor | USD 548.00 | USD 98 over; documented low-cost variant |
 | Penstock, 20 m of 125 mm (item 9, excluded) | USD 140.00 | Site-dependent |
 | Battery, 12 V 50 Ah LiFePO4 (item 17, excluded) | USD 160.00 | Often already owned |
 
@@ -172,7 +176,7 @@ Decided by Amish, 2026-09-25 (PCF-DDR-002): the 125 mm design-point penstock (N1
 - **Water and the site.** Weirs, rock steps and streams in flood can drown people, especially children. Install and service only at low flow, never stand on a weir crest, keep the intake and tailrace fenced or covered where children play, and site the turbine above normal flood level. Close the intake before entering the stream. The runner is only 199 mm above normal tailwater, so check flood levels before siting.
 - **Rotating parts.** The runner is enclosed in the housing, and the bearings and coupling are inside a guard under the generator plate. Always close the valve and wait for the runner to stop before opening the housing or removing the guard; a runner turning at 300 to 400 rpm can still cut fingers.
 - **Runaway voltage.** The hardware clamp keeps the DC bus at 48 V or less, but a double fault can reach about 80 V DC at 3 m head. The DC side must stay enclosed and rated for at least 100 V.
-- **Dump load and clamp heat.** The 300 W dump load and the 300 W clamp resistor can exceed 200 °C in still air. Mount them in a vented metal guard, away from timber, dry grass and roofs, or immerse the dump load in a water tank with a thermal cut-out.
+- **Dump load and clamp heat.** The 300 W dump load and the 350 W clamp resistor can exceed 200 °C in still air. Mount them in a vented metal guard, away from timber, dry grass and roofs, or immerse the dump load in a water tank with a thermal cut-out.
 - **Lithium battery.** A LiFePO4 battery is less prone to thermal runaway than other lithium chemistries but can still deliver hundreds of amperes into a short circuit. Use a battery with a BMS, a 20 A fuse within 300 mm of the battery terminal, charge-temperature limits from the BMS, and a dry, ventilated, non-combustible location. Lead-acid batteries vent hydrogen while charging and need ventilation.
 - **Water hammer.** Use only the multi-turn gate valve and close it over at least 10 s. Never fit a quarter-turn ball valve: an instant stop on a 20 m penstock could add about 35 m of head and burst drainage pipe. Keep the screen clear, because a nozzle plugged all at once could add about 18 m.
 - **Environment and permits.** Leave enough water in the stream for fish and downstream users (R16), screen the intake, and check local water-use rules before building.

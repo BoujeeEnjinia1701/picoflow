@@ -321,3 +321,65 @@ The valve is visible in all three photoreal renders: `media/render-hero.png` (pe
 ### Recommended next step
 
 Amish decides register item 8 (clamp resistor) and the other open items, starting with acceptance of PCF-DDR-003. A real quote for the 125 mm gate valve would firm up the cost. Then refresh the product renders on the Mac. TRL 4 stays on hold.
+
+## Session 2026-10-01: clamp resistor decided (6.8 Ω, 350 W)
+
+Amish, 2026-10-01: "I approve of your recommendations for PicoFlow and GravitySort". For PicoFlow this answers open item 8 of the design decisions register (PCF-DEC-001 v0.2), the clamp resistor, whose recommendation was option (b). Only this item is decided; acceptance of PCF-DDR-003 (A1), the welded frame and the other open items stay open. Nothing was built; trl stays 3.
+
+### Accepted, as recommended
+
+| Register item (v0.2) | Decision |
+| --- | --- |
+| 8 | Clamp resistor: a 6.8 Ω aluminium-clad resistor rated 350 W or more replaces the 8.2 Ω, 300 W one, so the clamp keeps a margin below its 40 V release point in the worst case |
+
+### What changed
+
+- `docs/06-design-decisions.md` (PCF-DEC-001 v0.3): item 8 moved to Decisions made, dated 2026-10-01, with Amish's words and the record (PCF-CAL-001 v0.5, section 6); it was the last open item, so items 1 to 7 keep their numbers. Value engineering updated: USD 618 (USD 168 over the target), USD 548 with a salvaged motor (USD 98 over), and the line 15 change named.
+- `docs/04-calcs/sizing.py`: clamp resistor 6.8 Ω (was 8.2 Ω) and its 350 W rating added, with the rating and the release margin printed; rerun, `docs/04-calcs/results.json` rewritten. PCF-CAL-001 v0.5 (`docs/04-calcs/01-sizing.md`): summary, R8 and R15 rows, section 6 (clamp) and section 11 (cost) rewritten; a note under the history table says what v0.5 changed.
+- `bom/bom.csv` line 15: 6.8 ohm, 350 W (or higher rated) aluminium-clad clamp resistor; re-priced from USD 28 to USD 32 (+USD 4, indicative, to be quoted). `bom/bom-notes.md`: totals and a paragraph on the change.
+- `docs/05-build-plan.md` (PCF-BLD-001 v0.3): the voltage clamp and resistor rows of section 3.16, wiring item 3 and the parts cost (USD 618); "Where the numbers come from" points at PCF-CAL-001 v0.5 and PCF-REQ-001 v0.7.
+- `docs/05-build-plan/wiring.png` (Figure 31) regenerated with `cad/src/build_plan_media.py wiring`: the resistor guard now reads "6.8 ohm 350 W clamp (DC bus)" and the clamp wire "to the 6.8 ohm clamp resistor". Checked by eye: labels readable, nothing overlapping.
+- `docs/02-concept.md` (PCF-PRC-001 v0.7): controller description, component table line 15, runaway paragraph, cost table and the heat safety note (350 W clamp resistor).
+- `docs/03-requirements.md` (PCF-REQ-001 v0.7): R8 and R15 status and notes.
+- `README.md`: parts list and kit cost.
+- Concept media regenerated (`media/concept-blueprint.*` carries the kit cost; `hero.png`, `cutaway.png`, `exploded.png`, `flow.png`, `model.glb`); no geometry changed.
+- PDFs regenerated with `python3 .kit/render.py`.
+
+### Consistency fix
+
+`bom/bom.csv` line 7 said "a pair of printed 33 mm inserts" and "two 33 mm inserts at the design point", while the model, PCF-CAL-001 and the build plan use 34 mm (flagged under "Found, not changed" in the previous session). Both now say 34 mm. No price change.
+
+### Key results (PCF-CAL-001 v0.5)
+
+| Quantity | 8.2 Ω, 300 W (v0.4) | 6.8 Ω, 350 W (v0.5) |
+| --- | --- | --- |
+| Worst-case clamped bus (3.0 m, 15 L/s) | 40.1 V, 0.1 V above the 40 V release | 36.7 V, 3.3 V below the release |
+| Clamped runner speed | 456 rpm | 426 rpm |
+| Dissipation at equilibrium | 196 W | 198 W |
+| Dissipation at the 48 V switch-on point | 281 W (300 W rating) | 339 W (350 W rating, 3 % margin) |
+| Kit cost, new generator | USD 614 (USD 164 over the USD 450 target) | USD 618 (USD 168 over) |
+| Kit cost, salvaged motor | USD 544 (USD 94 over) | USD 548 (USD 98 over) |
+
+6.8 Ω is the largest E12 value that keeps the worst-case equilibrium below the release point. R8 stays met by calculation; no requirement changed status: none not met, R12 at risk, R7, R11 and R16 not verifiable at TRL 3, 12 met, R15 reported against its value-engineering target.
+
+### Still open (PCF-DEC-001)
+
+1. Accept the design-for-construction changes (PCF-DDR-003, A1).
+2. Frame welded or bolted (A3).
+3. First site type, region and co-design partner.
+4. Split housing for runner inspection.
+5. Clear inspection window in the housing.
+6. Guard material.
+7. Render layout choices.
+
+### Safety
+
+The clamp now cycles as designed in the worst case instead of staying switched in. The resistor runs close to its rating for the moment after switch-on (339 W in a 350 W part), so it must sit on its heat sink inside the vented guard; a 500 W part would give more margin if 350 W aluminium-clad resistors are not stocked. The 48 V ceiling, the 100 V enclosure and the double-fault case (about 80 V) are unchanged.
+
+### Found, not changed
+
+`cad/src/product_model.py` still names the nozzle insert "33 mm" in its part list; it affects only the photoreal render labels and is left for the next render refresh on the Mac.
+
+### Recommended next step
+
+Amish decides the remaining open items, starting with acceptance of PCF-DDR-003 (A1). Quotes for the 125 mm gate valve and the 6.8 Ω, 350 W clamp resistor would firm up the cost. Then refresh the product renders on the Mac. TRL 4 stays on hold.

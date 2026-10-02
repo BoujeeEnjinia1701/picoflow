@@ -69,9 +69,9 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - 125 mm PVC penstock with a slow-closing, full-bore gate valve, forebay screen and 315 mm PVC housing
 - Three-phase rectifier
 - Open-design MPPT, dump-load and clamp controller for a 12 V battery
-- 300 W dump-load resistor and 8.2 ohm clamp resistor
+- 300 W dump-load resistor and 6.8 ohm, 350 W clamp resistor
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv): about $614 for the turbine kit with a new generator, against a value-engineering target of $450; penstock and battery excluded.
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): about $618 for the turbine kit with a new generator, against a value-engineering target of $450; penstock and battery excluded.
 
 ## Building the prototype
 

@@ -3,7 +3,7 @@ doc_id: PCF-BLD-001
 title: PicoFlow prototype build plan
 project: PicoFlow
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: Full-bore 125 mm inlet valve fitted with a short pipe piece (section 3.14, step 17, joint 13); pictures regenerated
+  - version: "0.3"
+    date: '2026-10-01'
+    author: Amish Chadha
+    change: Clamp resistor 6.8 ohm, 350 W (was 8.2 ohm, 300 W) in section 3.16 and the wiring picture (Figure 31); parts cost USD 618
 ---
 
 # PicoFlow prototype build plan
@@ -29,7 +33,7 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order. The penstock is a short stub; the real run is 10 to 30 m of pipe from the forebay.*
 
-The prototype is one PicoFlow turbine set on a concrete pad over a tailrace, with its pipework, inlet valve, forebay and an equipment post for the electrics. Water from the forebay runs down the penstock, through a slow-closing valve and a tee, to two printed nozzles that fire jets onto a printed Turgo runner inside an open-bottomed plastic pipe; the runner turns a generator on top through a shaft in two sealed bearings. Figure 1 shows the 23 components in the order you make or fit them. Fourteen are made in a small workshop: the welded steel frame, the housing cut from sewer pipe, two printed nozzles and their inserts, the plastic lid, the shaft, the printed runner, the guard, the posts and sleeves, the generator plate, three pipe stands, the cut pipework, the forebay and the equipment post. Everything else is bought and fitted: bearing units, hub, coupling, generator, pipe fittings, valve, rectifier, controller modules, resistors, wiring and fixings. The work is sawing and welding steel angle, cutting and drilling plastic pipe and sheet, 3D printing, solvent welding PVC, and wiring bought modules. The turbine kit costs about USD 614 in parts with a new generator, from the bill of materials; the penstock and battery are extra.
+The prototype is one PicoFlow turbine set on a concrete pad over a tailrace, with its pipework, inlet valve, forebay and an equipment post for the electrics. Water from the forebay runs down the penstock, through a slow-closing valve and a tee, to two printed nozzles that fire jets onto a printed Turgo runner inside an open-bottomed plastic pipe; the runner turns a generator on top through a shaft in two sealed bearings. Figure 1 shows the 23 components in the order you make or fit them. Fourteen are made in a small workshop: the welded steel frame, the housing cut from sewer pipe, two printed nozzles and their inserts, the plastic lid, the shaft, the printed runner, the guard, the posts and sleeves, the generator plate, three pipe stands, the cut pipework, the forebay and the equipment post. Everything else is bought and fitted: bearing units, hub, coupling, generator, pipe fittings, valve, rectifier, controller modules, resistors, wiring and fixings. The work is sawing and welding steel angle, cutting and drilling plastic pipe and sheet, 3D printing, solvent welding PVC, and wiring bought modules. The turbine kit costs about USD 618 in parts with a new generator, from the bill of materials; the penstock and battery are extra.
 
 > **Safety:** Streams and weirs can drown people; work at the site only at low flow, never alone, and close the intake before entering the stream. The runner and coupling spin at 300 to 450 rpm: close the valve and wait for them to stop before opening anything. With no load and a failed clamp the generator can reach about 80 V DC, so the DC side is enclosed and rated for 100 V. The dump load and clamp resistor run above 200 °C. The 12 V battery can deliver hundreds of amperes into a short. Close the gate valve slowly, over at least ten turns. Welding, grinding and printing need eye protection and ventilation.
 
@@ -435,15 +439,15 @@ The controller in the bill of materials is an open-design board, laid out at TRL
 | Rectifier | Three-phase bridge, 35 A, 1,000 V, on an aluminium heat sink in a vented box |
 | Charger | Synchronous buck charge controller with input-voltage (maximum power point) regulation, 15 to 60 V in, a 12 V LiFePO4 charge profile, and a battery-full output |
 | Dump-load switch | MOSFET switch module rated 30 A at 12 V, driven by the charger's battery-full output |
-| Voltage clamp | A comparator module with its own supply from the DC bus, on at 48 V and off at 40 V, driving a MOSFET or DC solid-state relay rated 100 V and 10 A that switches the 8.2 ohm clamp resistor across the bus, with no connection to the charger's control |
-| Resistors | A 300 W, 12 V heating element or wire-wound dump load and an 8.2 ohm, 300 W aluminium-clad clamp resistor, both on a heat sink inside a vented steel guard |
+| Voltage clamp | A comparator module with its own supply from the DC bus, on at 48 V and off at 40 V, driving a MOSFET or DC solid-state relay rated 100 V and 10 A that switches the 6.8 ohm clamp resistor across the bus, with no connection to the charger's control |
+| Resistors | A 300 W, 12 V heating element or wire-wound dump load and a 6.8 ohm aluminium-clad clamp resistor rated 350 W or more, both on a heat sink inside a vented steel guard |
 | Isolation | A 2-pole DC isolator rated 100 V, a 20 A fuse within 300 mm of the battery positive, cable glands |
 
 Wire it like this, with stranded copper and a crimped lug or ferrule on every terminal:
 
 1. Generator to rectifier, three phases: 4 mm², about 10 m, in a conduit along the pipework.
 2. Rectifier to the charger input (the DC bus): 4 mm².
-3. DC bus to the voltage clamp's sense input: 1.5 mm². Clamp switch to the 8.2 ohm resistor: 1.5 mm².
+3. DC bus to the voltage clamp's sense input: 1.5 mm². Clamp switch to the 6.8 ohm resistor: 1.5 mm².
 4. Charger output (12 V) to the DC isolator and on to the battery, with the 20 A fuse within 300 mm of the battery: 4 mm².
 5. Charger output to the dump-load switch and on to the dump load: 4 mm².
 6. Charger battery-full signal to the dump-load switch: 0.5 mm².
@@ -629,7 +633,7 @@ Stop at each point. Carry on only when everything listed is true.
 - Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 74 checks); STEP and STL exports in `cad/step/` and `cad/stl/`, including `picoflow-nozzle`, `picoflow-runner`, `picoflow-insert-pair-34mm` and `picoflow-saddle-gaskets`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/PCF-DWG-101` to `PCF-DWG-114`. Hole template: `docs/05-build-plan/nozzle-hole-template.pdf`.
 - General arrangement: `cad/drawings/PCF-DWG-001.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.4) and `docs/04-calcs/sizing.py`.
+- Calculations: `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.5) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (PCF-DDR-003), with PCF-DDR-001 and PCF-DDR-002.
-- Requirements: `docs/03-requirements.md` (PCF-REQ-001 v0.6).
+- Requirements: `docs/03-requirements.md` (PCF-REQ-001 v0.7).
