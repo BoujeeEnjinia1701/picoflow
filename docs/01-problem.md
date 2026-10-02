@@ -3,9 +3,9 @@ doc_id: PCF-PRB-001
 title: PicoFlow problem statement
 project: PicoFlow
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "First site and partner selection rule recorded from the decisions of 2026-10-02"
 ---
 
 # PicoFlow problem statement
@@ -87,7 +91,7 @@ Research shows the technical route exists. A single-jet Turgo turbine, normally 
 
 ## Open questions
 
-- Which first site type, region and co-design partner: a household stream in East Africa, a hill farm in Southeast Asia, or a teaching rig? Proposed, awaiting Amish (PCF-DDR-001 O1).
+- Which first site type, region and co-design partner: a household stream in East Africa, a hill farm in Southeast Asia, or a teaching rig? Selection rule decided 2026-10-02 (PCF-DEC-001): hilly off-grid communities with streams of 5 to 15 L/s and 1 to 3 m of head, confirmed by dry-season flow measurements; first candidate type to approach, a micro-hydro NGO such as Practical Action's energy programmes in Nepal or Peru.
 - How common are 1 to 3 m sites with 5 to 15 L/s in the dry season, compared with the larger flows propeller turbines need? This sets whether a Turgo or a propeller is the better low-head choice for the target users.
 - Battery voltage: 12 V, decided by Amish on 2026-09-25 (PCF-DDR-001). Whether 24 V households need a variant is left for later.
 - Which water-use and fisheries rules apply to small diversions in the first target country?

@@ -3,9 +3,9 @@ doc_id: PCF-PRC-001
 title: PicoFlow design precis
 project: PicoFlow
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Clamp resistor 6.8 Ω, 350 W (decided by Amish 2026-10-01; was 8.2 Ω, 300 W); clamp and cost figures from PCF-CAL-001 v0.5
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Decisions of 2026-10-02: welding rule, no housing window, polycarbonate or PVC guard, partner selection rule"
 ---
 
 # PicoFlow design precis
@@ -174,7 +178,8 @@ Decided by Amish, 2026-09-25 (PCF-DDR-002): the 125 mm design-point penstock (N1
 > **Safety:** PicoFlow combines moving water at a weir, a spinning runner, a generator that can exceed 60 V DC if both the load and the clamp fail, resistors that run hot, and a lithium battery. Treat each as a hazard at every stage, including site survey.
 
 - **Water and the site.** Weirs, rock steps and streams in flood can drown people, especially children. Install and service only at low flow, never stand on a weir crest, keep the intake and tailrace fenced or covered where children play, and site the turbine above normal flood level. Close the intake before entering the stream. The runner is only 199 mm above normal tailwater, so check flood levels before siting.
-- **Rotating parts.** The runner is enclosed in the housing, and the bearings and coupling are inside a guard under the generator plate. Always close the valve and wait for the runner to stop before opening the housing or removing the guard; a runner turning at 300 to 400 rpm can still cut fingers.
+- **Rotating parts.** The runner is enclosed in the housing, and the bearings and coupling are inside a guard under the generator plate. Always close the valve and wait for the runner to stop before opening the housing or removing the guard; a runner turning at 300 to 400 rpm can still cut fingers. The housing has no window while the printed runner's life is unproven, and a clear guard must be polycarbonate, never acrylic.
+- **Welding.** The frame and pipe stands are welded from bare steel and galvanized or painted afterwards; never weld galvanized steel, which gives off zinc fumes.
 - **Runaway voltage.** The hardware clamp keeps the DC bus at 48 V or less, but a double fault can reach about 80 V DC at 3 m head. The DC side must stay enclosed and rated for at least 100 V.
 - **Dump load and clamp heat.** The 300 W dump load and the 350 W clamp resistor can exceed 200 °C in still air. Mount them in a vented metal guard, away from timber, dry grass and roofs, or immerse the dump load in a water tank with a thermal cut-out.
 - **Lithium battery.** A LiFePO4 battery is less prone to thermal runaway than other lithium chemistries but can still deliver hundreds of amperes into a short circuit. Use a battery with a BMS, a 20 A fuse within 300 mm of the battery terminal, charge-temperature limits from the BMS, and a dry, ventilated, non-combustible location. Lead-acid batteries vent hydrogen while charging and need ventilation.
@@ -187,6 +192,6 @@ Decided by Amish, 2026-09-25 (PCF-DDR-002): the 125 mm design-point penstock (N1
 - Confirm the runner efficiency of a printable bucket shape against the Bristol low-head results.
 - Confirm the drainage pipe joint rating with the supplier.
 - Check PETG and nylon creep, water uptake and sand erosion under continuous duty (R12).
-- Choose the first site type, region and partner (O1).
+- Choose the first site type, region and partner (O1). Selection rule decided 2026-10-02: hilly off-grid communities with streams of 5 to 15 L/s and 1 to 3 m of head, confirmed by dry-season flow measurements; first candidate type to approach, a micro-hydro NGO such as Practical Action's energy programmes in Nepal or Peru. Nothing is agreed.
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html).

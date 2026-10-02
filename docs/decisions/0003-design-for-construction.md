@@ -3,9 +3,9 @@ doc_id: PCF-DDR-003
 title: PicoFlow design for construction
 project: PicoFlow
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: A2 accepted by Amish as recommended (full-bore inlet valve); A1 and A3 stay open
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "A1 and A3 accepted by Amish on 2026-10-02 (design for construction; welded frame from bare steel, galvanized or painted after welding)"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. A2 in Table 3 is accepted: Amish, 2026-10-01: "picoflow - i agree with the recommendation", so option (a), a full-bore valve matched to the 125 mm penstock, re-priced, is decided and recorded in the design decisions register (PCF-DEC-001). A1 and A3 are still Proposed, awaiting Amish.
+- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. A2 in Table 3 is accepted: Amish, 2026-10-01: "picoflow - i agree with the recommendation", so option (a), a full-bore valve matched to the 125 mm penstock, re-priced, is decided and recorded in the design decisions register (PCF-DEC-001). A1 and A3 were accepted by Amish on 2026-10-02 ("i approve your recommendations for all 555 open decisions."), which accepts every change in Tables 1 and 2 (P11's valve fittings already superseded by A2) and the welded frame, made from bare steel and galvanized or painted after welding; both are recorded in PCF-DEC-001. The record stays Draft.
 
 ## Context
 
@@ -69,13 +73,13 @@ The changes below keep what PicoFlow does: the same runner, jets, setting height
 | Drawing | PCF-DWG-001 Rev P3; making sketches PCF-DWG-101 to 114 added. | Follows the model. |
 | Documents | PCF-CAL-001 v0.3, PCF-REQ-001 v0.5 and PCF-PRC-001 v0.5: numbers updated. No performance or safety requirement changed status; R15 is now reported against its value-engineering target (USD 84 over) rather than as met. | Follows the model and Amish's 2026-10-01 instruction on budgets. |
 
-*Table 3. Items for Amish: A2 accepted as recommended on 2026-10-01; A1 and A3 proposed, awaiting Amish.*
+*Table 3. Items for Amish: A2 accepted as recommended on 2026-10-01; A1 and A3 accepted as recommended on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | Accept the design-for-construction changes P1 to P14. | (a) accept; (b) accept with changes. | (a). |
+| A1 | Accept the design-for-construction changes P1 to P14. | (a) accept; (b) accept with changes. | (a), noting that P11's valve fittings are replaced by the full-bore valve of A2. Accepted by Amish, 2026-10-02. |
 | A2 | Inlet valve bore (N6, now quantified). The 90 mm valve with its reducer and expander costs 0.084 m of head; at exactly 10 L/s output is 81.7 W, 1.7 W over R3. A full-bore valve on the 125 mm line gives 85.6 W and 43.6 % water to wire. | (a) full-bore valve matched to the penstock, re-priced in the kit; (b) keep the 90 mm valve and its fittings. | (a), because R3 now rests on a 1.7 W margin and the runner efficiency is still unmeasured. Accepted by Amish, 2026-10-01. |
-| A3 | Frame made by welding. | (a) welded by a local fabricator, as modelled; (b) a bolted frame with corner gussets, more parts but no welding. | (a): simplest and stiffest; one fabricator visit. |
+| A3 | Frame made by welding. | (a) welded by a local fabricator, as modelled; (b) a bolted frame with corner gussets, more parts but no welding. | (a): simplest and stiffest; one fabricator visit. Accepted by Amish, 2026-10-02: welded from bare steel, then hot-dip galvanized or painted; never welded after galvanizing. |
 
 ## Consequences
 
@@ -83,4 +87,5 @@ The changes below keep what PicoFlow does: the same runner, jets, setting height
 - Requirement status (PCF-CAL-001 v0.3): none not met, 1 at risk (R12, printed runner life), 3 not verifiable at TRL 3, 12 met, and R15 over its value-engineering target by USD 84.
 - The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept frame, bearing housing, guard and pipework; they need updating on Amish's Mac, where Blender is.
 - With A2 accepted (2026-10-01), the 90 mm valve, reducer, expander and nipples are replaced in the model, BOM line 8 and the build plan (section 3.14, step 17, joint 13) by a full-bore 125 mm PVC-U gate valve with solvent-weld sockets, about 330 mm long and 5.5 kg (catalogue class, to confirm), joined to the tee by a 175 mm piece of penstock pipe. The model now runs 74 constructability checks, all passing. PCF-CAL-001 v0.4: 85.6 W into the battery at exactly 10 L/s, 5.6 W over R3 (was 81.7 W and 1.7 W); 87.8 W with the 34 mm inserts; water to wire 43.6 % at 10 L/s. The kit is USD 614, USD 164 over the USD 450 value-engineering target (line 8 from USD 40 to USD 120, an estimate to be quoted). The turbine unit stays 24.5 kg; the pipework carried separately is 9.8 kg (was 6.3 kg). PCF-DWG-001 is Rev P4.
+- With A1 and A3 accepted (2026-10-02), the frame and pipe stands are welded from bare steel and galvanized or painted afterwards, never welded after galvanizing; the build plan states this, and the BOM descriptions of lines 11 and 18 still say galvanized angle until they are revised.
 - Bought parts are chosen at TRL 4; their sizes (flange units, generator face, fitting socket depths, valve bore) must be checked then and the model moved to suit.

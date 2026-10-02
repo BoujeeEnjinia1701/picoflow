@@ -3,9 +3,9 @@ doc_id: PCF-DEC-001
 title: PicoFlow design decisions register
 project: PicoFlow
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Amish accepted the recommendation of open item 8 (clamp resistor, option b, 6.8 Ω, 350 W); moved to Decisions made; value engineering updated (line 15 re-priced)
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Amish approved the recommendations for all open decisions 1 to 7 on 2026-10-02 (PCF-DDR-003 accepted; welded then galvanized frame; no window; polycarbonate or PVC guard); moved to decisions made"
 ---
 
 # PicoFlow design decisions register
@@ -29,17 +33,7 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-| # | Decision needed | Options | Recommendation | Affects in the build | Source |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Accept the design-for-construction changes (frame, tie rods, flange bearing units, runner hub, nozzle saddles, manifold layout, pipe stands, fixings; the valve fittings of P11 are superseded by the full-bore valve decided on 2026-10-01) | Accept; accept with changes | Accept | The whole build plan | PCF-DDR-003, A1 |
-| 2 | Frame made by welding or bolting | (a) welded by a local fabricator; (b) bolted with corner gussets | (a) | Frame (section 3.1) | PCF-DDR-003, A3 |
-| 3 | First site type, region and co-design partner, including confirming that target sites carry about 5 to 15 L/s | Region and partner to be chosen | None yet | Site work: forebay, penstock length, pad, equipment post position | PCF-DDR-001 and 002, O1 |
-| 4 | Split housing for runner inspection (shown in the product renders) | (a) one-piece pipe, as modelled; (b) split into bolted halves | (a) | Housing | REVIEW 2026-09-26, item 1 |
-| 5 | Clear inspection window in the housing (shown in the product renders) | (a) none, as modelled; (b) optional bolted polycarbonate window | (b) as an option | Housing | REVIEW 2026-09-26, item 2 |
-| 6 | Guard material (the renders show a clear guard) | (a) 160 mm PVC pipe, as modelled; (b) clear polycarbonate tube of the same size | (b) if a clear tube is found at that size, so the spider can be checked without removing it | Guard (section 3.9) | REVIEW 2026-09-26, item 3; PCF-DDR-003, P9 |
-| 7 | Render layout choices: rectifier box shown loose beside the unit; tailwater drawn 20 mm below the channel edge | Accept as render choices; change the renders | Accept | Renders only | REVIEW 2026-09-26, items 5 and 6 |
-
-Item 4 of the 2026-09-26 render review (nozzle holes in the housing) is now part of the design (PCF-DDR-003, P5) and needs no separate decision.
+None. All open decisions were decided on 2026-10-02.
 
 ## To confirm when parts are bought
 
@@ -58,7 +52,7 @@ Item 4 of the 2026-09-26 render review (nozzle holes in the housing) is now part
 Value-engineering target: USD 450 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 618 for the turbine kit with a new generator (USD 168 over the target); USD 548 with a salvaged washing machine motor (USD 98 over the target). The penstock (about USD 140 for 20 m) and the battery (about USD 160) are outside the kit, as decided with the budget. Main cost drivers and savings worth trying:
 
 - The largest lines are the full-bore inlet valve (USD 120, an estimate), the generator (USD 110), the nozzle manifold (USD 50), the controller (USD 43), the bearing units, plate, posts and guard (USD 43) and the housing and lid (USD 35). The 6.8 Ω, 350 W clamp resistor (decided 2026-10-01) raised line 15 from USD 28 to USD 32, an indicative price to be quoted.
-- Making the design constructable added USD 86: fixings (USD 28), pipe stands (USD 15), flexible couplings and the reducer (USD 12), flange bearing units and plate (USD 10), valve fittings (USD 8, since replaced by the full-bore valve), the forebay tank connector and screen frame (USD 8), and smaller items (USD 5).
+- Making the design constructable added USD 86: fixings (USD 28), pipe stands (USD 15), flexible couplings and the reducer (USD 12), flange bearing units and plate (USD 10), valve fittings (USD 8, since replaced by the full-bore valve, so the construction additions still in the estimate are USD 78), the forebay tank connector and screen frame (USD 8), and smaller items (USD 5).
 - Savings worth trying: a salvaged washing machine motor (about USD 70 less, already the documented variant); a 6 mm steel generator plate instead of 8 mm aluminium (a few dollars, about 0.6 kg heavier); timber pipe stands; buying fixings as one bulk pack. The full-bore valve (decided 2026-10-01) raised line 8 from USD 40 to USD 120 to recover 3.9 W at the design point, about USD 21 per watt; no published price was found for a 125 mm PVC-U gate valve, so getting real quotes is the first saving to try, and a cheaper full-bore valve of the same kind would bring most of the USD 80 back.
 
 ## Decisions made
@@ -67,8 +61,15 @@ Value-engineering target: USD 450 (a hypothetical control target, not a limit). 
 | --- | --- | --- | --- |
 | 2026-09-25 | TRL 2 review items D1 to D10: budget USD 450 with the salvaged-motor variant documented, new low-speed BLDC generator, open-design controller (off-the-shelf only for first bench tests), 12 V battery, PETG then glass-filled nylon runner, vertical shaft, two jets, drainage pipe with a slow-closing valve, problem wording, Turgo | Amish: "proceed with all of your recommendations across all batches. Make sure we don't proceed to TRL 4 on any of them." | PCF-DDR-001 |
 | 2026-09-25 | TRL 3 items N1 to N5: 125 mm design-point penstock, R4 relaxed to 20 W, R2 stated per head, R14 turbine-unit definition, USD 2 cost margin accepted | Amish: "i accept all your recommendations, go with them across all repos." | PCF-DDR-002 |
-| 2026-09-30 | Make the design physically buildable while drawing the build plan | Amish: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." | PCF-DDR-003 (changes open for review, open decision 1) |
+| 2026-09-30 | Make the design physically buildable while drawing the build plan | Amish: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." | PCF-DDR-003 (changes accepted on 2026-10-02, below) |
 | 2026-09-30 | Outstanding decisions are kept in this register, not in the build plan | Amish: "don't log outstanding decisions in this build plan - that is not the place for it. that should be in a separate design document logged and named as such" | This register |
 | 2026-10-01 | Inlet valve bore (N6, open decision 2 in register v0.1): option (a), a full-bore valve matched to the 125 mm penstock, re-priced. A 125 mm PVC-U gate valve with solvent-weld sockets replaces the 90 mm valve, reducer and expander: 85.6 W at exactly 10 L/s, 5.6 W over R3; line 8 USD 120 | Amish: "picoflow - i agree with the recommendation" | PCF-DDR-003, A2; PCF-CAL-001 v0.4 |
 | 2026-10-01 | The budget is a value-engineering target, not a limit | Amish: "the budgets are a hypothethical control target to ensure we are thinking along a value engineering lens. its ok to ensure wording reflects that the hypothesis budget was x - the real cost being accrued is y" | This register, Value engineering |
 | 2026-10-01 | Clamp resistor (R8, open item 8 in register v0.2): option (b), a 6.8 Ω aluminium-clad clamp resistor rated 350 W or more replaces the 8.2 Ω, 300 W one. In the worst case (3.0 m, 15 L/s) the clamp now settles the bus at 36.7 V, 3.3 V below its 40 V release, so it cycles as intended (the 8.2 Ω resistor settled at 40.1 V); 339 W at the 48 V switch-on point, inside the 350 W rating. BOM line 15 USD 32 (+USD 4) | Amish: "I approve of your recommendations for PicoFlow and GravitySort" | PCF-CAL-001 v0.5, section 6 |
+| 2026-10-02 | Design for construction accepted: the changes P1 to P14 of PCF-DDR-003 and their knock-on changes, as made; P11's valve fittings are already replaced by the full-bore valve decided on 2026-10-01 | Amish: "i approve your recommendations for all 555 open decisions." | PCF-DDR-003, A1 and Tables 1 and 2 |
+| 2026-10-02 | Frame (option a): welded by a local fabricator from bare steel, then hot-dip galvanized or painted; never welded after galvanizing | Amish: "i approve your recommendations for all 555 open decisions." | PCF-DDR-003, A3 |
+| 2026-10-02 | First site type, region and partner: kept open under the portfolio rule, chosen as hilly off-grid communities with streams of 5 to 15 L/s and 1 to 3 m of head, confirmed by dry-season flow measurements. First candidate type to approach: a micro-hydro NGO, for example Practical Action's energy programmes in Nepal or Peru | Amish: "i approve your recommendations for all 555 open decisions." | PCF-DDR-001 and 002, O1 |
+| 2026-10-02 | Housing (option a): the one-piece pipe is kept; the runner is inspected by lifting the lid | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, item 1 |
+| 2026-10-02 | Inspection window (option a, changed from b): no window in the kit; kept as a later teaching option in impact-rated polycarbonate, only after the runner has passed its life test | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, item 2 |
+| 2026-10-02 | Guard: a clear guard (option b) only if the clear tube is polycarbonate, never acrylic; otherwise the 160 mm PVC guard stays, and the spider is checked with the turbine stopped and the plate off | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, item 3; PCF-DDR-003, P9 |
+| 2026-10-02 | Render layout choices (rectifier box loose beside the unit; tailwater 20 mm below the channel edge) accepted as render choices | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, items 5 and 6 |

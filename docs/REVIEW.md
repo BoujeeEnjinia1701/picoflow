@@ -383,3 +383,32 @@ The clamp now cycles as designed in the worst case instead of staying switched i
 ### Recommended next step
 
 Amish decides the remaining open items, starting with acceptance of PCF-DDR-003 (A1). Quotes for the 125 mm gate valve and the 6.8 Ω, 350 W clamp resistor would firm up the cost. Then refresh the product renders on the Mac. TRL 4 stays on hold.
+
+## Session 2026-10-02: open decisions decided
+
+On 2026-10-02 Amish approved the recommendations for every open decision: "i approve your recommendations for all 555 open decisions." The 7 open decisions of the design decisions register are now in its Decisions made table, dated 2026-10-02.
+
+PCF-DDR-003 (design for construction) is accepted (A1 and A3; A2 was accepted on 2026-10-01). Safety rules carried into the build plan: frame and pipe stands welded from bare steel and galvanized or painted afterwards, never welded after galvanizing; no window in the housing; a clear guard only in polycarbonate, never acrylic. The value engineering note now says the construction additions still in the estimate are USD 78 (review flag 2).
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (PCF-DEC-001 v0.4)
+- `docs/decisions/0003-design-for-construction.md` (PCF-DDR-003 v0.3)
+- `docs/01-problem.md` (PCF-PRB-001 v0.5)
+- `docs/02-concept.md` (PCF-PRC-001 v0.8)
+- `docs/05-build-plan.md` (PCF-BLD-001 v0.4)
+- `bom/bom-notes.md` (not a controlled document)
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2: BOM: change the descriptions of lines 11 (frame) and 18 (pipe stands) from galvanized angle to bare steel angle, hot-dip galvanized or painted after welding, and add the galvanizing or paint cost if the fabricator quotes it separately.
+2. Decision 2: Drawings: change the material notes on making sketches PCF-DWG-101 (frame) and PCF-DWG-111 (pipe stand) to bare steel, galvanized or painted after welding.
+3. Decision 1: Renders: regenerate the photoreal renders, `media/card.png`, `media/social-preview.png` and the appearance model on Amish's Mac to show the accepted constructable design, without the housing window and split housing, with a PVC (or polycarbonate) guard (items 4 to 7 follow with them).
+4. Decision 1: Value engineering: get real quotes for the full-bore 125 mm valve before anything else (review flag 1).
+
+### Points found in the review
+
+1. The 2026-10-01 full-bore valve decision rests on an estimated USD 120 with no published price (about USD 21 per watt recovered); a real quote should be the first value-engineering step, and option (b) could be reopened if it comes in high.
+2. The Value engineering list still counts USD 8 of valve fittings in the USD 86 added for construction, although they were replaced by the full-bore valve.
+
+No CAD model, BOM quantity or price, calculation result or picture was changed. TRL stays at 3; TRL 4 remains on hold.

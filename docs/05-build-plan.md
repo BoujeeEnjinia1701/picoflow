@@ -3,9 +3,9 @@ doc_id: PCF-BLD-001
 title: PicoFlow prototype build plan
 project: PicoFlow
 doc_type: Build plan
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: Clamp resistor 6.8 ohm, 350 W (was 8.2 ohm, 300 W) in section 3.16 and the wiring picture (Figure 31); parts cost USD 618
+  - version: "0.4"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Decisions of 2026-10-02: frame and pipe stands welded from bare steel and galvanized or painted afterwards; guard PVC or polycarbonate, never acrylic; no housing window; safety stops S6 and S7 updated. Pictures unchanged"
 ---
 
 # PicoFlow prototype build plan
@@ -66,7 +70,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 2. Turbine frame making sketch (PCF-DWG-101).*
 
-**What it is and what it is made from.** The square steel frame the housing stands on, bolted to the pad over the tailrace. Galvanized steel angle 40 x 40 x 4 mm, about 1.8 m; flat bar 80 x 5 mm and 30 x 5 mm.
+**What it is and what it is made from.** The square steel frame the housing stands on, bolted to the pad over the tailrace. Bare (uncoated) steel angle 40 x 40 x 4 mm, about 1.8 m; flat bar 80 x 5 mm and 30 x 5 mm; hot-dip galvanized or painted after welding. A local fabricator welds it.
 
 **How to make it.**
 
@@ -76,7 +80,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 4. Cut four 70 mm lengths of angle for the legs. Fit each inside a corner, tight under the horizontal legs and against the vertical legs, and weld.
 5. Cut four 80 x 80 mm foot plates from 5 mm flat bar. Drill a 13 mm anchor hole in each, 18 mm in from two adjacent edges. Weld one under each leg so it reaches outward, with the hole outside the corner of the square (208 mm from both centre lines).
 6. Cut four 30 mm lengths of 20 x 5 mm flat bar for the pipe stops. Weld one upright on each horizontal leg at the middle of each side, its inner face 158.5 mm from the centre of the frame.
-7. Clean the welds and paint them with zinc-rich paint.
+7. Clean the welds, then have the whole frame hot-dip galvanized, or paint it. Never weld galvanized steel: the zinc gives off toxic fumes.
 
 **How it fits the parts next to it.**
 
@@ -263,7 +267,7 @@ The hub's flange sits on the runner hub with four M5 screws into the heat-set in
 
 *Figure 19. Guard making sketch (PCF-DWG-108).*
 
-**What it is and what it is made from.** A short tube that covers both bearing units and the jaw coupling. 160 mm PVC pipe, 4 mm wall.
+**What it is and what it is made from.** A short tube that covers both bearing units and the jaw coupling. 160 mm PVC pipe, 4 mm wall. A clear polycarbonate tube of the same size may replace it; never acrylic, which is brittle and would crack under a coupling failure. With the PVC guard, check the coupling spider only with the turbine stopped and the generator plate off.
 
 **How to make it.**
 
@@ -328,14 +332,15 @@ Each post stands on the lid 125 mm each way from the centre. Its rod goes up fro
 
 *Figure 24. Pipe stand making sketch (PCF-DWG-111).*
 
-**What it is and what it is made from.** A short steel stand with a pipe clip that carries the branch pipework at the nozzle height. Galvanized angle 40 x 40 x 4 mm, flat bar 100 x 6 mm and 60 x 5 mm, a 90 mm pipe clip with an M8 boss.
+**What it is and what it is made from.** A short steel stand with a pipe clip that carries the branch pipework at the nozzle height. Bare steel angle 40 x 40 x 4 mm, galvanized or painted after welding, flat bar 100 x 6 mm and 60 x 5 mm, a 90 mm pipe clip with an M8 boss.
 
 **How to make it.**
 
 1. Cut a 259 mm upright from angle and a 100 x 100 mm foot from 6 mm flat bar; drill an 11 mm anchor hole in the foot, 35 mm in from two edges.
 2. Weld the upright square in the middle of the foot.
 3. Cut a 60 x 60 mm top plate from 5 mm flat bar, drill 9 mm in the middle and weld it square on top of the upright.
-4. Put an M8 bolt up through the top plate and screw the clip's boss onto it.
+4. Galvanize or paint the stand once it is welded, never before.
+5. Put an M8 bolt up through the top plate and screw the clip's boss onto it.
 
 **How it fits the parts next to it.**
 
@@ -615,8 +620,8 @@ Stop at each point. Carry on only when everything listed is true.
 - **S3. Before the generator plate goes on (step 14).** The guard is in its groove; the coupling hubs are tight on both shafts.
 - **S4. Before any wire is connected to the battery.** The DC side is enclosed in its boxes; the clamp check of section 5 has passed on a bench supply; the battery fuse is out; the isolator is off; the resistor guard is mounted with clear air above it.
 - **S5. Before water is admitted.** The generator is wired to the rectifier and the clamp and dump load are connected; nobody is near the runner, coupling or resistors; the valve is opened slowly, a turn at a time.
-- **S6. Before opening the housing or removing the plate.** The valve is fully closed (over at least ten turns), the runner has stopped, and the isolator is off.
-- **S7. Never.** Never fit a quarter-turn valve; never run with the clamp or dump load disconnected; never leave the screen uncleared, since a nozzle blocked all at once can add about 18 m of head to the drainage pipe.
+- **S6. Before opening the housing or removing the plate.** The valve is fully closed (over at least ten turns), the runner has stopped, and the isolator is off. The coupling spider is checked only in this state.
+- **S7. Never.** Never weld galvanized steel; never fit an acrylic guard or a window in the housing; never fit a quarter-turn valve; never run with the clamp or dump load disconnected; never leave the screen uncleared, since a nozzle blocked all at once can add about 18 m of head to the drainage pipe.
 
 ## 7. Tools, skills and workspace
 
