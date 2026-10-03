@@ -25,7 +25,7 @@ from model import PARAMS, build_components, nozzle_frame, pad_context, _derived 
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 P = _derived(PARAMS)
 C = build_components()
 REPO = "github.com/BoujeeEnjinia1701/picoflow"
@@ -139,7 +139,7 @@ def sheets():
     out.append(_sheet(
         Part("Turbine frame", S("frame"), COL["frame"]), [M["housing"], M["tie_rods"]],
         dwg_no="PCF-DWG-101", title="PicoFlow turbine frame: making sketch",
-        material="Galvanized steel angle 40 x 40 x 4 mm; flat 80 x 80 x 5 and 30 x 20 x 5 mm",
+        material="Bare steel angle 40 x 40 x 4 mm; flat 80 x 80 x 5 and 30 x 20 x 5 mm; galvanized or painted after welding",
         inset_view=(28, -55),
         notes=["Square: four 380 mm lengths of 40 x 40 x 4 angle, mitred 45 deg at each",
                "  end, horizontal legs pointing inward, top faces flat and level.",
@@ -152,7 +152,7 @@ def sheets():
                "  horizontal legs at the middle of each side, inner face 158.5 mm",
                "  from the centre (1 mm outside the housing).",
                "Tie rod holes: 11 mm in each corner, 170 mm from both centre lines.",
-               "Clean the welds and touch up the galvanizing with zinc paint.",
+               "Clean the welds, then galvanize or paint the whole frame. Never weld after galvanizing.",
                "Check: top flat within 1 mm; the housing drops in between the stops."],
         **base))
 
@@ -336,14 +336,14 @@ def sheets():
     out.append(_sheet(
         Part("Pipe stand", st, COL["stands"]), [M["pipework"]],
         dwg_no="PCF-DWG-111", title="PicoFlow pipe stand (make 3): making sketch",
-        material="Galvanized angle 40 x 40 x 4 mm, flat 100 x 100 x 6 and 60 x 60 x 5 mm",
+        material="Bare steel angle 40 x 40 x 4 mm, flat 100 x 100 x 6 and 60 x 60 x 5 mm; galvanized or painted after welding",
         view_shape=b.Pos(-x, -y, 0) * st, inset_view=(25, -60),
         notes=["Upright: 259 mm of 40 x 40 x 4 angle, ends square.",
                "Foot: 100 x 100 x 6 mm plate, one 11 mm anchor hole 35 mm in from",
                "  two edges; weld the upright to it in the middle, square.",
                "Top: 60 x 60 x 5 mm plate with a 9 mm hole in the middle, welded",
                "  square on top of the upright.",
-               "Clip: a 90 mm galvanized pipe clip with an M8 boss, screwed onto an",
+               "Clip: a 90 mm pipe clip with an M8 boss, screwed onto an",
                "  M8 bolt up through the top plate. The clip's band holds the pipe.",
                "Height: pad to the bottom of the pipe 290 mm; adjust on the M8",
                "  thread if the pad is uneven.",

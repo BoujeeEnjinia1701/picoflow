@@ -1,13 +1,12 @@
 """PicoFlow product appearance model (build123d), TRL 3.
 
-Finished-product look for photoreal renders: the 315 mm PVC housing drawn as two halves with
-bolted vertical seam flanges, a clear polycarbonate inspection window in the front half that
-shows the teal printed Turgo runner, a filleted HDPE lid, an aluminium bearing housing with
-cap screws and a grease nipple, stainless posts, a filleted generator plate, a clear coupling
+Finished-product look for photoreal renders: the one-piece 315 mm PVC housing with its nozzle
+entries (no window and no split, PCF-DDR-003 accepted 2026-10-02), a filleted HDPE lid, an aluminium bearing housing with
+cap screws and a grease nipple, stainless posts, a filleted generator plate, a 160 mm PVC pipe coupling
 guard over a two-hub jaw coupling with its elastomer spider, a finned low-speed BLDC generator
 with a label band and cable gland, the 125 x 90 mm tee, 90 mm branches with socket couplers,
-two printed nozzles with swappable metal inserts, a gate valve with a handwheel, a galvanized
-angle frame on foot plates, and a vented rectifier box with a lit status light. Context is a
+two printed nozzles with swappable metal inserts, a gate valve with a handwheel, a steel angle frame
+(galvanized or painted after welding) on foot plates, and a vented rectifier box with a lit status light. Context is a
 short section of 125 mm penstock on a pipe saddle, the concrete edges of the tailrace channel
 under the frame and the tailwater surface.
 APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FABRICATION.
@@ -35,15 +34,15 @@ TITLE = "PicoFlow: pico hydro Turgo turbine with a generator on the lid"
 RENDER_VIEWS = [
     {"name": "hero", "groups": ["shell", "internal", "context"], "explode": False, "el": 30, "az": -40,
      "note": "Product render from the front right and above (about 30 deg elevation); generator on the lid, "
-             "runner behind the clear inspection window, penstock and gate valve arriving from the back left "
+             "one-piece housing, penstock and gate valve arriving from the back left "
              "over the tailrace channel"},
     {"name": "exploded", "groups": ["shell", "internal", "accessory"], "explode": True, "el": 28, "az": -55,
      "note": "Exploded view from the front right and above (about 28 deg elevation): generator, plate and posts, "
-             "jaw coupling and guard, bearing housing, shaft, lid, housing halves with the inspection window, "
+             "jaw coupling and guard, bearing housing, shaft, lid, one-piece housing, "
              "runner, nozzles with inserts, manifold, gate valve, frame and rectifier box"},
     {"name": "detail", "groups": ["shell", "internal"], "explode": False, "el": 12, "az": -78,
-     "note": "Detail view from the front, slightly right and above (about 12 deg elevation): the teal Turgo "
-             "runner seen through the clear inspection window, with the nozzle entering at left"},
+     "note": "Detail view from the front, slightly right and above (about 12 deg elevation): the one-piece "
+             "housing, the nozzle entering at left, the frame and the pad over the tailrace"},
 ]
 
 # Colours (restrained product palette; kit accent for the runner)
@@ -68,9 +67,6 @@ C_CONCRETE = "#CFCCC6"
 C_WATER = "#9EC3CF"
 
 # Appearance-only layout and detail sizes (mm)
-WIN_HALF_ANG = 34.0        # inspection window half angle about -Y
-WIN_Z = (150.0, 350.0)     # window opening, Z range
-SEAM_W, SEAM_T = 26.0, 8.0 # vertical seam flange width (radial) and thickness
 CH_IN = 165.0              # tailrace channel inner half width (X), under the frame legs
 CH_WALL = 110.0
 CH_Y = 280.0               # channel half length along Y
@@ -117,7 +113,7 @@ def _hex_bolt(x, y, z, af=13.0, h=6.0, washer=True, up=True):
 
 
 def _housing(p):
-    """Two housing halves (split on the Y = 0 plane), seam flanges, bolts and the window."""
+    """One-piece 315 mm PVC housing with nozzle entries and collars (no window, no split; PCF-DDR-003, accepted 2026-10-02)."""
     Ro = p["housing_od"] / 2
     t = p["housing_wall"]
     z0, h = p["housing_z0"], p["housing_h"]
@@ -133,56 +129,11 @@ def _housing(p):
     # shallow raised collars top and bottom (rolled pipe ends)
     band = lambda zb: Pos(0, 0, zb) * (Cylinder(Ro + 1.5, 14) - Cylinder(Ro - 1, 16))
     pipe += band(z0 + 7) + band(z0 + h - 7)
-    # inspection window opening on the front (-Y) side
-    wa = math.radians(WIN_HALF_ANG)
-    wz0, wz1 = WIN_Z
-    win_cut = Pos(0, -Ro, (wz0 + wz1) / 2) * Box(2 * Ro * math.sin(wa), 60, wz1 - wz0)
-    win_cut = _fillet_try(win_cut, win_cut.edges().filter_by(Axis.Y), [18.0, 10.0])
-    pipe -= win_cut
-
-    front = pipe & Pos(0, -Ro, zc) * Box(2 * Ro + 60, 2 * Ro, h + 40)
-    back = pipe & Pos(0, Ro, zc) * Box(2 * Ro + 60, 2 * Ro, h + 40)
-    # vertical seam flanges on both sides of each half, with a 1 mm parting gap
-    fl_h = h - 40
-    bolts_f, bolts_b = None, None
-    for sx in (1, -1):
-        xf = sx * (Ro - t + SEAM_W / 2)
-        fl_f = Pos(xf, -SEAM_T / 2 - 0.5, zc) * Box(SEAM_W, SEAM_T, fl_h)
-        fl_b = Pos(xf, SEAM_T / 2 + 0.5, zc) * Box(SEAM_W, SEAM_T, fl_h)
-        fl_f = _fillet_try(fl_f, fl_f.edges().filter_by(Axis.Y), [3.0, 1.5])
-        fl_b = _fillet_try(fl_b, fl_b.edges().filter_by(Axis.Y), [3.0, 1.5])
-        front += fl_f
-        back += fl_b
-        xb = sx * (Ro + SEAM_W / 2 - 6)
-        for zb in (z0 + 50, zc, z0 + h - 50):
-            hb = Pos(xb, -SEAM_T - 0.5 - 2.5, zb) * Rot(90, 0, 0) * extrude(RegularPolygon(10 / math.sqrt(3), 6), amount=2.5, both=True)
-            hb += Pos(xb, -SEAM_T - 0.5 - 0.5, zb) * Rot(90, 0, 0) * Cylinder(8.0, 1.0)
-            nb = Pos(xb, SEAM_T + 0.5 + 2.5, zb) * Rot(90, 0, 0) * extrude(RegularPolygon(10 / math.sqrt(3), 6), amount=2.5, both=True)
-            nb += Pos(xb, SEAM_T + 0.5 + 0.5, zb) * Rot(90, 0, 0) * Cylinder(8.0, 1.0)
-            bolts_f = hb if bolts_f is None else bolts_f + hb
-            bolts_b = nb if bolts_b is None else bolts_b + nb
-    # window frame: a curved bezel ring around the opening, outside the wall
-    ring_o = Pos(0, -Ro, (wz0 + wz1) / 2) * Box(2 * Ro * math.sin(wa) + 24, 80, wz1 - wz0 + 24)
-    ring_o = _fillet_try(ring_o, ring_o.edges().filter_by(Axis.Y), [26.0, 18.0])
-    shell_band = Pos(0, 0, zc) * (Cylinder(Ro + 4, h) - Cylinder(Ro - 0.5, h + 2))
-    bezel = (ring_o & shell_band) - win_cut
-    glass = (Pos(0, -Ro, (wz0 + wz1) / 2) * Box(2 * Ro * math.sin(wa) + 12, 80, wz1 - wz0 + 12))
-    glass = _fillet_try(glass, glass.edges().filter_by(Axis.Y), [22.0, 14.0])
-    glass &= Pos(0, 0, zc) * (Cylinder(Ro + 1.8, h) - Cylinder(Ro + 0.2, h + 2))
-    # bezel screws
-    wscrews = None
-    for ang in (-WIN_HALF_ANG - 4, WIN_HALF_ANG + 4):
-        for zs in (wz0 + 20, (wz0 + wz1) / 2, wz1 - 20):
-            ra = math.radians(ang)
-            x, y = (Ro + 4) * math.sin(ra), -(Ro + 4) * math.cos(ra)
-            sc = Pos(x, y, zs) * Rot(0, 0, ang) * Rot(90, 0, 0) * Cylinder(4.0, 3.0)
-            sc = _fillet_try(sc, sc.edges(), [0.8, 0.4])
-            wscrews = sc if wscrews is None else wscrews + sc
-    # maker label plate on the back half, +X side
+    # maker label plate, +X side
     lab_a = math.radians(55)
     label = Pos((Ro + 0.6) * math.sin(lab_a), (Ro + 0.6) * math.cos(lab_a), z0 + 70) * Rot(0, 0, -55) * Box(90, 1.2, 36)
     label = _fillet_try(label, label.edges().filter_by(Axis.Y), [3.0, 1.5])
-    return front, back, bolts_f, bolts_b, bezel, glass, wscrews, label
+    return pipe, label
 
 
 def _nozzles(p):
@@ -266,17 +217,11 @@ def product_parts(P=PARAMS):
     # ---- 2 shaft
     add("Stainless shaft", m["shaft"], C_STEEL, "metal", 2, "internal", (0, 0, E_SHAFT))
 
-    # ---- 6 housing halves, window, lid
-    front, back, bolts_f, bolts_b, bezel, glass, wscrews, label = _housing(p)
-    E_FRONT, E_BACK = (-90, -320, 0), (160, 380, -230)
-    add("Housing front half (315 mm PVC)", front, C_PVC, "plastic", 6, "shell", E_FRONT)
-    add("Housing back half (315 mm PVC)", back, C_PVC, "plastic", 6, "shell", E_BACK)
-    add("Seam bolts", bolts_f, C_STEEL, "metal", 6, "shell", E_FRONT)
-    add("Seam nuts", bolts_b, C_STEEL, "metal", 6, "shell", E_BACK)
-    add("Inspection window bezel", bezel, C_DARK, "plastic", 6, "shell", (-90, -360, 0))
-    add("Inspection window (clear polycarbonate)", glass, C_WINDOW, "clear", 6, "shell", (-90, -340, 0))
-    add("Window screws", wscrews, C_STEEL, "metal", 6, "shell", (-90, -380, 0))
-    add("Housing label plate", label, C_LABEL, "plastic", 6, "shell", E_BACK)
+    # ---- 6 housing, lid
+    housing, label = _housing(p)
+    E_HOUS = (0, 0, -130)
+    add("Housing (315 mm PVC, one piece)", housing, C_PVC, "plastic", 6, "shell", E_HOUS)
+    add("Housing label plate", label, C_LABEL, "plastic", 6, "shell", E_HOUS)
 
     lid = Pos(0, 0, z_lid + p["lid_t"] / 2) * Box(p["lid"], p["lid"], p["lid_t"])
     lid = _fillet_try(lid, lid.edges().filter_by(Axis.Z), [18.0, 10.0])
@@ -326,7 +271,7 @@ def product_parts(P=PARAMS):
     g0 = bh0 + p["brg_housing_h"]
     gh = p["plate_z0"] - g0
     guard = Pos(0, 0, g0 + gh / 2) * (Cylinder(p["guard_d"] / 2, gh) - Cylinder(p["guard_d"] / 2 - 2, gh + 2))
-    add("Coupling guard (clear polycarbonate)", guard, C_WINDOW, "clear", 3, "shell", (0, 0, E_GUARD))
+    add("Coupling guard (160 mm PVC pipe)", guard, C_PVC, "plastic", 3, "shell", (0, 0, E_GUARD))
     grings = (Pos(0, 0, g0 + 4) * (Cylinder(p["guard_d"] / 2 + 2, 8) - Cylinder(p["guard_d"] / 2 - 2, 9))
               + Pos(0, 0, g0 + gh - 4) * (Cylinder(p["guard_d"] / 2 + 2, 8) - Cylinder(p["guard_d"] / 2 - 2, 9)))
     add("Coupling guard rings", grings, C_ALU, "plastic", 3, "shell", (0, 0, E_GUARD))

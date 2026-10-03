@@ -3,7 +3,7 @@ doc_id: PCF-DEC-001
 title: PicoFlow design decisions register
 project: PicoFlow
 doc_type: Design decisions register
-version: "0.4"
+version: "0.5"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Amish approved the recommendations for all open decisions 1 to 7 on 2026-10-02 (PCF-DDR-003 accepted; welded then galvanized frame; no window; polycarbonate or PVC guard); moved to decisions made"
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Approved follow-ups carried out (BOM lines 11 and 18 coating wording, making sketches, appearance model); valve quote still to get"
 ---
 
 # PicoFlow design decisions register
@@ -73,3 +77,4 @@ Value-engineering target: USD 450 (a hypothetical control target, not a limit). 
 | 2026-10-02 | Inspection window (option a, changed from b): no window in the kit; kept as a later teaching option in impact-rated polycarbonate, only after the runner has passed its life test | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, item 2 |
 | 2026-10-02 | Guard: a clear guard (option b) only if the clear tube is polycarbonate, never acrylic; otherwise the 160 mm PVC guard stays, and the spider is checked with the turbine stopped and the plate off | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, item 3; PCF-DDR-003, P9 |
 | 2026-10-02 | Render layout choices (rectifier box loose beside the unit; tailwater 20 mm below the channel edge) accepted as render choices | Amish: "i approve your recommendations for all 555 open decisions." | REVIEW 2026-09-26, items 5 and 6 |
+| 2026-10-02 | Follow-ups of the open-decision sign-off that need BOM, drawing or appearance model work are carried out: frame and pipe stand wording and making sketches (bare steel, galvanized or painted after welding); appearance model without the housing window and split, with a PVC guard. Real quotes for the full-bore 125 mm valve and the photoreal renders are still to do | Amish: "APPROVED CHANGES, COMPLETE THESE" | [REVIEW.md](REVIEW.md), session 2026-10-02 (approved follow-ups carried out) |

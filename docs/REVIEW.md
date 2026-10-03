@@ -412,3 +412,39 @@ PCF-DDR-003 (design for construction) is accepted (A1 and A3; A2 was accepted on
 2. The Value engineering list still counts USD 8 of valve fittings in the USD 86 added for construction, although they were replaced by the full-bore valve.
 
 No CAD model, BOM quantity or price, calculation result or picture was changed. TRL stays at 3; TRL 4 remains on hold.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved every follow-up action of the open-decision sign-off on 2026-10-02 ("APPROVED CHANGES, COMPLETE THESE"). Results for the four follow-ups listed above:
+
+### Approved follow-ups carried out
+
+1. BOM lines 11 and 18: done. Both now say bare steel angle, welded bare and then hot-dip galvanized or painted after welding. The fabricator has not quoted galvanizing or paint separately, so no coating cost was added; a small-batch galvanizing minimum charge could exceed the USD 15 and USD 5 line prices (noted in `bom/bom-notes.md`).
+2. Making sketches PCF-DWG-101 and PCF-DWG-111: done. Material notes and the touch-up note now say bare steel, galvanized or painted after welding, never welded after galvanizing. General arrangement PCF-DWG-001 is Rev P5 (frame material note). Text check on all drawings is clean.
+3. Appearance model: done. `cad/src/product_model.py` now draws a one-piece housing with no window and no split, and a 160 mm PVC pipe guard (polycarbonate is allowed in the build plan, never acrylic); views hero, exploded and detail kept, with their notes updated. Render scenes exported to `/home/claude/renders/picoflow` (hero, exploded, detail, each .npz and .json, and `picoflow__jobs.json`). The photoreal renders, `media/card.png` and `media/social-preview.png` are for Amish's Mac.
+4. Real quotes for the full-bore 125 mm valve: not done. It is outreach to suppliers by Amish; the USD 120 line stays an estimate and is still the first value-engineering step.
+
+Done 3 of 4.
+
+### Key results
+
+- Requirement status: no change. Calculations unchanged (`sizing.py` not affected by these follow-ups).
+- Cost: Value-engineering target: USD 450. Estimated cost of the constructable design: USD 618 for the turbine kit with a new generator (USD 168 over the target); USD 548 with a salvaged washing machine motor (USD 98 over the target). `budget_usd` unchanged. Mass unchanged.
+- The model and its 74 constructability checks are unchanged and pass. No build plan picture besides the two making sketches changed, because no geometry changed.
+
+### Documents changed (new versions)
+
+PCF-BLD-001 v0.5, PCF-PRC-001 v0.9, PCF-DEC-001 v0.5, PCF-DDR-003 v0.4; `bom/bom.csv`, `bom/bom-notes.md`, `cad/src/build_plan_media.py`, `cad/src/sheets.py`, `cad/src/product_model.py`.
+
+### Cross-repo actions
+
+None found for this repo.
+
+### Recommended next step
+
+Amish gets quotes for the 125 mm full-bore valve, then the photoreal renders are made on the Mac from the exported scenes. TRL 4 stays on hold.
+
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

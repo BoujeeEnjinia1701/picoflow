@@ -1,7 +1,7 @@
 """PicoFlow drawing sheets.
 
 Run from the repo root:  python cad/src/sheets.py
-Builds PCF-DWG-001 (turbine unit general arrangement, Rev P4) in cad/drawings/ from
+Builds PCF-DWG-001 (turbine unit general arrangement, Rev P5) in cad/drawings/ from
 cad/src/model.py. PCF-DWG-010 is the concept sheet made by cad/src/concept_media.py.
 """
 import json
@@ -21,13 +21,14 @@ asm = model.build()
 work = ROOT / "cad" / "drawings" / "_views"
 views = project_views(asm, work)
 
-s = Sheet(project="PicoFlow", title="Turbine unit general arrangement", dwg_no="PCF-DWG-001", rev="P4",
-          author="Amish Chadha", date="2026-10-01", scale=None, concept=True,
-          material="Runner and nozzles PETG; housing PVC SN4; lid HDPE; frame galvanized steel. PRELIMINARY, NOT FOR FABRICATION",
+s = Sheet(project="PicoFlow", title="Turbine unit general arrangement", dwg_no="PCF-DWG-001", rev="P5",
+          author="Amish Chadha", date="2026-10-02", scale=None, concept=True,
+          material="Runner and nozzles PETG; housing PVC SN4; lid HDPE; frame steel, galvanized or painted after welding. PRELIMINARY, NOT FOR FABRICATION",
           revisions=[("P1", "General arrangement for TRL 3 (PCF-CAL-001)", "2026-09-25", "AC"),
                      ("P2", "Penstock 125 mm, 33 mm inserts (PCF-DDR-002)", "2026-09-25", "AC"),
                      ("P3", "Design for construction (PCF-DDR-003)", "2026-10-01", "AC"),
-                     ("P4", "Full-bore 125 mm inlet valve (PCF-DDR-003, A2)", "2026-10-01", "AC")])
+                     ("P4", "Full-bore 125 mm inlet valve (PCF-DDR-003, A2)", "2026-10-01", "AC"),
+                     ("P5", "Frame steel welded bare, then galvanized or painted (2026-10-02)", "2026-10-02", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(views["iso"], 276, 38, 140, 72, label="Isometric view", sublabel="Not to scale; penstock shown as a stub")
 s.add_notes("Main dimensions (mm), Z from normal tailwater", [

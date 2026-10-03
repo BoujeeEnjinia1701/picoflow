@@ -78,7 +78,7 @@ PARAMS = {
     "lid_t": 12.0,
     "lid_groove": 3.0,         # groove under the lid that locates the housing top
     "frame": 380.0,            # DDR-003 P1: frame outside size, square (was 420)
-    "frame_leg": 40.0,         # 40 x 40 x 4 mm galvanized angle
+    "frame_leg": 40.0,         # 40 x 40 x 4 mm steel angle (galvanized or painted after welding)
     "angle_t": 4.0,
     "foot": 80.0,              # foot plates, 80 x 80 x 5 mm
     "foot_t": 5.0,

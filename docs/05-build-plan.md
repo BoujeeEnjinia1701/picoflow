@@ -3,7 +3,7 @@ doc_id: PCF-BLD-001
 title: PicoFlow prototype build plan
 project: PicoFlow
 doc_type: Build plan
-version: "0.4"
+version: "0.5"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -25,6 +25,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: "Decisions of 2026-10-02: frame and pipe stands welded from bare steel and galvanized or painted afterwards; guard PVC or polycarbonate, never acrylic; no housing window; safety stops S6 and S7 updated. Pictures unchanged"
+  - version: "0.5"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Approved follow-ups: frame and pipe stand making sketches (PCF-DWG-101, 111) now say bare steel, galvanized or painted after welding"
 ---
 
 # PicoFlow prototype build plan
@@ -637,8 +641,8 @@ Stop at each point. Carry on only when everything listed is true.
 
 - Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 74 checks); STEP and STL exports in `cad/step/` and `cad/stl/`, including `picoflow-nozzle`, `picoflow-runner`, `picoflow-insert-pair-34mm` and `picoflow-saddle-gaskets`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/PCF-DWG-101` to `PCF-DWG-114`. Hole template: `docs/05-build-plan/nozzle-hole-template.pdf`.
-- General arrangement: `cad/drawings/PCF-DWG-001.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (PCF-CAL-001 v0.5) and `docs/04-calcs/sizing.py`.
+- General arrangement: `cad/drawings/PCF-DWG-001.pdf`, Rev P5.
+- Calculations: `docs/04-calcs/01-sizing.md` (PCF-CAL-001) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (PCF-DDR-003), with PCF-DDR-001 and PCF-DDR-002.
 - Requirements: `docs/03-requirements.md` (PCF-REQ-001 v0.7).

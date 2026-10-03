@@ -3,7 +3,7 @@ doc_id: PCF-DDR-003
 title: PicoFlow design for construction
 project: PicoFlow
 doc_type: Design decision record
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "A1 and A3 accepted by Amish on 2026-10-02 (design for construction; welded frame from bare steel, galvanized or painted after welding)"
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Appearance model updated to the accepted design (no window, one-piece housing, PVC guard); photoreal renders still to be remade on Amish's Mac"
 ---
 
 # 0003: Design for construction
@@ -85,7 +89,7 @@ The changes below keep what PicoFlow does: the same runner, jets, setting height
 
 - `design_state: constructable` in `project.yaml`. The build plan PCF-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`); open items are in the design decisions register PCF-DEC-001.
 - Requirement status (PCF-CAL-001 v0.3): none not met, 1 at risk (R12, printed runner life), 3 not verifiable at TRL 3, 12 met, and R15 over its value-engineering target by USD 84.
-- The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept frame, bearing housing, guard and pipework; they need updating on Amish's Mac, where Blender is.
+- The appearance model `cad/src/product_model.py` was updated on 2026-10-02 to the accepted design (one-piece housing, no window, PVC guard) and its render scenes exported. The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` still show the earlier design until they are remade on Amish's Mac, where Blender is.
 - With A2 accepted (2026-10-01), the 90 mm valve, reducer, expander and nipples are replaced in the model, BOM line 8 and the build plan (section 3.14, step 17, joint 13) by a full-bore 125 mm PVC-U gate valve with solvent-weld sockets, about 330 mm long and 5.5 kg (catalogue class, to confirm), joined to the tee by a 175 mm piece of penstock pipe. The model now runs 74 constructability checks, all passing. PCF-CAL-001 v0.4: 85.6 W into the battery at exactly 10 L/s, 5.6 W over R3 (was 81.7 W and 1.7 W); 87.8 W with the 34 mm inserts; water to wire 43.6 % at 10 L/s. The kit is USD 614, USD 164 over the USD 450 value-engineering target (line 8 from USD 40 to USD 120, an estimate to be quoted). The turbine unit stays 24.5 kg; the pipework carried separately is 9.8 kg (was 6.3 kg). PCF-DWG-001 is Rev P4.
 - With A1 and A3 accepted (2026-10-02), the frame and pipe stands are welded from bare steel and galvanized or painted afterwards, never welded after galvanizing; the build plan states this, and the BOM descriptions of lines 11 and 18 still say galvanized angle until they are revised.
 - Bought parts are chosen at TRL 4; their sizes (flange units, generator face, fitting socket depths, valve bore) must be checked then and the model moved to suit.

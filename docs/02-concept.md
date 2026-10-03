@@ -3,7 +3,7 @@ doc_id: PCF-PRC-001
 title: PicoFlow design precis
 project: PicoFlow
 doc_type: Design precis
-version: "0.8"
+version: "0.9"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -41,6 +41,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Decisions of 2026-10-02: welding rule, no housing window, polycarbonate or PVC guard, partner selection rule"
+- version: "0.9"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Approved follow-up: frame described as steel angle, galvanized or painted after welding"
 ---
 
 # PicoFlow design precis
@@ -81,7 +85,7 @@ Numbers match the exploded view (Figure 3), the general arrangement drawing PCF-
 | 8 | Inlet valve | Full-bore 125 mm PVC-U multi-turn gate valve with solvent-weld sockets, joined to the tee by a short piece of penstock pipe | Slow closing (R17); full bore decided by Amish, 2026-10-01 (PCF-DEC-001) |
 | 9 | Penstock | 125 mm PVC (SN8), about 20 m, drainage grade allowed, support every 2 to 3 m | Site-dependent; excluded from kit cost; 125 mm decided 2026-09-25 |
 | 10 | Forebay and intake screen | Plastic tub or masonry box, 6 mm stainless mesh, overflow lip | Keep the screen clear (surge risk if a nozzle plugs) |
-| 11 | Turbine frame | 40 mm galvanized steel angle, 380 mm welded square, short legs and foot plates, anchored to a pad over the tailrace | Nozzles 280 mm above tailwater (R13) |
+| 11 | Turbine frame | 40 mm bare steel angle, galvanized or painted after welding, 380 mm welded square, short legs and foot plates, anchored to a pad over the tailrace | Nozzles 280 mm above tailwater (R13) |
 | 12 | Equipment post | Treated timber post on a base plate | Keeps electronics out of spray and flood |
 | 13 | Rectifier | Three-phase bridge, 35 A, 1,000 V, on a heat sink | |
 | 14 | MPPT, dump-load and clamp controller | Microcontroller, synchronous buck converter, MOSFET dump-load switch, independent comparator clamp, IP65 box rated for 100 V DC | Open design (decided); off-the-shelf unit for first bench tests only |
